@@ -79,3 +79,19 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// ===================== GET CURRENT USER =====================
+exports.getMe = async (req, res) => {
+  try {
+
+    // req.user was attached by authMiddleware
+    res.status(200).json(req.user);
+
+  } catch (error) {
+
+    res.status(500).json({
+      error: error.message
+    });
+
+  }
+};
