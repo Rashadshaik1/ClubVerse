@@ -20,3 +20,6 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT,()=>{
     console.log(`Server Running on port ${PORT}`);
 });
+app.use("/api/clubs", require("./routes/clubRoutes"));
+app.use("/api/events", require("./routes/eventRoutes"));
+app.use("/api/registration", require("./routes/registrationRoutes"));
