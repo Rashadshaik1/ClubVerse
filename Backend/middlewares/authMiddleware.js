@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+const User = require("../models/User");
+const Club = require("../models/Club"); // <-- Added
 
 // Middleware to protect routes
 // Only users with a valid JWT token can access routes using this middleware
@@ -22,6 +23,13 @@ const protect = async (req, res, next) => {
             // Result -> "abc.xyz.123"
             token = req.headers.authorization.split(" ")[1];
 
+            // FIX: token missing check
+            if (!token) {
+                return res.status(401).json({
+                    message: "Not authorized, token missing"
+                });
+            }
+
             // Verify token using JWT_SECRET
             // If token is invalid or expired, jwt.verify throws an error
             const decoded = jwt.verify(
@@ -29,17 +37,46 @@ const protect = async (req, res, next) => {
                 process.env.JWT_SECRET
             );
 
-            // decoded contains payload stored during login
-            // Example:
-            // {
-            //   id: "6857a8f...",
-            //   iat: 1712345678,
-            //   exp: 1712950478
-            // }
+            // FIX: decoded id safety check
+            if (!decoded || !decoded.id) {
+                return res.status(401).json({
+                    message: "Invalid token payload"
+                });
+            }
 
-            // Find user in MongoDB using ID from token
-            // select("-password") removes password from returned data
-            req.user = await User.findById(decoded.id).select("-password");
+            let account;
+
+            // ================= CLUB LOGIN =================
+            if (decoded.role === "club") {
+
+                account = await Club.findById(decoded.id).select("-password");
+
+                if (!account) {
+                    return res.status(401).json({
+                        message: "Club not found"
+                    });
+                }
+
+                account = account.toObject();
+                account.role = "club";
+            }
+
+            // ================= USER LOGIN =================
+            else {
+
+                account = await User.findById(decoded.id).select("-password");
+
+                if (!account) {
+                    return res.status(401).json({
+                        message: "User not found"
+                    });
+                }
+
+                account = account.toObject();
+                account.role = account.role || "student";
+            }
+
+            req.user = account;
 
             // Pass control to next middleware/route
             next();
@@ -53,6 +90,8 @@ const protect = async (req, res, next) => {
         }
 
     } catch (error) {
+
+        console.log("AUTH ERROR:", error);
 
         // Token invalid, expired, tampered with, etc.
         return res.status(401).json({

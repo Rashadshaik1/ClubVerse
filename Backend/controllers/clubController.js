@@ -1,25 +1,68 @@
 const Club = require("../models/Club");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 
-// ================= CREATE CLUB =================
-exports.createClub = async (req, res) => {
+// ================= LOGIN CLUB =================
+exports.loginClub = async (req, res) => {
   try {
-    // req.body lo frontend nunchi data vastundi
-    const { name, description } = req.body;
+    const { email, password } = req.body;
 
-    // JWT middleware already user info add chesindi
-    // req.user.id = logged in user id
-    const club = await Club.create({
-      name,
-      description,
-      createdBy: req.user.id
+    const club = await Club.findOne({
+      email: email.toLowerCase().trim()
     });
 
-    // success response
-    res.status(201).json(club);
+    if (!club) {
+      return res.status(404).json({
+        msg: "Invalid club credentials"
+      });
+    }
 
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (club.isBlocked) {
+      return res.status(403).json({
+        msg: "This club has been blocked by Super Admin."
+      });
+    }
+
+    const isMatch = await bcrypt.compare(
+      password,
+      club.password
+    );
+
+    if (!isMatch) {
+      return res.status(401).json({
+        msg: "Invalid club credentials"
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id: club._id,
+        role: "club"
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d"
+      }
+    );
+
+    res.json({
+      success: true,
+      token,
+      club: {
+        _id: club._id,
+        name: club.name,
+        email: club.email,
+        type: club.type,
+        logo: club.logo
+      }
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "Server Error"
+    });
   }
 };
 

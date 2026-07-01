@@ -1,26 +1,70 @@
 const mongoose = require("mongoose");
 
-// Schema = structure of data in DB
-const clubSchema = new mongoose.Schema({
-  
-  // Club name (example: Coding Club)
-  name: {
-    type: String,
-    required: true
-  },
+const clubSchema = new mongoose.Schema(
+  {
+    // Club Name
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
 
-  // Description about club
-  description: {
-    type: String,
-    required: true
-  },
+    // Club Login Email
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true
+    },
 
-  // Who created this club (user id from JWT)
-  createdBy: {
-    type: String
+    // Club Login Password
+    password: {
+      type: String,
+      required: true
+    },
+
+    // Club Type
+    type: {
+      type: String,
+      enum: ["social", "technical", "cultural"],
+      default: "social"
+    },
+
+    // Club Description
+    description: {
+      type: String,
+      default: ""
+    },
+
+    // Club Logo
+    logo: {
+      type: String,
+      default: ""
+    },
+
+    // Block / Unblock
+    isBlocked: {
+      type: Boolean,
+      default: false
+    },
+
+    // Active Status
+    isActive: {
+      type: Boolean,
+      default: true
+    },
+
+    // Created By (Super Admin)
+    createdBy: {
+      type: String,
+      default: ""
+    }
+  },
+  {
+    timestamps: true
   }
+);
 
-}, { timestamps: true }); // adds createdAt, updatedAt automatically
-
-// Export model so we can use in controller
-module.exports = mongoose.model("Club", clubSchema);
+module.exports =
+  mongoose.models.Club || mongoose.model("Club", clubSchema);

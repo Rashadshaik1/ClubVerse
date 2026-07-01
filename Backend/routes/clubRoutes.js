@@ -1,20 +1,21 @@
 const express = require("express");
 const router = express.Router();
 
-// import middleware
+// middleware
 const { protect } = require("../middlewares/authMiddleware");
 
-// import controller functions
-const { createClub, getClubs } = require("../controllers/clubController");
+// controller
+const {
+  getClubs,
+  loginClub
+} = require("../controllers/clubController");
+
+// ================= LOGIN CLUB =================
+router.post("/login", loginClub);
 
 
-// POST → create club (only logged-in users)
-router.post("/", protect, createClub);
 
-
-// GET → fetch all clubs (no login needed)
+// ================= GET CLUBS =================
 router.get("/", getClubs);
 
-
-// export routes
 module.exports = router;

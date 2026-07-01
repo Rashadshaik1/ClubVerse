@@ -1,28 +1,43 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 
-// JWT middleware
 const { protect } = require("../middlewares/authMiddleware");
 
-// Controller functions
 const {
   createEvent,
   getEvents,
-  getEventById
+  getEventById,
+  getMyEvents,
+  getClubEvents
 } = require("../controllers/eventController");
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-// POST → create event (login required)
-router.post("/", protect, createEvent);
+/* ================= CREATE EVENT ================= */
+router.post(
+  "/",
+  protect,
+  upload.fields([
+    { name: "poster", maxCount: 1 },
+    { name: "banner", maxCount: 1 }
+  ]),
+  createEvent
+);
 
+/* ================= FIX ORDER (IMPORTANT) ================= */
 
-// GET → fetch all events
+// 👇 THESE MUST COME BEFORE /:id
+
+router.get("/my", protect, getMyEvents);
+
+router.get("/club/:clubId", protect, getClubEvents);
+
+/* ================= NORMAL ROUTES ================= */
 router.get("/", getEvents);
 
-
-// GET → fetch single event
+/* ================= SINGLE EVENT (LAST) ================= */
 router.get("/:id", getEventById);
 
-
-// export router
 module.exports = router;

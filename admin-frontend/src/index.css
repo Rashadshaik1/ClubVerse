@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FONT */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #0b1220;
+  color: white;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* SIDEBAR LINKS (HOVER ENABLED) */
+.sidebar-link {
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: white;
+  transition: 0.3s;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.sidebar-link:hover {
+  background: rgba(34, 211, 238, 0.2);
+  transform: translateX(5px);
+}
+
+/* GLASS CARD (DEFAULT HOVER ENABLED) */
+.glass-card {
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: 0.3s;
+}
+
+/* HOVER EFFECT (FOR DASHBOARD + NORMAL CARDS) */
+.glass-card:hover {
+  transform: translateY(-5px);
+  background: rgba(34, 211, 238, 0.15);
+}
+
+/* ❌ DISABLE HOVER ONLY WHERE NEEDED (Create Club card) */
+.no-hover:hover {
+  transform: none !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* INPUT */
+.input {
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  outline: none;
+}
+
+/* BUTTON */
+.btn {
+  padding: 10px;
+  border-radius: 10px;
+  background: #22d3ee;
+  color: black;
+  font-weight: bold;
+}
