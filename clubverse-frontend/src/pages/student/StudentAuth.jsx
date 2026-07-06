@@ -76,7 +76,7 @@ export default function StudentAuth() {
         JSON.stringify(data.user)
       );
 
-      navigate("/student-dashboard");
+      navigate("/student-home");
 
     } catch {
       setError("Server Error");
