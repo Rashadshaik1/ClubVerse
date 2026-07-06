@@ -11,8 +11,9 @@ connectDB();
 const app = express();
 
 // middleware
-app.use(express.json({ limit: "2mb" }));
-app.use(express.urlencoded({ extended: true, limit: "2mb" }));
+// ✅ CHANGED: Global limit ni 50mb chesthe Super Admin (2mb profile pics) validation damage avvadu, inka club big events dynamic base64 handling leak lekunda pass avthundi.
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cors());
 
 // ================= ROUTES =================
