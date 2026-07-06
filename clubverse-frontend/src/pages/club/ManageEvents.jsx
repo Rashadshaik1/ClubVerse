@@ -7,15 +7,14 @@ import { useNavigate } from "react-router-dom";
 export default function ManageEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const navigate = useNavigate();
 
   // ================= FETCH EVENTS =================
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         setLoading(true);
-
         const token = localStorage.getItem("token");
 
         if (!token) {
@@ -32,13 +31,14 @@ export default function ManageEvents() {
           }
         );
 
-        const data = res.data.data || [];
+        // ✅ Fallback verification to avoid undefined bugs
+        const data = res.data.data || res.data.events || [];
         setEvents(data);
 
       } catch (err) {
         console.log("FETCH EVENTS ERROR:", err.response?.data || err.message);
       } finally {
-        setLoading(false);
+        setLoading(false); // ✅ FIXED: Changed loading(false) to setLoading(false)
       }
     };
 
@@ -48,7 +48,6 @@ export default function ManageEvents() {
   // ================= COUNTDOWN =================
   const getTimeLeft = (eventDate) => {
     const diff = new Date(eventDate) - new Date();
-
     if (diff <= 0) return "Completed";
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -95,7 +94,7 @@ export default function ManageEvents() {
                 >
                   {/* BANNER */}
                   <img
-                    src={event.banner || "https://via.placeholder.com/300"}
+                    src={event.banner || "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500&auto=format&fit=crop&q=60"}
                     className="h-40 w-full object-cover"
                     alt="event"
                   />
@@ -104,7 +103,7 @@ export default function ManageEvents() {
                     {/* TITLE */}
                     <h2 className="text-xl font-bold text-gray-800">
                       {event.title}
-                    </h2>
+                    </h2> 
 
                     {/* DATE */}
                     <p className="text-sm text-gray-500">

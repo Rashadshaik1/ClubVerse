@@ -10,9 +10,10 @@ import StudentAuth from "./pages/student/StudentAuth";
 import ClubLogin from "./pages/club/ClubLogin";
 import Dashboard from "./pages/club/Dashboard";
 import CreateEvent from "./pages/club/CreateEvent";
-
-// ✅ ADDED
 import ManageEvents from "./pages/club/ManageEvents";
+
+// ✅ ADDED DYNAMIC EVENT DASHBOARD
+import EventDashboard from "./pages/club/EventDashboard";
 
 export default function App() {
   return (
@@ -33,9 +34,10 @@ export default function App() {
         <Route path="/club-login" element={<ClubLogin />} />
         <Route path="/club-dashboard" element={<Dashboard />} />
         <Route path="/create-event" element={<CreateEvent />} />
-
-        {/* ✅ MANAGE EVENTS */}
         <Route path="/manage-events" element={<ManageEvents />} />
+
+        {/* ✅ DYNAMIC EVENT DASHBOARD ROUTE */}
+        <Route path="/club/event/:id" element={<EventDashboard />} />
 
       </Routes>
     </BrowserRouter>

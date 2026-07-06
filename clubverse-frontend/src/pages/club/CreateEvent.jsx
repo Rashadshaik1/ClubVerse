@@ -3,7 +3,6 @@ import axios from "axios";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
 
-
 export default function CreateEvent() {
   const club = JSON.parse(localStorage.getItem("club") || "{}");
 
@@ -92,8 +91,6 @@ export default function CreateEvent() {
 
     try {
       setLoading(true);
-
-      // ✅ TOKEN FIX (IMPORTANT)
       const token = localStorage.getItem("token");
 
       if (!token) {
@@ -103,6 +100,7 @@ export default function CreateEvent() {
 
       const payload = new FormData();
 
+      // Determine category automatically
       const autoCategory =
         club?.type === "Technical"
           ? "Technical Event"
@@ -112,35 +110,46 @@ export default function CreateEvent() {
 
       payload.append("category", autoCategory);
 
+      // Explicitly process form keys cleanly
       Object.keys(formData).forEach((key) => {
-        payload.append(key, formData[key]);
+        // Handle files fields carefully
+        if (key === "poster" || key === "banner") {
+          if (formData[key] instanceof File) {
+            payload.append(key, formData[key]);
+          }
+          return; // Skip appending null values
+        }
+
+        // Handle string values cleanly. If empty, pass empty string so backend logic avoids crashes
+        const val = formData[key] === null || formData[key] === undefined ? "" : formData[key];
+        payload.append(key, val);
       });
 
-    const res = await axios.post(
-  "http://localhost:5000/api/events",
-  payload,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
-);
-
-
+      const res = await axios.post(
+        "http://localhost:5000/api/events",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      );
 
       console.log("EVENT CREATED:", res.data);
-alert("Event Created Successfully");
-
-// optional redirect to manage page
-window.location.href = "/club/manage-events";
+      alert("Event Created Successfully!");
+      
+      // Redirect cleanly to manage events list page
+      window.location.href = "/club/manage-events";
     } catch (err) {
       console.error("CREATE EVENT ERROR:", err.response?.data || err.message);
-      alert(err.response?.data?.msg || "Failed to create event");
+      
+      const errMsg = err.response?.data?.message || err.response?.data?.error || "Failed to create event";
+      alert("Error: " + errMsg);
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-[#f4ffff] flex">
       <ClubSidebar />
@@ -162,6 +171,7 @@ window.location.href = "/club/manage-events";
                 name="title"
                 placeholder="Event Title"
                 onChange={handleChange}
+                required
               />
 
               <textarea
@@ -169,6 +179,7 @@ window.location.href = "/club/manage-events";
                 name="description"
                 placeholder="Description"
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -177,8 +188,8 @@ window.location.href = "/club/manage-events";
               <h2 className="text-xl font-bold mb-4">Schedule</h2>
 
               <div className="grid md:grid-cols-2 gap-4">
-                <input type="date" className={inputStyle} name="date" onChange={handleChange} />
-                <input className={inputStyle} name="venue" placeholder="Venue" onChange={handleChange} />
+                <input type="date" className={inputStyle} name="date" onChange={handleChange} required />
+                <input className={inputStyle} name="venue" placeholder="Venue" onChange={handleChange} required />
               </div>
 
               <div className="grid md:grid-cols-3 gap-4 mt-4">
@@ -209,7 +220,7 @@ window.location.href = "/club/manage-events";
 
                 <div>
                   <label className="font-semibold">Poster</label>
-                  <input type="file" name="poster" onChange={handleChange} />
+                  <input type="file" name="poster" onChange={handleChange} accept="image/*" />
 
                   {preview.poster && (
                     <img src={preview.poster} className="mt-3 w-full h-40 object-cover rounded-xl border" />
@@ -218,7 +229,7 @@ window.location.href = "/club/manage-events";
 
                 <div>
                   <label className="font-semibold">Banner (1280×720)</label>
-                  <input type="file" name="banner" onChange={handleChange} required />
+                  <input type="file" name="banner" onChange={handleChange} accept="image/*" required />
 
                   {preview.banner && (
                     <img src={preview.banner} className="mt-3 w-full h-40 object-cover rounded-xl border" />
@@ -280,15 +291,15 @@ window.location.href = "/club/manage-events";
 
               </div>
 
-              <input className={`${inputStyle} mt-4`} name="maxParticipants" placeholder="Max Participants" onChange={handleChange} />
+              <input className={`${inputStyle} mt-4`} name="maxParticipants" placeholder="Max Participants" type="number" onChange={handleChange} />
             </div>
 
             {/* RULES */}
             <div className="bg-white p-6 rounded-2xl shadow border border-[#cceeee]">
               <h2 className="text-xl font-bold mb-4">Rules & Requirements</h2>
 
-              <textarea className={inputStyle} name="rules" onChange={handleChange} />
-              <textarea className={`${inputStyle} mt-4`} name="requirements" onChange={handleChange} />
+              <textarea className={inputStyle} name="rules" placeholder="Rules" onChange={handleChange} />
+              <textarea className={`${inputStyle} mt-4`} name="requirements" placeholder="Requirements" onChange={handleChange} />
             </div>
 
             {/* CONTACTS */}
@@ -298,61 +309,63 @@ window.location.href = "/club/manage-events";
               <div className="grid md:grid-cols-2 gap-6">
 
                 <div className="space-y-3">
-  <h3 className="font-semibold">Coordinator 1</h3>
+                  <h3 className="font-semibold">Coordinator 1</h3>
 
-  <input
-    className={inputStyle}
-    name="coordinator1Name"
-    placeholder="Name"
-    onChange={handleChange}
-  />
+                  <input
+                    className={inputStyle}
+                    name="coordinator1Name"
+                    placeholder="Name"
+                    onChange={handleChange}
+                  />
 
-  <input
-    className={inputStyle}
-    name="coordinator1Email"
-    placeholder="Email"
-    onChange={handleChange}
-  />
+                  <input
+                    className={inputStyle}
+                    name="coordinator1Email"
+                    placeholder="Email"
+                    type="email"
+                    onChange={handleChange}
+                  />
 
-  <input
-    className={inputStyle}
-    name="coordinator1Phone"
-    placeholder="Phone Number"
-    onChange={handleChange}
-  />
-</div>
+                  <input
+                    className={inputStyle}
+                    name="coordinator1Phone"
+                    placeholder="Phone Number"
+                    onChange={handleChange}
+                  />
+                </div>
 
-<div className="space-y-3">
-  <h3 className="font-semibold">Coordinator 2</h3>
+                <div className="space-y-3">
+                  <h3 className="font-semibold">Coordinator 2</h3>
 
-  <input
-    className={inputStyle}
-    name="coordinator2Name"
-    placeholder="Name"
-    onChange={handleChange}
-  />
+                  <input
+                    className={inputStyle}
+                    name="coordinator2Name"
+                    placeholder="Name"
+                    onChange={handleChange}
+                  />
 
-  <input
-    className={inputStyle}
-    name="coordinator2Email"
-    placeholder="Email"
-    onChange={handleChange}
-  />
+                  <input
+                    className={inputStyle}
+                    name="coordinator2Email"
+                    placeholder="Email"
+                    type="email"
+                    onChange={handleChange}
+                  />
 
-  <input
-    className={inputStyle}
-    name="coordinator2Phone"
-    placeholder="Phone Number"
-    onChange={handleChange}
-  />
-</div>
+                  <input
+                    className={inputStyle}
+                    name="coordinator2Phone"
+                    placeholder="Phone Number"
+                    onChange={handleChange}
+                  />
+                </div>
 
               </div>
             </div>
 
             {/* SUBMIT */}
             <div className="flex justify-end">
-              <button className="bg-[#048c92] text-white px-6 py-3 rounded-xl">
+              <button type="submit" className="bg-[#048c92] text-white px-6 py-3 rounded-xl disabled:opacity-50" disabled={loading}>
                 {loading ? "Creating..." : "Publish Event"}
               </button>
             </div>
