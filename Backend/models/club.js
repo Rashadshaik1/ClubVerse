@@ -6,63 +6,124 @@ const clubSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
 
-    // Club Login Email
+    // Login Email
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
-      trim: true
+      trim: true,
     },
 
-    // Club Login Password
+    // Login Password
     password: {
       type: String,
-      required: true
+      required: true,
     },
 
-    // Club Type
+    // Club Category
     type: {
       type: String,
       enum: ["social", "technical", "cultural"],
-      default: "social"
+      default: "social",
     },
 
-    // Club Description
+    // About Club
     description: {
       type: String,
-      default: ""
+      default: "",
+      trim: true,
     },
 
-    // Club Logo
+    // Established Year
+    establishedYear: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    // Faculty Coordinator
+    facultyCoordinator: {
+      name: {
+        type: String,
+        default: "",
+        trim: true,
+      },
+      email: {
+        type: String,
+        default: "",
+        trim: true,
+        lowercase: true,
+      },
+    },
+
+    // Contact Number
+    contactNumber: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    // Club Room / Location
+    location: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    // Social Media Links
+    instagram: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    linkedin: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    website: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    // Images
     logo: {
       type: String,
-      default: ""
+      default: "",
     },
 
-    // Block / Unblock
+    banner: {
+      type: String,
+      default: "",
+    },
+
+    // Account Status
     isBlocked: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
-    // Active Status
     isActive: {
       type: Boolean,
-      default: true
+      default: true,
     },
 
     // Created By (Super Admin)
     createdBy: {
       type: String,
-      default: ""
-    }
+      default: "",
+      trim: true,
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 

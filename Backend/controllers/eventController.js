@@ -1,6 +1,7 @@
 const Event = require("../models/Event");
 const Registration = require("../models/Registration");
-const nodemailer = require("nodemailer"); // 👈 Just ee requirement add chesa
+const Notification = require("../models/Notification");
+const nodemailer = require("nodemailer");
 
 // ================= NODEMAILER CONFIGURATION =================
 // `.env` lo unna EMAIL, EMAIL_PASS references ni auto-detect chestundi
@@ -195,89 +196,585 @@ exports.getMyEvents = async (req, res) => {
   }
 };
 
-// ================= ADDED: CHANGE EVENT VENUE & EMAIL NOTIFY =================
+/// ================= ADDED: CHANGE EVENT VENUE & EMAIL NOTIFY =================
 exports.changeVenue = async (req, res) => {
+
   try {
+
     const { id } = req.params;
     const { venue } = req.body;
 
-    const event = await Event.findByIdAndUpdate(id, { venue }, { new: true });
-    if (!event) {
-      return res.status(404).json({ success: false, message: "Event not found." });
+
+    const event = await Event.findByIdAndUpdate(
+      id,
+      { venue },
+      { new:true }
+    );
+
+
+    if(!event){
+
+      return res.status(404).json({
+        success:false,
+        message:"Event not found."
+      });
+
     }
 
-    const registrations = await Registration.find({ eventId: id });
-    const emailList = registrations
-      .map(reg => reg.email || reg.studentEmail || reg.userEmail)
-      .filter(Boolean);
 
-    if (emailList.length > 0) {
+    // 🔔 CLUB NOTIFICATION
+
+    await Notification.create({
+
+      clubId:event.clubId,
+
+      message:
+      `${event.title} venue has been changed to ${venue}`,
+
+      type:"EVENT_UPDATE"
+
+    });
+
+
+
+    const registrations =
+    await Registration.find({
+      eventId:id
+    });
+
+
+
+    const emailList =
+    registrations
+    .map(
+      reg =>
+      reg.email ||
+      reg.studentEmail ||
+      reg.userEmail
+    )
+    .filter(Boolean);
+
+
+
+    if(emailList.length > 0){
+
       const mailOptions = {
-        from: process.env.EMAIL,
-        to: emailList.join(","), 
-        subject: `⚠️ Venue Changed Alert: ${event.title}`,
-        html: `
-          <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #cceeee; border-radius: 12px; max-width: 600px;">
-            <h2 style="color: #048c92;">Important Update Regarding ${event.title}</h2>
-            <p>Hello Participant,</p>
-            <p>Please note that the venue for the event has been updated.</p>
-            <p style="background: #f4ffff; padding: 12px; border-left: 4px solid #43bfc3; border-radius: 4px;">
-              <b>New Venue Location:</b> ${venue}
-            </p>
-            <hr style="border: 0; border-top: 1px solid #cceeee; margin: 20px 0;" />
-            <p style="font-size: 12px; color: #777;">This is an automated notification. Do not reply directly.</p>
-          </div>
+
+        from:process.env.EMAIL,
+
+        to:emailList.join(","),
+
+        subject:
+        `⚠️ Venue Changed Alert: ${event.title}`,
+
+        html:`
+        <div style="font-family:Arial;padding:20px">
+
+        <h2 style="color:#048c92">
+        Important Update Regarding ${event.title}
+        </h2>
+
+        <p>Hello Participant,</p>
+
+        <p>
+        Please note that the venue for the event has been updated.
+        </p>
+
+
+        <p>
+        <b>New Venue:</b> ${venue}
+        </p>
+
+
+        </div>
         `
+
       };
+
+
       await transporter.sendMail(mailOptions);
+
     }
 
-    return res.json({ success: true, message: "Venue updated and emails sent!", event });
+
+
+    return res.json({
+
+      success:true,
+
+      message:
+      "Venue updated and notifications sent!",
+
+      event
+
+    });
+
+
+
+  }
+  catch(error){
+
+    return res.status(500).json({
+
+      success:false,
+
+      message:error.message
+
+    });
+
+  }
+
+};
+
+/// ================= ADDED: POSTPONE EVENT & EMAIL NOTIFY =================
+exports.postponeEvent = async (req,res)=>{
+
+
+try{
+
+
+const {id}=req.params;
+
+const {date,reason}=req.body;
+
+
+
+const event =
+await Event.findByIdAndUpdate(
+
+id,
+
+{date},
+
+{new:true}
+
+);
+
+
+
+if(!event){
+
+return res.status(404).json({
+
+success:false,
+
+message:"Event not found."
+
+});
+
+}
+
+
+
+// 🔔 CLUB NOTIFICATION
+
+await Notification.create({
+
+clubId:event.clubId,
+
+
+message:
+`${event.title} has been postponed to ${new Date(date).toLocaleDateString()}`,
+
+
+type:"EVENT_UPDATE"
+
+
+});
+
+
+
+
+
+const registrations =
+await Registration.find({
+
+eventId:id
+
+});
+
+
+
+const emailList =
+registrations
+.map(
+reg =>
+reg.email ||
+reg.studentEmail ||
+reg.userEmail
+)
+.filter(Boolean);
+
+
+
+
+
+if(emailList.length>0){
+
+
+
+const mailOptions={
+
+
+from:process.env.EMAIL,
+
+
+to:emailList.join(","),
+
+
+subject:
+`⏰ Event Postponed Notice: ${event.title}`,
+
+
+html:`
+
+<div style="font-family:Arial;padding:20px">
+
+<h2 style="color:#048c92">
+Timeline Rescheduled: ${event.title}
+</h2>
+
+
+<p>Hello Participant,</p>
+
+
+<p>
+The event has been postponed.
+</p>
+
+
+<p>
+<b>New Date:</b>
+${new Date(date).toLocaleDateString()}
+</p>
+
+
+<p>
+<b>Reason:</b>
+${reason}
+</p>
+
+
+</div>
+
+`
+
+};
+
+
+
+await transporter.sendMail(mailOptions);
+
+
+}
+
+
+
+
+
+return res.json({
+
+success:true,
+
+message:
+"Event postponed and notifications sent!",
+
+event
+
+});
+
+
+
+}
+catch(error){
+
+
+return res.status(500).json({
+
+success:false,
+
+message:error.message
+
+});
+
+
+}
+
+
+};
+// ================= CANCEL EVENT & EMAIL NOTIFY =================
+exports.cancelEvent = async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+    const { reason } = req.body;
+
+
+    const event = await Event.findByIdAndUpdate(
+      id,
+      {
+        status:"cancelled"
+      },
+      {
+        new:true
+      }
+    );
+
+
+    if(!event){
+
+      return res.status(404).json({
+
+        success:false,
+
+        message:"Event not found."
+
+      });
+
+    }
+
+
+
+    // 🔔 CLUB NOTIFICATION
+
+    await Notification.create({
+
+      clubId:event.clubId,
+
+      message:
+      `${event.title} has been cancelled`,
+
+      type:"EVENT_UPDATE"
+
+    });
+
+
+
+    // FIND REGISTERED STUDENTS
+
+    const registrations =
+    await Registration.find({
+      eventId:id
+    });
+
+
+
+    const emailList =
+    registrations
+    .map(
+      reg =>
+      reg.email ||
+      reg.studentEmail ||
+      reg.userEmail
+    )
+    .filter(Boolean);
+
+
+
+    // SEND EMAIL
+
+    if(emailList.length > 0){
+
+
+      const mailOptions = {
+
+        from:process.env.EMAIL,
+
+        to:emailList.join(","),
+
+        subject:
+        `❌ Event Cancelled: ${event.title}`,
+
+        html:`
+
+        <div style="font-family:Arial;padding:20px">
+
+        <h2 style="color:#d9534f">
+        Event Cancellation Notice
+        </h2>
+
+
+        <p>Hello Participant,</p>
+
+
+        <p>
+        We regret to inform you that the following event has been cancelled.
+        </p>
+
+
+        <p>
+        <b>Event:</b> ${event.title}
+        </p>
+
+
+        <p>
+        <b>Reason:</b> ${reason || "Not specified"}
+        </p>
+
+
+        <hr/>
+
+
+        <p style="font-size:12px;color:#777">
+        This is an automated notification.
+        </p>
+
+
+        </div>
+
+        `
+
+      };
+
+
+      await transporter.sendMail(mailOptions);
+
+    }
+
+
+
+    return res.json({
+
+      success:true,
+
+      message:
+      "Event cancelled and emails sent!",
+
+      event
+
+    });
+
+
+
+  }
+  catch(error){
+
+
+    return res.status(500).json({
+
+      success:false,
+
+      message:error.message
+
+    });
+
+
+  }
+
+};
+// ================= UPLOAD GALLERY IMAGES =================
+exports.uploadGalleryImages = async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found"
+      });
+    }
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Please upload images"
+      });
+    }
+
+    const images = req.files.map(file => ({
+      image: `data:${file.mimetype};base64,${file.buffer.toString("base64")}`
+    }));
+
+    event.gallery.push(...images);
+
+    await event.save();
+
+    res.json({
+      success: true,
+      message: "Gallery updated successfully",
+      gallery: event.gallery
+    });
+
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
   }
 };
 
-// ================= ADDED: POSTPONE EVENT & EMAIL NOTIFY =================
-exports.postponeEvent = async (req, res) => {
+
+// ================= GET GALLERY =================
+exports.getGalleryImages = async (req, res) => {
+
   try {
-    const { id } = req.params;
-    const { date, reason } = req.body;
 
-    const event = await Event.findByIdAndUpdate(id, { date }, { new: true });
+    const event = await Event.findById(req.params.id);
+
     if (!event) {
-      return res.status(404).json({ success: false, message: "Event not found." });
+
+      return res.status(404).json({
+        success: false,
+        message: "Event not found"
+      });
+
     }
 
-    const registrations = await Registration.find({ eventId: id });
-    const emailList = registrations
-      .map(reg => reg.email || reg.studentEmail || reg.userEmail)
-      .filter(Boolean);
+    res.json({
+      success: true,
+      gallery: event.gallery
+    });
 
-    if (emailList.length > 0) {
-      const mailOptions = {
-        from: process.env.EMAIL,
-        to: emailList.join(","),
-        subject: `⏰ Event Postponed Notice: ${event.title}`,
-        html: `
-          <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #cceeee; border-radius: 12px; max-width: 600px;">
-            <h2 style="color: #048c92;">Timeline Rescheduled: ${event.title}</h2>
-            <p>Hello Participant,</p>
-            <p>The event has been postponed due to operational requirements.</p>
-            <div style="background: #f4ffff; padding: 12px; border-left: 4px solid #43bfc3; margin-bottom: 10px; border-radius: 4px;">
-              <b>New Event Date:</b> ${new Date(date).toLocaleDateString()}
-            </div>
-            <p><b>Reason:</b> ${reason}</p>
-            <hr style="border: 0; border-top: 1px solid #cceeee; margin: 20px 0;" />
-            <p style="font-size: 12px; color: #777;">Automated notification sequence.</p>
-          </div>
-        `
-      };
-      await transporter.sendMail(mailOptions);
-    }
-
-    return res.json({ success: true, message: "Event postponed and emails sent!", event });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
   }
+
+};
+
+
+// ================= DELETE GALLERY IMAGE =================
+exports.deleteGalleryImage = async (req, res) => {
+
+  try {
+
+    const event = await Event.findById(req.params.eventId);
+
+    if (!event) {
+
+      return res.status(404).json({
+        success: false,
+        message: "Event not found"
+      });
+
+    }
+
+    event.gallery = event.gallery.filter(
+      img => img._id.toString() !== req.params.imageId
+    );
+
+    await event.save();
+
+    res.json({
+      success: true,
+      message: "Image deleted successfully",
+      gallery: event.gallery
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+
 };

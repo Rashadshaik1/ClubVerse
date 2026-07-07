@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 const eventSchema = new mongoose.Schema(
@@ -91,9 +90,21 @@ const eventSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Club",
     },
+
+    gallery: [
+      {
+        image: {
+          type: String,
+          required: true,
+        },
+        uploadedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
 
 module.exports = mongoose.model("Event", eventSchema);
-

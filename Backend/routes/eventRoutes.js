@@ -9,35 +9,129 @@ const {
   getEvents,
   getEventById,
   getMyEvents,
-  getClubEvents
+  getClubEvents,
+  changeVenue,
+  postponeEvent,
+  cancelEvent,
+  uploadGalleryImages,
+  getGalleryImages,
+  deleteGalleryImage
 } = require("../controllers/eventController");
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage });
+
+const upload = multer({
+  storage
+});
+
 
 /* ================= CREATE EVENT ================= */
+
 router.post(
   "/",
   protect,
   upload.fields([
-    { name: "poster", maxCount: 1 },
-    { name: "banner", maxCount: 1 }
+    {
+      name:"poster",
+      maxCount:1
+    },
+    {
+      name:"banner",
+      maxCount:1
+    }
   ]),
   createEvent
 );
 
-/* ================= FIX ORDER (IMPORTANT) ================= */
 
-// 👇 THESE MUST COME BEFORE /:id
 
-router.get("/my", protect, getMyEvents);
+/* ================= CLUB EVENTS ================= */
 
-router.get("/club/:clubId", protect, getClubEvents);
+// IMPORTANT:
+// /my and /club/:clubId should come before /:id
 
-/* ================= NORMAL ROUTES ================= */
-router.get("/", getEvents);
+router.get(
+  "/my",
+  protect,
+  getMyEvents
+);
 
-/* ================= SINGLE EVENT (LAST) ================= */
-router.get("/:id", getEventById);
+
+router.get(
+  "/club/:clubId",
+  protect,
+  getClubEvents
+);
+
+
+
+/* ================= EVENT UPDATE ACTIONS ================= */
+
+
+// Change Venue
+
+router.put(
+  "/change-venue/:id",
+  protect,
+  changeVenue
+);
+
+
+// Postpone Event
+
+router.put(
+  "/postpone/:id",
+  protect,
+  postponeEvent
+);
+
+
+// Cancel Event
+
+router.put(
+  "/cancel/:id",
+  protect,
+  cancelEvent
+);
+
+
+
+/* ================= GET ALL EVENTS ================= */
+
+router.get(
+  "/",
+  getEvents
+);
+
+
+
+/* ================= GET SINGLE EVENT ================= */
+
+// Always keep this last
+
+router.get(
+  "/:id",
+  getEventById
+);
+// ================= EVENT GALLERY =================
+
+router.post(
+  "/:id/gallery",
+  protect,
+  upload.array("images", 20),
+  uploadGalleryImages
+);
+
+router.get(
+  "/:id/gallery",
+  getGalleryImages
+);
+
+router.delete(
+  "/:eventId/gallery/:imageId",
+  protect,
+  deleteGalleryImage
+);
+
 
 module.exports = router;

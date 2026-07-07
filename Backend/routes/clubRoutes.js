@@ -7,15 +7,25 @@ const { protect } = require("../middlewares/authMiddleware");
 // controller
 const {
   getClubs,
-  loginClub
+  loginClub,
+  getProfile,
+  updateProfile,
+  changePassword
 } = require("../controllers/clubController");
 
 // ================= LOGIN CLUB =================
 router.post("/login", loginClub);
 
-
-
-// ================= GET CLUBS =================
+// ================= GET ALL CLUBS =================
 router.get("/", getClubs);
+
+// ================= CLUB PROFILE =================
+router.get("/profile", protect, getProfile);
+
+// ================= UPDATE PROFILE =================
+router.put("/profile", protect, updateProfile);
+
+// ================= CHANGE PASSWORD =================
+router.put("/change-password", protect, changePassword);
 
 module.exports = router;
