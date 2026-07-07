@@ -3,6 +3,7 @@ import axios from "axios";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
 import { useNavigate } from "react-router-dom";
+import { FaCalendarAlt, FaHourglassHalf, FaRegFolderOpen } from "react-icons/fa";
 
 export default function ManageEvents() {
   const [events, setEvents] = useState([]);
@@ -10,7 +11,6 @@ export default function ManageEvents() {
   const navigate = useNavigate();
 
   // ================= FETCH EVENTS =================
-
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -31,14 +31,13 @@ export default function ManageEvents() {
           }
         );
 
-        // ✅ Fallback verification to avoid undefined bugs
         const data = res.data.data || res.data.events || [];
         setEvents(data);
 
       } catch (err) {
         console.log("FETCH EVENTS ERROR:", err.response?.data || err.message);
       } finally {
-        setLoading(false); // ✅ FIXED: Changed loading(false) to setLoading(false)
+        setLoading(false);
       }
     };
 
@@ -68,73 +67,104 @@ export default function ManageEvents() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#f4ffff]">
+    <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
+      {/* FIXED SIDEBAR */}
       <ClubSidebar />
 
-      <div className="flex-1 ml-72">
+      {/* CONTENT CONTAINER */}
+      <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300">
         <ClubNavbar />
 
-        <div className="p-6">
-          <h1 className="text-3xl font-bold text-[#048c92] mb-6">
-            Manage Events
-          </h1>
+        {/* SIMPLE CLEAN HEADER */}
+        <div className="mb-8 bg-white/40 backdrop-blur-md p-6 rounded-3xl border border-white/40 shadow-sm">
+          <h1 className="text-2xl font-black text-[#048c92] tracking-tight">Manage Events</h1>
+        </div>
 
-          {/* ================= LOADING ================= */}
-          {loading ? (
-            <p className="text-gray-500">Loading events...</p>
-          ) : events.length === 0 ? (
-            <p className="text-gray-500">No events found</p>
-          ) : (
-            <div className="grid md:grid-cols-3 gap-6">
-              {events.map((event) => (
+        {/* ================= MAIN INTERFACE STATE ================= */}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center pt-24 space-y-3">
+            <div className="w-8 h-8 border-4 border-[#048c92] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm font-bold text-[#048c92] animate-pulse">Loading Events...</p>
+          </div>
+        ) : events.length === 0 ? (
+          <div className="bg-white/50 backdrop-blur-md border border-dashed border-[#cceeee] rounded-3xl p-12 text-center max-w-xl mx-auto mt-12 space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-[#048c92]/5 flex items-center justify-center mx-auto text-[#048c92]">
+              <FaRegFolderOpen className="text-xl" />
+            </div>
+            <div>
+              <h3 className="text-base font-extrabold text-gray-700">No events found</h3>
+              <p className="text-xs text-gray-400 mt-1">Your club hasn't launched any events yet.</p>
+            </div>
+            <button 
+              onClick={() => navigate("/club/create-event")}
+              className="bg-[#048c92]/10 hover:bg-[#048c92]/20 text-[#048c92] text-xs font-black px-4 py-2 rounded-xl border border-[#048c92]/20 transition-all"
+            >
+              Launch First Event
+            </button>
+          </div>
+        ) : (
+          /* EVENTS CARD GRID */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl">
+            {events.map((event) => {
+              const currentStatus = getStatus(event.date);
+              
+              return (
                 <div
                   key={event._id}
                   onClick={() => navigate(`/club/event/${event._id}`)}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer hover:scale-[1.02] transition"
+                  className="group bg-white/60 backdrop-blur-xl rounded-3xl border border-[#cceeee] overflow-hidden cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                 >
-                  {/* BANNER */}
-                  <img
-                    src={event.banner || "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500&auto=format&fit=crop&q=60"}
-                    className="h-40 w-full object-cover"
-                    alt="event"
-                  />
-
-                  <div className="p-4">
-                    {/* TITLE */}
-                    <h2 className="text-xl font-bold text-gray-800">
-                      {event.title}
-                    </h2> 
-
-                    {/* DATE */}
-                    <p className="text-sm text-gray-500">
-                      {new Date(event.date).toDateString()}
-                    </p>
-
-                    {/* STATUS */}
-                    <div className="mt-2">
+                  {/* ARTWORK TOP LAYER */}
+                  <div className="relative h-44 w-full overflow-hidden bg-gray-100 border-b border-[#cceeee]/60">
+                    <img
+                      src={event.banner || "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500&auto=format&fit=crop&q=60"}
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      alt="event-banner"
+                    />
+                    
+                    {/* TIMELINE STATUS STICKER */}
+                    <div className="absolute top-4 right-4">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-bold ${
-                          getStatus(event.date) === "UPCOMING"
-                            ? "bg-green-100 text-green-700"
-                            : getStatus(event.date) === "TODAY"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-gray-200 text-gray-700"
+                        className={`px-3 py-1 rounded-xl text-[10px] font-black tracking-wider uppercase shadow-sm ${
+                          currentStatus === "UPCOMING"
+                            ? "bg-emerald-500 text-white"
+                            : currentStatus === "TODAY"
+                            ? "bg-amber-500 text-white animate-pulse"
+                            : "bg-gray-400 text-white"
                         }`}
                       >
-                        {getStatus(event.date)}
+                        {currentStatus}
                       </span>
                     </div>
+                  </div>
 
-                    {/* COUNTDOWN */}
-                    <div className="mt-3 text-sm text-[#048c92] font-semibold">
-                      ⏳ {getTimeLeft(event.date)}
+                  {/* METADATA LOWER LAYER */}
+                  <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                      <h2 className="text-base font-black text-gray-800 tracking-tight group-hover:text-[#048c92] transition-colors line-clamp-1">
+                        {event.title}
+                      </h2> 
+                      
+                      <p className="text-[11px] font-bold text-gray-400 mt-1 flex items-center gap-1.5">
+                        <FaCalendarAlt className="text-xs text-[#43bfc3]" />
+                        {new Date(event.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+                      </p>
+                    </div>
+
+                    {/* COUNTDOWN TRACKER */}
+                    <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Time Remaining</span>
+                      <div className={`text-xs font-black flex items-center gap-1 ${currentStatus === 'COMPLETED' ? 'text-gray-400' : 'text-[#048c92]'}`}>
+                        <FaHourglassHalf className={`text-[11px] ${currentStatus === 'TODAY' ? 'animate-spin' : ''}`} />
+                        {getTimeLeft(event.date)}
+                      </div>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
