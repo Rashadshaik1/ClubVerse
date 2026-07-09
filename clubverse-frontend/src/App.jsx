@@ -6,6 +6,8 @@ import Landing from "./pages/common/Landing";
 // STUDENT
 import StudentAuth from "./pages/student/StudentAuth";
 import StudentHome from "./pages/student/StudentHome";
+import StudentAbout from "./pages/student/StudentAbout";
+import StudentProfile from "./pages/student/StudentProfile"; // ✅ NEW
 
 // CLUB
 import ClubLogin from "./pages/club/ClubLogin";
@@ -21,8 +23,8 @@ import EventDashboard from "./pages/club/EventDashboard";
 // ✅ ADDED MEMBERS MANAGEMENT MODULE
 import Members from "./pages/club/Members";
 
-// 🌟 FIX: Profile
-import Profile from "./pages/club/Profile"; 
+// 🌟 CLUB PROFILE
+import Profile from "./pages/club/Profile";
 
 // ✅ ADDED GALLERY MODULE
 import Gallery from "./pages/club/Gallery";
@@ -37,34 +39,42 @@ export default function App() {
 
         {/* LANDING */}
         <Route path="/" element={<Landing />} />
+
+        {/* CLUB ABOUT */}
         <Route path="/about" element={<About />} />
 
-       {/* STUDENT */}
+        {/* ================= STUDENT ================= */}
         <Route path="/student-auth" element={<StudentAuth />} />
         <Route path="/student-home" element={<StudentHome />} />
+        <Route path="/student-about" element={<StudentAbout />} />
+        <Route path="/student-profile" element={<StudentProfile />} /> {/* ✅ NEW */}
 
-        {/* CLUB */}
+        {/* ================= CLUB ================= */}
         <Route path="/club-login" element={<ClubLogin />} />
         <Route path="/club-dashboard" element={<Dashboard />} />
         <Route path="/create-event" element={<CreateEvent />} />
         <Route path="/manage-events" element={<ManageEvents />} />
 
-
-        {/* MEMBERS CONFIGURATION ROUTE LINKED */}
+        {/* MEMBERS */}
         <Route path="/members" element={<Members />} />
 
-        {/* ✅ ADDED PROFILE ROUTE LINKED */}
+        {/* CLUB PROFILE */}
         <Route path="/profile" element={<Profile />} />
 
-        {/* ✅ ADDED GALLERY ROUTE LINKED */}
+        {/* GALLERY */}
         <Route path="/gallery" element={<Gallery />} />
-        
-        {/* ✅ ADDED GALLERY DETAILS ROUTE (ఇక్కడ యాడ్ చేశాను) */}
-        <Route path="/club/gallery/:id" element={<GalleryDetails />} />
 
-        {/* DYNAMIC EVENT DASHBOARD ROUTE */}
+        {/* GALLERY DETAILS */}
+        <Route
+          path="/club/gallery/:id"
+          element={<GalleryDetails />}
+        />
 
-        <Route path="/club/event/:id" element={<EventDashboard />} />
+        {/* EVENT DASHBOARD */}
+        <Route
+          path="/club/event/:id"
+          element={<EventDashboard />}
+        />
 
       </Routes>
     </BrowserRouter>

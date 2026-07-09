@@ -231,62 +231,55 @@ export default function ClubNavbar() {
 
 
 
-                <div className="divide-y divide-gray-50 font-medium text-xs text-gray-600">
+               <div className="max-h-80 overflow-y-auto divide-y divide-gray-50 font-medium text-xs text-gray-600 custom-scrollbar">
 
 
-                  {
-                    notifications.length === 0 ? (
+{
+  notifications.length === 0 ? (
 
-                      <div className="p-4 text-center text-gray-400">
+    <div className="p-4 text-center text-gray-400">
+      No notifications yet
+    </div>
 
-                        No notifications yet
+  )
 
-                      </div>
+  :
 
-                    )
+  (
 
-                    :
+    notifications.map((item)=>(
 
-                    (
+      <div
+        key={item._id}
+        className="p-4 hover:bg-[#43bfc3]/5 cursor-pointer transition"
+      >
 
-                      notifications.map((item)=>(
-
-
-                        <div
-
-                          key={item._id}
-
-                          className="p-4 hover:bg-[#43bfc3]/5 cursor-pointer transition"
-
-                        >
+        <p>
+          {item.message}
+        </p>
 
 
-                          {item.message}
+        <p className="text-[10px] text-gray-400 mt-2">
+
+          {
+            new Date(
+              item.createdAt
+            ).toLocaleString()
+          }
+
+        </p>
 
 
-                          <p className="text-[10px] text-gray-400 mt-2">
+      </div>
 
-                            {
-                              new Date(
-                                item.createdAt
-                              ).toLocaleString()
-                            }
+    ))
 
-                          </p>
+  )
+
+}
 
 
-                        </div>
-
-
-                      ))
-
-                    )
-
-                  }
-
-
-                </div>
-
+</div>
 
               </div>
 

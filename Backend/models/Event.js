@@ -86,11 +86,22 @@ const eventSchema = new mongoose.Schema(
       default: "upcoming",
     },
 
+    cancelReason: {
+  type: String,
+  default: "",
+},
+
+cancelledAt: {
+  type: Date,
+  default: null,
+},
+
     clubId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Club",
     },
 
+    // ================= GALLERY =================
     gallery: [
       {
         image: {
@@ -98,6 +109,33 @@ const eventSchema = new mongoose.Schema(
           required: true,
         },
         uploadedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+
+    // ================= FEEDBACK =================
+    feedback: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+
+        rating: {
+          type: Number,
+          required: true,
+          min: 1,
+          max: 5,
+        },
+
+        comment: {
+          type: String,
+          default: "",
+        },
+
+        createdAt: {
           type: Date,
           default: Date.now,
         },

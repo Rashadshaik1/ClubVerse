@@ -71,12 +71,20 @@ export default function StudentAuth() {
       }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify(data.user)
-      );
 
-      navigate("/student-home");
+// Save complete student object
+localStorage.setItem(
+  "student",
+  JSON.stringify(data.user)
+);
+
+// (Optional) Backward compatibility if other pages use "user"
+localStorage.setItem(
+  "user",
+  JSON.stringify(data.user)
+);
+
+navigate("/student-home");
 
     } catch {
       setError("Server Error");

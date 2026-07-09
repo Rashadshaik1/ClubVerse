@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
+import Loader from "../../components/Loader";
 import { 
   BarChart, 
   Bar, 
@@ -158,7 +159,7 @@ export default function EventDashboard() {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert("Event cancelled successfully.");
-      navigate("/club/manage-events");
+      navigate("/manage-events");
     } catch (err) {
       alert("Cancellation failed.");
     }
@@ -246,15 +247,8 @@ export default function EventDashboard() {
   };
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen bg-[#edfdfd] items-center justify-center">
-        <div className="flex flex-col items-center space-y-3">
-          <div className="w-10 h-10 border-4 border-[#048c92] border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-[#048c92] font-black text-sm tracking-wide">Loading Dashboard Analytics...</p>
-        </div>
-      </div>
-    );
-  }
+  return <Loader />;
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">

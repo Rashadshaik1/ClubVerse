@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
+import Loader from "../../components/Loader";
 
 const CORE_ROLES = ["President", "Secretary", "Treasurer", "Vice president", "Student coordinator", "Joint secretary", "Club advisor"];
 const GOVERNING_ROLES = ["Event organizer", "Marketing lead", "Designing lead", "Documentation lead", "Content writing lead", "Promotions lead", "Social media lead", "Technical lead"];
@@ -12,6 +13,7 @@ export default function Members() {
   const [activeBoard, setActiveBoard] = useState(null); 
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [membersLoading, setMembersLoading] = useState(false);
 
   const [showBoardModal, setShowBoardModal] = useState(false);
   const [showMemberModal, setShowMemberModal] = useState(false);
@@ -40,14 +42,27 @@ export default function Members() {
   };
 
   const fetchMembers = async (boardId) => {
-    try {
-      const res = await axios.get(`${API_BASE}/boards/my-boards`, axiosConfig);
-      if (res.data.success) {
-        const currentBoard = res.data.data.find(b => b._id === boardId);
-        setMembers(currentBoard?.members || []);
-      }
-    } catch (err) { console.error(err); }
-  };
+  try {
+    setMembersLoading(true);
+
+    const res = await axios.get(
+      `${API_BASE}/boards/my-boards`,
+      axiosConfig
+    );
+
+    if (res.data.success) {
+      const currentBoard = res.data.data.find(
+        (b) => b._id === boardId
+      );
+
+      setMembers(currentBoard?.members || []);
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setMembersLoading(false);
+  }
+};
 
   const handleBoardSubmit = async (e) => {
     e.preventDefault();
@@ -117,13 +132,8 @@ export default function Members() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex items-center justify-center">
-        <div className="text-xl font-bold text-[#048c92]">Loading Engine...</div>
-      </div>
-    );
-  }
-
+  return <Loader />;
+}
   return (
     // ✅ 1. ఇక్కడ నీ మిగిలిన పేజీల్లాగే క్లీన్ ఫ్లెక్స్ రాపర్ పెట్టాను
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
@@ -211,7 +221,9 @@ export default function Members() {
               </button>
             </div>
 
-            {members.length === 0 ? (
+            {membersLoading ? (
+  <Loader />
+) : members.length === 0 ? (
               <div className="text-center py-12 bg-white/50 backdrop-blur-md rounded-3xl border border-dashed border-[#cceeee] text-xs text-gray-400 mb-8">
                 No executive board members added onto this academic layout loop yet.
               </div>

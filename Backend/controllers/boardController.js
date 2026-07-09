@@ -104,3 +104,35 @@ exports.removeMember = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed deletion processing" });
   }
 };
+// GET MEMBERS COUNT FOR A SPECIFIC CLUB (ADMIN)
+exports.getClubMemberCount = async (req,res)=>{
+  try{
+
+    const clubId = req.params.clubId;
+
+    const boards = await Board.find({clubId});
+
+
+    let count = 0;
+
+    boards.forEach((board)=>{
+      count += board.members.length;
+    });
+
+
+    res.status(200).json({
+      success:true,
+      count
+    });
+
+
+  }
+  catch(error){
+
+    res.status(500).json({
+      success:false,
+      message:"Error fetching member count"
+    });
+
+  }
+};

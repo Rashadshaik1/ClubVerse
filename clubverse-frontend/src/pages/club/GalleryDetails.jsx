@@ -4,6 +4,7 @@ import axios from "axios";
 import { FaTrash, FaCloudUploadAlt, FaArrowLeft, FaImages } from "react-icons/fa";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
+import Loader from "../../components/Loader";
 
 export default function GalleryDetails() {
   const { id } = useParams();
@@ -76,7 +77,9 @@ export default function GalleryDetails() {
   }
 };
 
-  if (loading) return <div className="text-center pt-20 text-[#048c92] font-black">Loading...</div>;
+  if (loading) {
+  return <Loader />;
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] to-[#edfdfd] flex">

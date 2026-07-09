@@ -504,164 +504,84 @@ message:error.message
 };
 // ================= CANCEL EVENT & EMAIL NOTIFY =================
 exports.cancelEvent = async (req, res) => {
-
   try {
-
     const { id } = req.params;
     const { reason } = req.body;
 
+    const event = await Event.findById(id);
 
-    const event = await Event.findByIdAndUpdate(
-      id,
-      {
-        status:"cancelled"
-      },
-      {
-        new:true
-      }
-    );
-
-
-    if(!event){
-
+    if (!event) {
       return res.status(404).json({
-
-        success:false,
-
-        message:"Event not found."
-
+        success: false,
+        message: "Event not found."
       });
-
     }
 
+    if (event.status === "cancelled") {
+      return res.status(400).json({
+        success: false,
+        message: "Event is already cancelled."
+      });
+    }
 
+    if (event.status === "completed") {
+      return res.status(400).json({
+        success: false,
+        message: "Completed events cannot be cancelled."
+      });
+    }
 
-    // 🔔 CLUB NOTIFICATION
+    event.status = "cancelled";
+    event.cancelReason = reason || "";
+    event.cancelledAt = new Date();
+
+    await event.save();
 
     await Notification.create({
-
-      clubId:event.clubId,
-
-      message:
-      `${event.title} has been cancelled`,
-
-      type:"EVENT_UPDATE"
-
+      clubId: event.clubId,
+      message: `${event.title} has been cancelled`,
+      type: "EVENT_UPDATE"
     });
 
+    const registrations = await Registration.find({ eventId: id });
 
+    const emailList = registrations
+      .map(reg => reg.email || reg.studentEmail || reg.userEmail)
+      .filter(Boolean);
 
-    // FIND REGISTERED STUDENTS
-
-    const registrations =
-    await Registration.find({
-      eventId:id
-    });
-
-
-
-    const emailList =
-    registrations
-    .map(
-      reg =>
-      reg.email ||
-      reg.studentEmail ||
-      reg.userEmail
-    )
-    .filter(Boolean);
-
-
-
-    // SEND EMAIL
-
-    if(emailList.length > 0){
-
-
+    if (emailList.length > 0) {
       const mailOptions = {
-
-        from:process.env.EMAIL,
-
-        to:emailList.join(","),
-
-        subject:
-        `❌ Event Cancelled: ${event.title}`,
-
-        html:`
-
+        from: process.env.EMAIL,
+        to: emailList.join(","),
+        subject: `❌ Event Cancelled: ${event.title}`,
+        html: `
         <div style="font-family:Arial;padding:20px">
-
-        <h2 style="color:#d9534f">
-        Event Cancellation Notice
-        </h2>
-
-
+        <h2 style="color:#d9534f">Event Cancellation Notice</h2>
         <p>Hello Participant,</p>
-
-
-        <p>
-        We regret to inform you that the following event has been cancelled.
-        </p>
-
-
-        <p>
-        <b>Event:</b> ${event.title}
-        </p>
-
-
-        <p>
-        <b>Reason:</b> ${reason || "Not specified"}
-        </p>
-
-
+        <p>We regret to inform you that the following event has been cancelled.</p>
+        <p><b>Event:</b> ${event.title}</p>
+        <p><b>Reason:</b> ${reason || "Not specified"}</p>
         <hr/>
-
-
-        <p style="font-size:12px;color:#777">
-        This is an automated notification.
-        </p>
-
-
+        <p style="font-size:12px;color:#777">This is an automated notification.</p>
         </div>
-
         `
-
       };
 
-
       await transporter.sendMail(mailOptions);
-
     }
 
-
-
     return res.json({
-
-      success:true,
-
-      message:
-      "Event cancelled and emails sent!",
-
+      success: true,
+      message: "Event cancelled and emails sent!",
       event
-
     });
 
-
-
-  }
-  catch(error){
-
-
+  } catch (error) {
     return res.status(500).json({
-
-      success:false,
-
-      message:error.message
-
+      success: false,
+      message: error.message
     });
-
-
   }
-
 };
 // ================= UPLOAD GALLERY IMAGES =================
 exports.uploadGalleryImages = async (req, res) => {
@@ -777,4 +697,38 @@ exports.deleteGalleryImage = async (req, res) => {
 
   }
 
+};
+//=============== FeedBack =============
+exports.addFeedback = async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+
+    const event = await Event.findById(req.params.id);
+
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found"
+      });
+    }
+
+    event.feedback.push({
+      user: req.user.id,
+      rating,
+      comment
+    });
+
+    await event.save();
+
+    res.json({
+      success: true,
+      message: "Feedback submitted successfully"
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
 };

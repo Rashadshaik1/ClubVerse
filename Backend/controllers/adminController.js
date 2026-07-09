@@ -3,6 +3,7 @@ const Club = require("../models/Club");
 const Event = require("../models/Event");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
+const nodemailer = require("nodemailer");
 
 
 // ================= CREATE ADMIN =================
@@ -20,7 +21,8 @@ exports.createAdmin = async (req, res) => {
     if (exists) {
       return res.status(400).json({ msg: "Admin already exists" });
     }
-
+    
+    const plainPassword = password;
     const hashedPassword = await bcrypt.hash(String(password), 10);
 
     const admin = await User.create({
@@ -30,10 +32,15 @@ exports.createAdmin = async (req, res) => {
       role: "admin"
     });
 
-    return res.status(201).json({
-      success: true,
-      data: admin
-    });
+   return res.status(201).json({
+  success:true,
+  data:{
+    id:club._id,
+    name:club.name,
+    email:club.email,
+    type:club.type
+  }
+});
 
   } catch (error) {
     console.log("ADMIN ERROR:", error);
@@ -72,7 +79,9 @@ exports.createClubAccount = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(String(password), 10);
+    const plainPassword = password;
+
+const hashedPassword = await bcrypt.hash(String(password), 10);
 
     let safeLogo = "";
     if (typeof logo === "string" && logo.length < 1000000) {
@@ -87,6 +96,67 @@ exports.createClubAccount = async (req, res) => {
   description: description || "",
   logo: safeLogo,
   createdBy: req.user?.id || ""
+});
+
+// SEND LOGIN CREDENTIALS EMAIL
+
+const transporter = nodemailer.createTransport({
+
+  service:"gmail",
+
+  auth:{
+    user:process.env.EMAIL,
+    pass:process.env.EMAIL_PASS
+  }
+
+});
+
+
+await transporter.sendMail({
+
+  from:`"ClubVerse Team" <${process.env.EMAIL}>`,
+
+  to:email,
+
+  subject:"Welcome to ClubVerse - Club Account Created 🎉",
+
+  html:`
+
+  <h2>Welcome to ClubVerse 🎉</h2>
+
+  <p>Your club account has been created successfully.</p>
+
+  <h3>Your Login Credentials:</h3>
+
+  <p>
+  <b>Email:</b> ${email}
+  </p>
+
+  <p>
+  <b>Password:</b> ${plainPassword}
+  </p>
+
+
+  <br/>
+
+  <p>
+  Login to ClubVerse using these credentials.
+  </p>
+
+  <p>
+  After first login, please change your password from Profile section.
+  </p>
+
+
+  <br/>
+
+  <p>
+  Regards,<br/>
+  ClubVerse Team
+  </p>
+
+  `
+
 });
 
     return res.status(201).json({
@@ -107,7 +177,9 @@ exports.createClubAccount = async (req, res) => {
 // ================= GET ALL USERS =================
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
+    const users = await User.find()
+  .select("-password")
+  .sort({ createdAt: -1 });
 
     return res.json({
       success: true,
@@ -123,7 +195,9 @@ exports.getAllUsers = async (req, res) => {
 // ================= GET ALL EVENTS =================
 exports.getAllEvents = async (req, res) => {
   try {
-    const events = await Event.find().populate("clubId");
+    const events = await Event.find()
+  .populate("clubId")
+  .sort({ createdAt: -1 });
 
     return res.json({
       success: true,
@@ -178,7 +252,11 @@ exports.deleteClub = async (req, res) => {
 
     
 
-    await Club.findByIdAndDelete(id);
+   await Event.deleteMany({
+  clubId:id
+});
+
+await Club.findByIdAndDelete(id);
 
     return res.json({
       success: true,
@@ -231,7 +309,8 @@ exports.blockClub = async (req, res) => {
 // ================= GET ALL CLUBS =================
 exports.getAllClubs = async (req, res) => {
   try {
-    const clubs = await Club.find();
+    const clubs = await Club.find()
+  .sort({ createdAt: -1 });
 
     return res.json({
       success: true,

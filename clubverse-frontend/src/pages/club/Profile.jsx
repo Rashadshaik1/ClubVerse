@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Loader from "../../components/Loader";
 import {
   Camera,
   Mail,
@@ -12,6 +13,8 @@ import {
   Info,
   Save,
   X,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 // 🌟 Font Awesome నుంచి సోషల్ ఐకాన్స్ ఇంపోర్ట్ చేశాను
@@ -28,13 +31,10 @@ export default function Profile() {
     email: "",
     createdAt: "",
   });
-const [banner, setBanner] = useState(
-  "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80"
-);
+  const [loading, setLoading] = useState(true);
+const [banner, setBanner] = useState("");
 
-const [logo, setLogo] = useState(
-  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=150&auto=format&fit=crop&q=80"
-);
+const [logo, setLogo] = useState("");
 
 const [about, setAbout] = useState("");
 
@@ -60,6 +60,11 @@ const [socials, setSocials] = useState({
     newPassword: "",
     confirmPassword: "",
   });
+  const [showPasswords, setShowPasswords] = useState({
+  current: false,
+  new: false,
+  confirm: false,
+});
 
   useEffect(() => {
     fetchClubProfile();
@@ -103,18 +108,15 @@ const fetchClubProfile = async () => {
     });
 
     // Images
-    setLogo(
-      data.logo ||
-        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=150&auto=format&fit=crop&q=80"
-    );
+   setLogo(data.logo || "");
 
-    setBanner(
-      data.banner ||
-        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80"
-    );
+   setBanner(data.banner || "");
 
-  } catch (err) {
+    } catch (err) {
     console.log(err);
+
+  } finally {
+    setLoading(false);
   }
 };
 
@@ -176,6 +178,40 @@ const fetchClubProfile = async () => {
     alert("Failed to update profile");
   }
 };
+const changePassword = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.put(
+      "http://localhost:5000/api/clubs/change-password",
+      passwordForm,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    alert(res.data.message);
+
+    setPasswordForm({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+
+    setShowPasswordModal(false);
+
+  } catch (err) {
+    alert(
+      err.response?.data?.msg || "Password update failed"
+    );
+  }
+};
+
+if (loading) {
+  return <Loader />;
+}
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
       <ClubSidebar />
@@ -187,42 +223,97 @@ const fetchClubProfile = async () => {
           {/* ================= 1 & 2. HERO BANNER & LOGO SECTION ================= */}
           <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm relative">
             <div className="h-64 w-full bg-gray-100 relative group">
-              <img
-                src={banner}
-                alt="Club Banner"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <label className="cursor-pointer bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-4 py-2 rounded-xl border border-gray-200 shadow-md flex items-center gap-2 hover:bg-white transition">
-                  <Camera className="w-4 h-4 text-[#048c92]" />
-                  Change Banner
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleBannerChange}
-                    className="hidden"
-                  />
-                </label>
-              </div>
+              {banner ? (
+  <>
+    <img
+      src={banner}
+      alt="Club Banner"
+      className="w-full h-full object-cover"
+    />
+<div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+
+  <label className="cursor-pointer bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-4 py-2 rounded-xl border border-gray-200 shadow-md flex items-center gap-2 hover:bg-white transition">
+    <Camera className="w-4 h-4 text-[#048c92]" />
+    Change
+
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleBannerChange}
+      className="hidden"
+    />
+  </label>
+
+
+  <button
+    type="button"
+    onClick={() => setBanner("")}
+    className="bg-red-500/90 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md hover:bg-red-600 transition"
+  >
+    Remove
+  </button>
+
+</div>
+  </>
+) : (
+  <div className="w-full h-full bg-gradient-to-r from-[#dff8f8] via-[#f7ffff] to-[#dff8f8] flex items-center justify-center">
+    <div className="text-center">
+      <Camera className="w-10 h-10 text-[#048c92]/40 mx-auto mb-2" />
+
+      <p className="text-sm font-bold text-gray-500">
+        No Cover Image
+      </p>
+
+      <p className="text-xs text-gray-400 mt-1 mb-4">
+        Upload a banner to personalize your club profile
+      </p>
+
+      <label className="inline-flex cursor-pointer items-center gap-2 bg-[#048c92] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#39adb2] transition">
+        <Camera className="w-4 h-4" />
+        Upload Cover
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleBannerChange}
+          className="hidden"
+        />
+      </label>
+    </div>
+  </div>
+)}
             </div>
 
             <div className="px-8 pb-6 pt-16 relative flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 border-b border-gray-100">
-              <div className="absolute -top-16 left-8 sm:left-12 w-32 h-32 rounded-full border-4 border-white bg-white shadow-md overflow-hidden group">
-                <img
-                  src={logo}
-                  alt="Club Logo"
-                  className="w-full h-full object-cover"
-                />
-                <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
-                  <Camera className="w-5 h-5 text-white" />
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleLogoChange}
-                    className="hidden"
-                  />
-                </label>
-              </div>
+             <div className="absolute -top-16 left-8 sm:left-12 w-32 h-32 rounded-full border-4 border-white bg-white shadow-md overflow-hidden group">
+
+  {logo ? (
+    <img
+      src={logo}
+      alt="Club Logo"
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <div className="w-full h-full bg-[#f4fcfc] flex flex-col items-center justify-center">
+      <Camera className="w-8 h-8 text-[#048c92]/40 mb-1" />
+      <p className="text-[10px] font-bold text-gray-400">
+        Upload Logo
+      </p>
+    </div>
+  )}
+
+  <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
+    <Camera className="w-5 h-5 text-white" />
+
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleLogoChange}
+      className="hidden"
+    />
+  </label>
+
+</div>
 
               <div className="sm:pl-40 text-center sm:text-left">
                 <h2 className="text-2xl font-black text-gray-800 tracking-tight">
@@ -532,54 +623,114 @@ const fetchClubProfile = async () => {
                   <label className="block text-[10px] font-black text-gray-400 uppercase tracking-wider mb-1.5">
                     Current Password
                   </label>
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    value={passwordForm.currentPassword}
-                    onChange={(e) =>
-                      setPasswordForm({
-                        ...passwordForm,
-                        currentPassword: e.target.value,
-                      })
-                    }
-                    className="w-full px-4 py-2.5 border border-gray-200 bg-[#f7ffff] rounded-xl text-xs focus:outline-none focus:border-[#43bfc3]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-wider mb-1.5">
-                    New Password
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    value={passwordForm.newPassword}
-                    onChange={(e) =>
-                      setPasswordForm({
-                        ...passwordForm,
-                        newPassword: e.target.value,
-                      })
-                    }
-                    className="w-full px-4 py-2.5 border border-gray-200 bg-[#f7ffff] rounded-xl text-xs focus:outline-none focus:border-[#43bfc3]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-wider mb-1.5">
-                    Confirm Password
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    value={passwordForm.confirmPassword}
-                    onChange={(e) =>
-                      setPasswordForm({
-                        ...passwordForm,
-                        confirmPassword: e.target.value,
-                      })
-                    }
-                    className="w-full px-4 py-2.5 border border-gray-200 bg-[#f7ffff] rounded-xl text-xs focus:outline-none focus:border-[#43bfc3]"
-                  />
-                </div>
+                <div className="relative">
+<input
+  type={showPasswords.current ? "text" : "password"}
+  placeholder="••••••••"
+  value={passwordForm.currentPassword}
+  onChange={(e) =>
+    setPasswordForm({
+      ...passwordForm,
+      currentPassword: e.target.value,
+    })
+  }
+  className="w-full px-4 py-2.5 pr-10 border border-gray-200 bg-[#f7ffff] rounded-xl text-xs focus:outline-none focus:border-[#43bfc3]"
+/>
 
+<button
+  type="button"
+  onClick={() =>
+    setShowPasswords({
+      ...showPasswords,
+      current: !showPasswords.current,
+    })
+  }
+  className="absolute right-3 top-2.5 text-gray-400"
+>
+{
+showPasswords.current 
+? <EyeOff className="w-4 h-4"/>
+: <Eye className="w-4 h-4"/>
+}
+</button>
+</div>
+                </div>
+               <div>
+  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-wider mb-1.5">
+    New Password
+  </label>
+
+  <div className="relative">
+
+    <input
+      type={showPasswords.new ? "text" : "password"}
+      placeholder="••••••••"
+      value={passwordForm.newPassword}
+      onChange={(e) =>
+        setPasswordForm({
+          ...passwordForm,
+          newPassword: e.target.value,
+        })
+      }
+      className="w-full px-4 py-2.5 pr-10 border border-gray-200 bg-[#f7ffff] rounded-xl text-xs focus:outline-none focus:border-[#43bfc3]"
+    />
+
+    <button
+      type="button"
+      onClick={() =>
+        setShowPasswords({
+          ...showPasswords,
+          new: !showPasswords.new,
+        })
+      }
+      className="absolute right-3 top-2.5 text-gray-400"
+    >
+      {
+        showPasswords.new
+        ? <EyeOff className="w-4 h-4"/>
+        : <Eye className="w-4 h-4"/>
+      }
+    </button>
+
+  </div>
+</div>
+                <div>
+  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-wider mb-1.5">
+    Confirm Password
+  </label>
+
+  <div className="relative">
+    <input
+      type={showPasswords.confirm ? "text" : "password"}
+      placeholder="••••••••"
+      value={passwordForm.confirmPassword}
+      onChange={(e) =>
+        setPasswordForm({
+          ...passwordForm,
+          confirmPassword: e.target.value,
+        })
+      }
+      className="w-full px-4 pr-10 py-2.5 border border-gray-200 bg-[#f7ffff] rounded-xl text-xs focus:outline-none focus:border-[#43bfc3]"
+    />
+
+    <button
+      type="button"
+      onClick={() =>
+        setShowPasswords({
+          ...showPasswords,
+          confirm: !showPasswords.confirm,
+        })
+      }
+      className="absolute right-3 top-2.5 text-gray-400"
+    >
+      {showPasswords.confirm ? (
+        <EyeOff className="w-4 h-4" />
+      ) : (
+        <Eye className="w-4 h-4" />
+      )}
+    </button>
+  </div>
+</div>
                 <div className="flex justify-end gap-2 pt-4 border-t border-gray-50 mt-6">
                   <button
                     type="button"
@@ -589,12 +740,12 @@ const fetchClubProfile = async () => {
                     Cancel
                   </button>
                   <button
-                    type="button"
-                    onClick={() => setShowPasswordModal(false)}
-                    className="px-4 py-2 text-xs font-black bg-[#048c92] text-white rounded-xl hover:bg-[#39adb2] transition shadow-sm"
-                  >
-                    Update Password
-                  </button>
+  type="button"
+  onClick={changePassword}
+  className="px-4 py-2 text-xs font-black bg-[#048c92] text-white rounded-xl hover:bg-[#39adb2] transition shadow-sm"
+>
+  Update Password
+</button>
                   
                 </div>
               </form>

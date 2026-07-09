@@ -2,14 +2,16 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    // 🔹 User name
+    // ================= BASIC DETAILS =================
+
+    // User Name
     name: {
       type: String,
       required: true,
       trim: true
     },
 
-    // 🔹 Email (must be unique)
+    // Email
     email: {
       type: String,
       required: true,
@@ -18,20 +20,62 @@ const userSchema = new mongoose.Schema(
       trim: true
     },
 
-    // 🔹 Password (hashed)
+    // Password (Hashed)
     password: {
       type: String,
       required: true
     },
 
-    // 🔹 Role of user
-    role: {
-  type: String,
-  enum: ["student", "admin"],
-  default: "student"
-},
+    // ================= STUDENT DETAILS =================
 
-    
+    // Roll Number
+    rollNumber: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true
+    },
+
+    // Department
+    department: {
+      type: String,
+      default: ""
+    },
+
+    // Year
+    year: {
+      type: String,
+      default: ""
+    },
+
+    // Mobile Number
+    mobile: {
+      type: String,
+      default: ""
+    },
+
+    // Profile Photo
+    profilePhoto: {
+      type: String,
+      default: ""
+    },
+
+    // Registered Events
+    registeredEvents: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Event"
+      }
+    ],
+
+    // ================= USER ROLE =================
+
+    role: {
+      type: String,
+      enum: ["student", "admin"],
+      default: "student"
+    },
+
     // ================= STATUS FLAGS =================
 
     isActive: {
@@ -44,7 +88,7 @@ const userSchema = new mongoose.Schema(
       default: false
     },
 
-    // ================= OTP FIELDS (ADDED ONLY) =================
+    // ================= OTP VERIFICATION =================
 
     otp: {
       type: String,
@@ -61,7 +105,6 @@ const userSchema = new mongoose.Schema(
       default: false
     }
   },
-
   {
     timestamps: true
   }

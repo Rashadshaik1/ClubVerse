@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 
 const allowedDomain = "@gvpce.ac.in";
-
+const  getStudentDetails  = require("../utils/studentDetails");
 // ================= TEMP OTP STORE =================
 const otpStore = {};
 
@@ -83,22 +83,40 @@ exports.verifyOtpRegister = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(record.password, 10);
 
-    const user = await User.create({
-      name: record.name,
-      email: record.email,
-      password: hashedPassword
-    });
+// Get student details from email
+const studentDetails = getStudentDetails(record.email);
+
+const user = await User.create({
+  name: record.name,
+  email: record.email,
+  password: hashedPassword,
+
+  rollNumber: studentDetails.rollNumber,
+  department: studentDetails.department,
+  year: studentDetails.year,
+
+  mobile: "",
+  profilePhoto: "",
+  registeredEvents: []
+});
 
     delete otpStore[email];
 
     res.status(201).json({
       success: true,
       user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role || "student"
-      }
+  _id: user._id,
+  name: user.name,
+  email: user.email,
+  role: user.role || "student",
+
+  rollNumber: user.rollNumber,
+  department: user.department,
+  year: user.year,
+  mobile: user.mobile,
+  profilePhoto: user.profilePhoto,
+  registeredEvents: user.registeredEvents
+}
     });
 
   } catch (error) {
@@ -193,12 +211,19 @@ exports.login = async (req, res) => {
 
     res.json({
       token,
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role || "student"
-      }
+     user: {
+  _id: user._id,
+  name: user.name,
+  email: user.email,
+  role: user.role || "student",
+
+  rollNumber: user.rollNumber,
+  department: user.department,
+  year: user.year,
+  mobile: user.mobile,
+  profilePhoto: user.profilePhoto,
+  registeredEvents: user.registeredEvents
+}
     });
 
   } catch (error) {

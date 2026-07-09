@@ -7,7 +7,8 @@ const {
   createBoard,
   deleteBoard,
   syncMember,
-  removeMember
+  removeMember,
+  getClubMemberCount
 } = require("../controllers/boardController");
 
 const { protect } = require("../middlewares/authMiddleware"); // Mee global authorization protection lock hook middleware 
@@ -20,5 +21,10 @@ router.delete("/:id", protect, deleteBoard);
 // Member sub operations routing arrays
 router.post("/sync-member", protect, syncMember);
 router.delete("/remove-member/:boardId/:memberId", protect, removeMember);
+router.get(
+"/club/:clubId/member-count",
+protect,
+getClubMemberCount
+);
 
 module.exports = router;

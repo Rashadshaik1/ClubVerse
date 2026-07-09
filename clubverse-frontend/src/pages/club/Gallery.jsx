@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
+import Loader from "../../components/Loader";
 import {
   FaCalendarAlt,
   FaImages,
@@ -49,6 +50,9 @@ export default function Gallery() {
       setLoading(false);
     }
   };
+  if (loading) {
+  return <Loader />;
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
@@ -64,12 +68,7 @@ export default function Gallery() {
           </p>
         </div>
 
-        {loading ? (
-          <div className="flex flex-col items-center justify-center pt-24">
-            <div className="w-8 h-8 border-4 border-[#048c92] border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-sm font-bold text-[#048c92] mt-3">Loading Gallery...</p>
-          </div>
-        ) : events.length === 0 ? (
+      {events.length === 0 ? (
           <div className="bg-white/50 backdrop-blur-md border border-dashed border-[#cceeee] rounded-3xl p-12 text-center max-w-xl mx-auto mt-12">
             <div className="w-14 h-14 rounded-2xl bg-[#048c92]/10 flex items-center justify-center mx-auto">
               <FaRegFolderOpen className="text-2xl text-[#048c92]" />

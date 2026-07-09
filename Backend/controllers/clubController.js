@@ -244,74 +244,91 @@ try{
 
 const {
 currentPassword,
-newPassword
+newPassword,
+confirmPassword
 }=req.body;
 
 
-const club =
-await Club.findById(req.user._id);
-
+const club = await Club.findById(req.user._id);
 
 
 if(!club){
 
 return res.status(404).json({
-
 success:false,
-
 msg:"Club not found"
-
 });
 
 }
 
 
+// Check old password
 
-const isMatch =
-await bcrypt.compare(
+const isMatch = await bcrypt.compare(
 currentPassword,
 club.password
 );
 
 
-
 if(!isMatch){
 
 return res.status(400).json({
-
 success:false,
-
 msg:"Current password is incorrect"
+});
 
+}
+
+
+// Check new password
+
+if(newPassword !== confirmPassword){
+
+return res.status(400).json({
+success:false,
+msg:"New password and confirm password do not match"
+});
+
+}
+
+
+// Password strength
+
+if(newPassword.length < 6){
+
+return res.status(400).json({
+success:false,
+msg:"Password must contain minimum 6 characters"
 });
 
 }
 
 
 
-const salt =
-await bcrypt.genSalt(10);
+// Hash new password
 
+const salt = await bcrypt.genSalt(10);
 
-
-club.password =
-await bcrypt.hash(
+club.password = await bcrypt.hash(
 newPassword,
 salt
 );
 
+
+// Security tracking
+
+club.passwordChangedAt = new Date();
 
 
 await club.save();
 
 
 
-res.json({
+res.status(200).json({
 
 success:true,
 
-message:
-"Password changed successfully"
+message:"Password changed successfully"
 
 });
 
@@ -319,11 +336,13 @@ message:
 }
 catch(err){
 
+console.log(err);
+
 res.status(500).json({
 
 success:false,
 
-msg:err.message
+msg:"Server Error"
 
 });
 

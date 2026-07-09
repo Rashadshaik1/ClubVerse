@@ -15,7 +15,8 @@ const {
   cancelEvent,
   uploadGalleryImages,
   getGalleryImages,
-  deleteGalleryImage
+  deleteGalleryImage,
+  addFeedback
 } = require("../controllers/eventController");
 
 const storage = multer.memoryStorage();
@@ -88,8 +89,9 @@ router.put(
 
 // Cancel Event
 
-router.put(
-  "/cancel/:id",
+
+router.post(
+  "/:id/cancel",
   protect,
   cancelEvent
 );
@@ -131,6 +133,13 @@ router.delete(
   "/:eventId/gallery/:imageId",
   protect,
   deleteGalleryImage
+);
+
+//========== FeedBack =======
+router.post(
+  "/:id/feedback",
+  protect,
+  addFeedback
 );
 
 

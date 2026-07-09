@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Clock3 } from "lucide-react";
 
 export default function EventCountdown({ eventDate }) {
   const calculateTime = () => {
@@ -29,29 +30,87 @@ export default function EventCountdown({ eventDate }) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [eventDate]);
+
+  const format = (num) => String(num).padStart(2, "0");
+
+  const timerData = [
+    {
+      label: "Days",
+      value: format(timeLeft.days),
+    },
+    {
+      label: "Hours",
+      value: format(timeLeft.hours),
+    },
+    {
+      label: "Minutes",
+      value: format(timeLeft.minutes),
+    },
+    {
+      label: "Seconds",
+      value: format(timeLeft.seconds),
+    },
+  ];
 
   return (
-    <div className="flex gap-3 mt-5">
+    <div className="mt-6">
 
-      <div className="bg-blue-100 rounded-lg px-3 py-2 text-center">
-        <p className="text-xl font-bold">{timeLeft.days}</p>
-        <span className="text-xs">Days</span>
+      {/* Heading */}
+
+      <div className="flex items-center gap-2 mb-4">
+
+        <Clock3
+          size={20}
+          className="text-[#6D4BC3]"
+        />
+
+        <h3 className="text-sm font-semibold text-[#4B2E91]">
+          Event Starts In
+        </h3>
+
       </div>
 
-      <div className="bg-blue-100 rounded-lg px-3 py-2 text-center">
-        <p className="text-xl font-bold">{timeLeft.hours}</p>
-        <span className="text-xs">Hours</span>
-      </div>
+      {/* Timer */}
 
-      <div className="bg-blue-100 rounded-lg px-3 py-2 text-center">
-        <p className="text-xl font-bold">{timeLeft.minutes}</p>
-        <span className="text-xs">Minutes</span>
-      </div>
+      <div className="grid grid-cols-4 gap-3">
 
-      <div className="bg-blue-100 rounded-lg px-3 py-2 text-center">
-        <p className="text-xl font-bold">{timeLeft.seconds}</p>
-        <span className="text-xs">Seconds</span>
+        {timerData.map((item) => (
+
+          <div
+            key={item.label}
+            className="
+            rounded-2xl
+            bg-white/70
+            backdrop-blur-xl
+            border
+            border-[#DDD4F2]
+            shadow-md
+            hover:shadow-xl
+            hover:-translate-y-1
+            transition-all
+            duration-300
+            py-4
+            text-center
+            "
+          >
+
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] bg-clip-text text-transparent">
+
+              {item.value}
+
+            </h2>
+
+            <p className="text-xs text-gray-500 mt-1 tracking-wide uppercase">
+
+              {item.label}
+
+            </p>
+
+          </div>
+
+        ))}
+
       </div>
 
     </div>

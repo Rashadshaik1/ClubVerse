@@ -14,6 +14,7 @@ import {
   PieChart,
   Pie,
   Cell,
+  Legend,
   ResponsiveContainer
 } from "recharts";
 
@@ -24,25 +25,170 @@ export default function ClubDetails() {
   const [club, setClub] = useState(null);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [chartData,setChartData]=useState([]);
+  const [pieData,setPieData]=useState([]);
+  const [memberCount,setMemberCount]=useState(0);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://127.0.0.1:5000/api/admin/clubs", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
 
-      const data = await res.json();
-      const found = (data.data || []).find((u) => u._id === id);
+  const fetchData = async () => {
 
-      setClub(found);
+    try {
+
+      const headers = {
+        Authorization:
+        `Bearer ${localStorage.getItem("token")}`,
+      };
+
+
+      // 1. Get clubs
+      const clubRes = await fetch(
+        "http://127.0.0.1:5000/api/admin/clubs",
+        {
+          headers
+        }
+      );
+
+
+      const clubData = await clubRes.json();
+
+
+      const foundClub =
+      (clubData.data || [])
+      .find((c)=>c._id === id);
+
+
+      setClub(foundClub);
+      const memberRes = await fetch(
+ `http://127.0.0.1:5000/api/boards/club/${id}/member-count`,
+ {
+  headers
+ }
+);
+
+
+const memberData = await memberRes.json();
+
+
+setMemberCount(memberData.count || 0);
+
+
+
+      // 2. Get all events
+
+      const eventRes = await fetch(
+        "http://127.0.0.1:5000/api/admin/events",
+        {
+          headers
+        }
+      );
+
+
+      const eventData = await eventRes.json();
+
+
+
+      // filter only this club events
+
+      const clubEvents =
+      (eventData.data || [])
+      .filter(
+        (e)=>
+        e.clubId?._id === id
+      );
+
+
+      setEvents(clubEvents);
+
+   const statusMap = {
+  Completed:0,
+  Upcoming:0,
+  Cancelled:0
+};
+
+
+clubEvents.forEach((event)=>{
+
+  if(event.status === "completed"){
+    statusMap.Completed++;
+  }
+
+  else if(event.status === "cancelled"){
+    statusMap.Cancelled++;
+  }
+
+  else if(event.status === "upcoming"){
+    statusMap.Upcoming++;
+  }
+
+});
+
+
+setPieData(
+
+Object.keys(statusMap).map((status)=>({
+
+name:status,
+value:statusMap[status]
+
+}))
+
+);
+      const monthMap={};
+
+
+clubEvents.forEach((event)=>{
+
+
+const month =
+new Date(event.createdAt)
+.toLocaleString(
+"default",
+{
+month:"short"
+}
+);
+
+
+monthMap[month] =
+(monthMap[month] || 0)+1;
+
+
+});
+
+
+setChartData(
+
+Object.keys(monthMap)
+.map((month)=>({
+
+month,
+count:monthMap[month]
+
+}))
+
+);
+        
+
+
       setLoading(false);
-    };
 
-    fetchData();
-  }, [id]);
 
+    }
+    catch(err){
+
+      console.log(err);
+      setLoading(false);
+
+    }
+
+  };
+
+
+  fetchData();
+
+
+},[id]);
   const handleDelete = async () => {
     if (!window.confirm("Delete this club?")) return;
 
@@ -128,25 +274,50 @@ export default function ClubDetails() {
           </p>
         </motion.div>
 
-        {/* ================= STATS ================= */}
-        <div className="grid grid-cols-3 gap-6">
+    {/* ================= STATS ================= */}
 
-          {[
-            { label: "Total Events", value: 12 },
-            { label: "Members", value: 45 },
-            { label: "Status", value: club.isBlocked ? "Inactive" : "Live" }
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ scale: 1.05 }}
-              className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl"
-            >
-              <p className="text-gray-400 text-sm">{item.label}</p>
-              <h2 className="text-2xl font-bold mt-1">{item.value}</h2>
-            </motion.div>
-          ))}
+<div className="grid grid-cols-3 gap-6">
 
-        </div>
+{
+[
+{
+ label:"Total Events",
+ value:events.length
+},
+
+{
+ label:"Members",
+ value:memberCount
+},
+
+{
+ label:"Status",
+ value:club.isBlocked ? "Inactive" : "Live"
+}
+
+].map((item,i)=>(
+
+<motion.div
+key={i}
+whileHover={{scale:1.05}}
+className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl"
+>
+
+<p className="text-gray-400 text-sm">
+{item.label}
+</p>
+
+<h2 className="text-2xl font-bold mt-1">
+{item.value}
+</h2>
+
+</motion.div>
+
+))
+
+}
+
+</div>
 
         {/* ================= ANALYTICS MOCK ================= */}
         <div className="grid grid-cols-2 gap-6">
@@ -158,9 +329,12 @@ export default function ClubDetails() {
             <h2 className="mb-4 font-semibold">Event Trend</h2>
 
             <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={[]}>
+              <LineChart data={chartData}>
                 <XAxis dataKey="month" stroke="#888" />
-                <YAxis stroke="#888" />
+               <YAxis 
+ stroke="#888"
+ allowDecimals={false}
+/>
                 <Tooltip />
                 <Line type="monotone" dataKey="count" stroke="#00C2FF" />
               </LineChart>
@@ -177,9 +351,25 @@ export default function ClubDetails() {
           >
             <h2 className="mb-4 font-semibold">Activity Split</h2>
 
-            <div className="h-[250px] flex items-center justify-center text-gray-400">
-              Pie Chart Placeholder
-            </div>
+            <ResponsiveContainer width="100%" height={250}>
+
+  <PieChart>
+
+<Pie
+data={pieData}
+dataKey="value"
+nameKey="name"
+outerRadius={90}
+label
+/>
+
+<Tooltip />
+
+<Legend />
+
+</PieChart>
+
+</ResponsiveContainer>
           </motion.div>
 
         </div>

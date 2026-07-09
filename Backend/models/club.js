@@ -24,6 +24,12 @@ const clubSchema = new mongoose.Schema(
       required: true,
     },
 
+    // Password Security Tracking
+    passwordChangedAt: {
+      type: Date,
+      default: null,
+    },
+
     // Club Category
     type: {
       type: String,
