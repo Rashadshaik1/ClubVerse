@@ -6,9 +6,17 @@ import {
   Building2
 } from "lucide-react";
 
+import { useNavigate } from "react-router-dom";
+
 import EventCountdown from "./EventCountdown";
 
 export default function EventFeedCard({ event }) {
+
+  const navigate = useNavigate();
+
+  const openEvent = () => {
+    navigate(`/student/event/${event._id}`);
+  };
 
   return (
 
@@ -61,11 +69,8 @@ export default function EventFeedCard({ event }) {
 
             ${
               event.status === "ongoing"
-
                 ? "bg-red-500 text-white"
-
                 : "bg-green-500 text-white"
-
             }`}
           >
 
@@ -81,15 +86,11 @@ export default function EventFeedCard({ event }) {
 
       <div className="p-6">
 
-        {/* Title */}
-
         <h2 className="text-2xl font-bold text-[#4B2E91]">
 
           {event.title}
 
         </h2>
-
-        {/* Club */}
 
         <div className="flex items-center gap-2 mt-2 text-[#6D4BC3]">
 
@@ -103,15 +104,11 @@ export default function EventFeedCard({ event }) {
 
         </div>
 
-        {/* Description */}
-
         <p className="mt-4 text-gray-600 leading-7 line-clamp-3">
 
           {event.description}
 
         </p>
-
-        {/* DETAILS */}
 
         <div className="mt-6 grid grid-cols-2 gap-4">
 
@@ -177,8 +174,6 @@ export default function EventFeedCard({ event }) {
 
         </div>
 
-        {/* Countdown */}
-
         {event.status === "upcoming" && (
 
           <EventCountdown
@@ -192,6 +187,7 @@ export default function EventFeedCard({ event }) {
         <div className="mt-8 flex gap-4">
 
           <button
+            onClick={openEvent}
             className="
             flex-1
             py-3
@@ -210,6 +206,7 @@ export default function EventFeedCard({ event }) {
           </button>
 
           <button
+            onClick={openEvent}
             className="
             flex-1
             py-3

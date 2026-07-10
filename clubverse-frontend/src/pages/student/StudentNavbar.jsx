@@ -5,7 +5,8 @@ import {
   Home,
   Users,
   Info,
-  User
+  User,
+  ClipboardList
 } from "lucide-react";
 
 import logo from "../../assets/logo.png";
@@ -64,6 +65,11 @@ const handleLogout = () => {
       icon: Users,
       path: "/student-clubs"
     },
+{
+  name: "My Registrations",
+  icon: ClipboardList,
+  path: "/student/my-registrations"
+},
     {
       name: "About",
       icon: Info,

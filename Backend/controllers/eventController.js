@@ -708,27 +708,62 @@ exports.addFeedback = async (req, res) => {
     if (!event) {
       return res.status(404).json({
         success: false,
-        message: "Event not found"
+        message: "Event not found",
+      });
+    }
+
+    // Only completed events can receive feedback
+    if (event.status !== "completed") {
+      return res.status(400).json({
+        success: false,
+        message: "Feedback is available only after the event is completed.",
+      });
+    }
+
+    // Student must be registered
+    const registration = await Registration.findOne({
+      eventId: event._id,
+      userId: req.user.id,
+    });
+
+    if (!registration) {
+      return res.status(403).json({
+        success: false,
+        message: "Only registered participants can submit feedback.",
+      });
+    }
+
+    // Prevent duplicate feedback
+    const alreadyGiven = event.feedback.find(
+      (fb) => fb.user.toString() === req.user.id
+    );
+
+    if (alreadyGiven) {
+      return res.status(400).json({
+        success: false,
+        message: "You have already submitted feedback.",
       });
     }
 
     event.feedback.push({
       user: req.user.id,
       rating,
-      comment
+      comment,
     });
 
     await event.save();
 
     res.json({
       success: true,
-      message: "Feedback submitted successfully"
+      message: "Feedback submitted successfully.",
     });
 
   } catch (err) {
+
     res.status(500).json({
       success: false,
-      message: err.message
+      message: err.message,
     });
+
   }
 };

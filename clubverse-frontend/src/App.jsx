@@ -3,33 +3,25 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // COMMON
 import Landing from "./pages/common/Landing";
 
-// STUDENT
+// ================= STUDENT =================
 import StudentAuth from "./pages/student/StudentAuth";
 import StudentHome from "./pages/student/StudentHome";
 import StudentAbout from "./pages/student/StudentAbout";
-import StudentProfile from "./pages/student/StudentProfile"; // ✅ NEW
+import StudentProfile from "./pages/student/StudentProfile";
+import Clubs from "./pages/student/Clubs";
+import StudentEventDetails from "./pages/student/StudentEventDetails";
+import MyRegistrations from "./pages/student/MyRegistrations";
 
-// CLUB
+// ================= CLUB =================
 import ClubLogin from "./pages/club/ClubLogin";
 import Dashboard from "./pages/club/Dashboard";
 import CreateEvent from "./pages/club/CreateEvent";
 import ManageEvents from "./pages/club/ManageEvents";
-
 import About from "./pages/club/About";
-
-// ✅ ADDED DYNAMIC EVENT DASHBOARD
 import EventDashboard from "./pages/club/EventDashboard";
-
-// ✅ ADDED MEMBERS MANAGEMENT MODULE
 import Members from "./pages/club/Members";
-
-// 🌟 CLUB PROFILE
 import Profile from "./pages/club/Profile";
-
-// ✅ ADDED GALLERY MODULE
 import Gallery from "./pages/club/Gallery";
-
-// ✅ ADDED GALLERY DETAILS MODULE
 import GalleryDetails from "./pages/club/GalleryDetails";
 
 export default function App() {
@@ -37,17 +29,26 @@ export default function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* LANDING */}
+        {/* ================= COMMON ================= */}
         <Route path="/" element={<Landing />} />
 
-        {/* CLUB ABOUT */}
+        {/* ================= CLUB ABOUT ================= */}
         <Route path="/about" element={<About />} />
 
         {/* ================= STUDENT ================= */}
         <Route path="/student-auth" element={<StudentAuth />} />
         <Route path="/student-home" element={<StudentHome />} />
+        <Route path="/student-clubs" element={<Clubs />} />
         <Route path="/student-about" element={<StudentAbout />} />
-        <Route path="/student-profile" element={<StudentProfile />} /> {/* ✅ NEW */}
+        <Route path="/student-profile" element={<StudentProfile />} />
+        <Route
+  path="/student/event/:id"
+  element={<StudentEventDetails />}
+/>
+<Route
+  path="/student/my-registrations"
+  element={<MyRegistrations />}
+/>
 
         {/* ================= CLUB ================= */}
         <Route path="/club-login" element={<ClubLogin />} />
@@ -58,7 +59,7 @@ export default function App() {
         {/* MEMBERS */}
         <Route path="/members" element={<Members />} />
 
-        {/* CLUB PROFILE */}
+        {/* PROFILE */}
         <Route path="/profile" element={<Profile />} />
 
         {/* GALLERY */}

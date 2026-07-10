@@ -2,10 +2,18 @@ const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema(
 {
+    // Receiver Student
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
+        default:null
+    },
+
+    // Receiver Club
     clubId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Club",
-        required:true
+        default:null
     },
 
     message:{
@@ -18,6 +26,12 @@ const notificationSchema = new mongoose.Schema(
         default:"GENERAL"
     },
 
+    relatedEvent:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Event",
+        default:null
+    },
+
     isRead:{
         type:Boolean,
         default:false
@@ -28,8 +42,9 @@ const notificationSchema = new mongoose.Schema(
     timestamps:true
 });
 
-
-module.exports = mongoose.model(
+module.exports =
+mongoose.models.Notification ||
+mongoose.model(
     "Notification",
     notificationSchema
 );

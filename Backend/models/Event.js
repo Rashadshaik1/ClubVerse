@@ -81,10 +81,16 @@ const eventSchema = new mongoose.Schema(
     },
 
     status: {
-      type: String,
-      enum: ["draft", "upcoming", "completed", "cancelled"],
-      default: "upcoming",
-    },
+  type: String,
+  enum: [
+    "draft",
+    "upcoming",
+    "ongoing",
+    "completed",
+    "cancelled",
+  ],
+  default: "upcoming",
+},
 
     cancelReason: {
   type: String,
