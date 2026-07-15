@@ -67,6 +67,11 @@ app.use(
   require("./routes/notificationRoutes")
 );
 
+app.use(
+  "/api/student-notifications",
+  require("./routes/studentNotificationRoutes")
+);
+
 
 
 // ================= AI ROUTE =================

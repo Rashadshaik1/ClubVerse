@@ -9,6 +9,9 @@ const  getStudentDetails  = require("../utils/studentDetails");
 // ================= TEMP OTP STORE =================
 const otpStore = {};
 
+// ================= FORGOT PASSWORD OTP STORE =================
+const forgotPasswordStore = {};
+
 // ===================== SEND OTP (NEW ADDITION) =====================
 exports.sendRegisterOtp = async (req, res) => {
   try {
@@ -171,6 +174,116 @@ exports.resendOtp = async (req, res) => {
 
   } catch (error) {
     console.error("Resend OTP Error:", error);
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
+
+
+// ===================== SEND FORGOT PASSWORD OTP =====================
+exports.sendForgotPasswordOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email.endsWith(allowedDomain)) {
+      return res.status(400).json({
+        msg: "Only GVPCE email allowed"
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        msg: "User not found"
+      });
+    }
+
+    const otp = crypto.randomInt(100000, 999999).toString();
+
+    forgotPasswordStore[email] = {
+      otp,
+      expires: Date.now() + 5 * 60 * 1000
+    };
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL.trim(),
+        pass: process.env.EMAIL_PASS.replace(/\s/g, "")
+      }
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL,
+      to: email,
+      subject: "ClubVerse Password Reset OTP",
+      text: `Your password reset OTP is: ${otp}`
+    });
+
+    res.json({
+      success: true,
+      msg: "OTP sent successfully"
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
+
+// ===================== VERIFY OTP + RESET PASSWORD =====================
+exports.resetPassword = async (req, res) => {
+  try {
+    const { email, otp, password } = req.body;
+
+    const record = forgotPasswordStore[email];
+
+    if (!record) {
+      return res.status(400).json({
+        msg: "OTP not found"
+      });
+    }
+
+    if (record.expires < Date.now()) {
+      delete forgotPasswordStore[email];
+
+      return res.status(400).json({
+        msg: "OTP expired"
+      });
+    }
+
+    if (record.otp !== otp) {
+      return res.status(400).json({
+        msg: "Invalid OTP"
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await User.findOneAndUpdate(
+      { email },
+      {
+        password: hashedPassword
+      }
+    );
+
+    delete forgotPasswordStore[email];
+
+    res.json({
+      success: true,
+      msg: "Password reset successful"
+    });
+
+  } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       error: error.message
     });

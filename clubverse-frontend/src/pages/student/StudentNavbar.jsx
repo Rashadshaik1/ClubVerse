@@ -163,22 +163,23 @@ const handleLogout = () => {
           {/* Notification */}
 
           <button
-            className="relative w-12 h-12 rounded-full bg-white/70 border border-[#DDD4F2]
-            hover:scale-105 transition flex items-center justify-center"
-          >
+  onClick={() => navigate("/student-notifications")}
+  className="relative w-12 h-12 rounded-full bg-white/70 border border-[#DDD4F2]
+  hover:scale-105 transition flex items-center justify-center"
+>
 
-            <Bell
-              size={21}
-              className="text-[#6D4BC3]"
-            />
+  <Bell
+    size={21}
+    className="text-[#6D4BC3]"
+  />
 
-            <span className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center">
+  <span
+    className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center"
+  >
+    2
+  </span>
 
-              2
-
-            </span>
-
-          </button>
+</button>
 
 {/* Avatar */}
 

@@ -1,22 +1,57 @@
 const express = require("express");
+
 const router = express.Router();
 
-// middleware
-const { protect }= require("../middlewares/authMiddleware");
+const { protect } = require("../middlewares/authMiddleware");
 
-// controller
 const {
+
   registerEvent,
-  getMyRegs
+
+  getMyRegs,
+
+  getEventRegistrations
+
 } = require("../controllers/registrationController");
 
 
-// POST → register for event
-router.post("/", protect, registerEvent);
+// ================= REGISTER FOR EVENT =================
+
+router.post(
+
+  "/",
+
+  protect,
+
+  registerEvent
+
+);
 
 
-// GET → my registrations
-router.get("/", protect, getMyRegs);
+// ================= GET MY REGISTRATIONS =================
+
+router.get(
+
+  "/",
+
+  protect,
+
+  getMyRegs
+
+);
+
+
+// ================= GET EVENT REGISTRATIONS =================
+
+router.get(
+
+  "/event/:eventId",
+
+  protect,
+
+  getEventRegistrations
+
+);
 
 
 module.exports = router;

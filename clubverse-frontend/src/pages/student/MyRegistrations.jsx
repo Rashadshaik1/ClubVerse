@@ -161,9 +161,7 @@ export default function MyRegistrations() {
 
                     </div>
 
-                    <Link
-                      to={`/student/events/${event._id}`}
-                    >
+                    <Link to={`/student/event/${event._id}`}>
                       <button
                         className="
                         w-full

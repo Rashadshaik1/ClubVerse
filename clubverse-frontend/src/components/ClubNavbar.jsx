@@ -54,10 +54,13 @@ export default function ClubNavbar() {
       );
 
 
-      const data = await res.json();
+      const response = await res.json();
 
-
-      setNotifications(data);
+if (response.success) {
+  setNotifications(response.data);
+} else {
+  setNotifications([]);
+}
 
 
     }

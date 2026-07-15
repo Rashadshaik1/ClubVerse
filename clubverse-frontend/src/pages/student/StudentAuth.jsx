@@ -10,13 +10,19 @@ export default function StudentAuth() {
   const [isLogin, setIsLogin] = useState(true);
   const [step, setStep] = useState(1);
 
+const [forgotPassword, setForgotPassword] = useState(false);
+const [forgotStep, setForgotStep] = useState(1);
+const [newPassword, setNewPassword] = useState("");
+const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    otp: ""
-  });
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  otp: "",
+  resetOtp: ""
+});
 
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
@@ -248,6 +254,109 @@ const resendOTP = async () => {
   }
 };
 
+// ================= FORGOT PASSWORD - SEND OTP =================
+
+const sendForgotOtp = async (e) => {
+  e.preventDefault();
+
+  setError("");
+
+  try {
+    setLoading(true);
+
+    const res = await fetch(
+      "http://localhost:5000/api/auth/forgot-password",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: form.email
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.msg || "Failed to send OTP");
+      return;
+    }
+
+    setForgotStep(2);
+    setTimer(60);
+    setOtp(["", "", "", "", "", ""]);
+
+  } catch (err) {
+    console.error(err);
+    setError("Server Error");
+  } finally {
+    setLoading(false);
+  }
+};
+
+// ================= RESET PASSWORD =================
+
+const handleResetPassword = async (e) => {
+  e.preventDefault();
+
+  setError("");
+
+  if (newPassword !== confirmNewPassword) {
+    setError("Passwords do not match");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    const res = await fetch(
+      "http://localhost:5000/api/auth/reset-password",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: form.email,
+          otp: otp.join(""),
+          password: newPassword
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.msg || "Password reset failed");
+      return;
+    }
+
+    alert("Password reset successful!");
+
+    // Reset all forgot password state
+    setForgotPassword(false);
+    setForgotStep(1);
+    setOtp(["", "", "", "", "", ""]);
+    setNewPassword("");
+    setConfirmNewPassword("");
+
+    setForm({
+      ...form,
+      password: "",
+      resetOtp: "",
+      otp: ""
+    });
+
+  } catch (err) {
+    console.error(err);
+    setError("Server Error");
+  } finally {
+    setLoading(false);
+  }
+};
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f6f4ff] via-[#eef2ff] to-[#e6f7ff]">
 
@@ -269,7 +378,7 @@ const resendOTP = async () => {
 
         {/* ================= LOGIN ================= */}
 
-        {isLogin && (
+        {isLogin && !forgotPassword && (
           <form
             onSubmit={handleLogin}
             className="flex flex-col gap-3"
@@ -331,8 +440,149 @@ const resendOTP = async () => {
               Login
             </button>
 
+            <div className="text-right">
+  <button
+    type="button"
+    onClick={() => {
+      setForgotPassword(true);
+      setForgotStep(1);
+      setError("");
+      setOtp(["", "", "", "", "", ""]);
+    }}
+    className="text-sm text-[#6D4BC3] hover:underline font-medium mt-2"
+  >
+    Forgot Password?
+  </button>
+</div>
+
           </form>
         )}
+
+        {/* ================= FORGOT PASSWORD - STEP 1 ================= */}
+
+{isLogin && forgotPassword && forgotStep === 1 && (
+
+  <form
+  onSubmit={sendForgotOtp}
+  className="flex flex-col gap-3"
+>
+
+    <input
+      type="email"
+      placeholder="Enter your GVPCE Email"
+      value={form.email}
+      onChange={(e) =>
+        setForm({
+          ...form,
+          email: e.target.value
+        })
+      }
+      className="p-3 rounded-lg bg-white/60 border border-[#DDD4F2] focus:outline-none focus:ring-2 focus:ring-[#8D76D8]"
+    />
+
+    <button
+      type="submit"
+      className="py-2 rounded-full text-white font-semibold bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8]"
+    >
+      Send OTP
+    </button>
+
+    <button
+      type="button"
+      onClick={() => {
+        setForgotPassword(false);
+        setForgotStep(1);
+        setError("");
+      }}
+      className="text-[#6D4BC3] text-sm hover:underline"
+    >
+      Back to Login
+    </button>
+
+  </form>
+
+)}
+
+{/* ================= FORGOT PASSWORD - STEP 2 ================= */}
+
+{isLogin && forgotPassword && forgotStep === 2 && (
+
+  <form
+  onSubmit={handleResetPassword}
+  className="flex flex-col gap-3"
+>
+
+    <p className="text-center text-sm text-gray-500">
+      Enter the OTP sent to
+    </p>
+
+    <p className="text-center font-semibold text-[#6D4BC3]">
+      {form.email}
+    </p>
+
+    {/* OTP BOXES */}
+
+    <div className="flex justify-center gap-3">
+
+      {otp.map((digit, index) => (
+
+        <input
+          key={index}
+          ref={(el) => (inputRefs.current[index] = el)}
+          type="text"
+          maxLength={1}
+          value={digit}
+          onChange={(e) =>
+            handleOtpChange(
+              e.target.value,
+              index
+            )
+          }
+          onKeyDown={(e) =>
+            handleKeyDown(e, index)
+          }
+          className="w-12 h-12 rounded-xl text-center text-xl font-bold
+          border border-[#DDD4F2]
+          bg-white/70
+          focus:outline-none
+          focus:ring-2
+          focus:ring-[#8D76D8]"
+        />
+
+      ))}
+
+    </div>
+
+    <input
+      type="password"
+      placeholder="New Password"
+      value={newPassword}
+      onChange={(e) =>
+        setNewPassword(e.target.value)
+      }
+      className="p-3 rounded-lg bg-white/60 border border-[#DDD4F2]"
+    />
+
+    <input
+      type="password"
+      placeholder="Confirm New Password"
+      value={confirmNewPassword}
+      onChange={(e) =>
+        setConfirmNewPassword(e.target.value)
+      }
+      className="p-3 rounded-lg bg-white/60 border border-[#DDD4F2]"
+    />
+
+    <button
+      type="submit"
+      className="py-2 rounded-full text-white font-semibold bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8]"
+    >
+      Reset Password
+    </button>
+
+  </form>
+
+)}
 
         {/* ================= REGISTER ================= */}
 

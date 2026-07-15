@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import StudentNotifications from "./pages/student/StudentNotifications";
 
 // COMMON
 import Landing from "./pages/common/Landing";
@@ -48,6 +49,10 @@ export default function App() {
 <Route
   path="/student/my-registrations"
   element={<MyRegistrations />}
+/>
+<Route
+  path="/student-notifications"
+  element={<StudentNotifications />}
 />
 
         {/* ================= CLUB ================= */}

@@ -8,7 +8,9 @@ const {
   guestLogin,
   sendRegisterOtp,
   verifyOtpRegister,
-  resendOtp
+  resendOtp,
+  sendForgotPasswordOtp,
+  resetPassword
 } = require("../controllers/authController");
 
 const { protect } = require("../middlewares/authMiddleware");
@@ -22,6 +24,10 @@ router.get("/", (req, res) => {
 router.post("/register-send-otp", sendRegisterOtp);
 router.post("/verify-otp-register", verifyOtpRegister);
 router.post("/resend-otp", resendOtp);
+
+// ================= FORGOT PASSWORD =================
+router.post("/forgot-password", sendForgotPasswordOtp);
+router.post("/reset-password", resetPassword);
 
 // ================= LOGIN =================
 router.post("/login", login);

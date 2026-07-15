@@ -767,3 +767,56 @@ exports.addFeedback = async (req, res) => {
 
   }
 };
+
+// ================= GET EVENT REGISTRATIONS =================
+
+exports.getEventRegistrations = async (req, res) => {
+
+  try {
+
+    const registrations = await Registration.find({
+
+      eventId: req.params.id
+
+    })
+
+    .populate(
+
+      "userId",
+
+      "name email rollNumber department"
+
+    )
+
+    .sort({
+
+      createdAt: -1
+
+    });
+
+    console.log("===== REGISTRATIONS =====");
+console.log(JSON.stringify(registrations, null, 2));
+
+    res.json({
+
+      success: true,
+
+      data: registrations
+
+    });
+
+  }
+
+  catch (error) {
+
+    res.status(500).json({
+
+      success: false,
+
+      message: error.message
+
+    });
+
+  }
+
+};

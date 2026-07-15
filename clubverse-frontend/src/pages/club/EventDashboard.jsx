@@ -36,6 +36,8 @@ export default function EventDashboard() {
   const [loading, setLoading] = useState(true);
   const [isUpcoming, setIsUpcoming] = useState(true);
 
+  const [registrations, setRegistrations] = useState([]);
+
   // Loading States
   const [isVenueUpdating, setIsVenueUpdating] = useState(false);
   const [isPostponeUpdating, setIsPostponeUpdating] = useState(false);
@@ -67,6 +69,20 @@ export default function EventDashboard() {
         });
         
         const eventData = res.data.event;
+const regRes = await axios.get(
+  `http://localhost:5000/api/events/${id}/registrations`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+);
+
+console.log("Registration Data:", regRes.data.data);
+
+setRegistrations(regRes.data.data);
+
+
         setEvent(eventData);
         setVenue(eventData.venue || "");
         
@@ -79,21 +95,41 @@ export default function EventDashboard() {
         const todayStr = now.toLocaleDateString('en-CA'); 
         setIsUpcoming(!(formattedEventDate && formattedEventDate < todayStr));
 
-        if (eventData.registrations && eventData.registrations.length > 0) {
-          const datesMap = {};
-          eventData.registrations.forEach(reg => {
-            const dateStr = reg.createdAt ? new Date(reg.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Setup';
-            datesMap[dateStr] = (datesMap[dateStr] || 0) + 1;
-          });
+        if (regRes.data.data.length > 0) {
 
-          const formattedChartArray = Object.keys(datesMap).map(key => ({
+    const datesMap = {};
+
+    regRes.data.data.forEach(reg => {
+
+        const dateStr = new Date(
+            reg.createdAt
+        ).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric"
+        });
+
+        datesMap[dateStr] =
+            (datesMap[dateStr] || 0) + 1;
+
+    });
+
+    setAnalyticsData(
+        Object.keys(datesMap).map(key => ({
             name: key,
             count: datesMap[key]
-          }));
-          setAnalyticsData(formattedChartArray);
-        } else {
-          setAnalyticsData([{ name: "No Registrations", count: 0 }]);
+        }))
+    );
+
+} else {
+
+    setAnalyticsData([
+        {
+            name: "No Registrations",
+            count: 0
         }
+    ]);
+
+}
 
         if (eventData.feedback && eventData.feedback.length > 0) {
           setLiveFeedback(eventData.feedback);
@@ -311,7 +347,7 @@ export default function EventDashboard() {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-sm font-black text-gray-700 uppercase tracking-wider">Registrations</h3>
                 <span className="bg-[#048c92] text-white font-black text-xs px-3 py-1 rounded-xl shadow-sm">
-                  {event?.registrations?.length || 0} Total
+                  {registrations.length || 0} Total
                 </span>
               </div>
               <div className="h-48 w-full mt-2">
@@ -341,6 +377,45 @@ export default function EventDashboard() {
                 </ResponsiveContainer>
               </div>
             </div>
+            <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm">
+
+<h2 className="text-lg font-bold mb-5">
+Registered Students
+</h2>
+
+{
+registrations.length===0 ?
+
+<p>No registrations yet.</p>
+
+:
+
+registrations.map(reg=>(
+
+<div
+key={reg._id}
+className="flex justify-between border-b py-3"
+>
+
+<div>
+
+<p className="font-semibold">
+{reg.userId?.name}
+</p>
+
+<p className="text-xs text-gray-500">
+{reg.userId?.email}
+</p>
+
+</div>
+
+</div>
+
+))
+
+}
+
+</div>
           </div>
 
           {/* RIGHT COLUMNS: CONTROLS & UTILITIES */}

@@ -212,3 +212,58 @@ error:error.message
 
 
 };
+
+
+// ================= GET EVENT REGISTRATIONS (CLUB ADMIN) =================
+
+exports.getEventRegistrations = async (req, res) => {
+
+  try {
+
+    const { eventId } = req.params;
+
+    const registrations = await Registration.find({
+
+      eventId
+
+    })
+
+      .populate(
+
+        "userId",
+
+        "name email rollNumber department year section"
+
+      )
+
+      .sort({
+
+        createdAt: -1
+
+      });
+
+    res.json({
+
+      success: true,
+
+      count: registrations.length,
+
+      data: registrations
+
+    });
+
+  }
+
+  catch (error) {
+
+    res.status(500).json({
+
+      success: false,
+
+      message: error.message
+
+    });
+
+  }
+
+};

@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const Registration = require("../models/Registration");
+
 
 const { protect } = require("../middlewares/authMiddleware");
 
@@ -16,7 +18,8 @@ const {
   uploadGalleryImages,
   getGalleryImages,
   deleteGalleryImage,
-  addFeedback
+  addFeedback,
+  getEventRegistrations
 } = require("../controllers/eventController");
 
 const storage = multer.memoryStorage();
@@ -105,6 +108,14 @@ router.get(
   getEvents
 );
 
+
+/* ================= GET EVENT REGISTRATIONS ================= */
+
+router.get(
+  "/:id/registrations",
+  protect,
+  getEventRegistrations
+);
 
 
 /* ================= GET SINGLE EVENT ================= */
