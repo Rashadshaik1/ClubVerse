@@ -58,6 +58,8 @@ export default function ManageEvents() {
     return `${days}d ${hours}h ${mins}m`;
   };
 
+  
+
   // ================= STATUS =================
   const getStatus = (event) => {
     if (event.status === "cancelled") return "CANCELLED";
@@ -69,6 +71,49 @@ export default function ManageEvents() {
     if (eventDate.toDateString() === now.toDateString()) return "TODAY";
     return "COMPLETED";
   };
+
+  const markCompleted = async (eventId) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    // await axios.put(
+    //   `http://localhost:5000/api/events/${eventId}/complete`,
+    //   {},
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   }
+    // );
+
+console.log("EVENT ID:", eventId);
+console.log("NEW VENUE:", newVenue);
+
+await axios.put(
+ `http://localhost:5000/api/events/change-venue/${eventId}`,
+ {
+   venue: newVenue
+ },
+ {
+   headers:{
+     Authorization:`Bearer ${token}`
+   }
+ }
+);
+    setEvents((prev) =>
+      prev.map((event) =>
+        event._id === eventId
+          ? { ...event, status: "completed" }
+          : event
+      )
+    );
+
+    alert("Event marked as completed.");
+  } catch (err) {
+    console.log(err);
+    alert("Failed to mark event as completed.");
+  }
+};
 
   if (loading) {
   return <Loader />;
@@ -185,19 +230,40 @@ export default function ManageEvents() {
                     </div>
 
                     {/* COUNTDOWN TRACKER */}
-                    <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-                        Time Remaining
-                      </span>
-                      <div
-                        className={`text-xs font-black flex items-center gap-1 ${currentStatus === "COMPLETED" ? "text-gray-400" : "text-[#048c92]"}`}
-                      >
-                        <FaHourglassHalf
-                          className={`text-[11px] ${currentStatus === "TODAY" ? "animate-spin" : ""}`}
-                        />
-                        {getTimeLeft(event.date)}
-                      </div>
-                    </div>
+                    {/* COUNTDOWN TRACKER */}
+<div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+    Time Remaining
+  </span>
+
+  <div
+    className={`text-xs font-black flex items-center gap-1 ${
+      currentStatus === "COMPLETED"
+        ? "text-gray-400"
+        : "text-[#048c92]"
+    }`}
+  >
+    <FaHourglassHalf
+      className={`text-[11px] ${
+        currentStatus === "TODAY" ? "animate-spin" : ""
+      }`}
+    />
+    {getTimeLeft(event.date)}
+  </div>
+</div>
+
+{currentStatus !== "COMPLETED" &&
+ event.status !== "cancelled" && (
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      markCompleted(event._id);
+    }}
+    className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-xl font-semibold transition"
+  >
+    Mark as Completed
+  </button>
+)}
                   </div>
                 </div>
               );

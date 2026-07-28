@@ -147,59 +147,173 @@ setRegistrations(regRes.data.data);
     if (id) fetchEventData();
   }, [id, token]);
 
-  const handleVenueChange = async () => {
-    try {
-      const confirmChange = window.confirm("Are you sure you want to change the venue? This triggers automated alert emails to all registered participants instantly.");
-      if (!confirmChange) return;
+ const handleVenueChange = async () => {
+  try {
+    const confirmChange = window.confirm(
+      "Are you sure you want to change the venue? This triggers automated alert emails to all registered participants instantly."
+    );
 
-      setIsVenueUpdating(true);
-      await axios.put(`http://localhost:5000/api/events/${id}/change-venue`, { venue }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      alert("Venue updated successfully! Broadcast emails have been sent.");
-    } catch (err) {
-      alert("Venue update failed.");
-    } finally {
-      setIsVenueUpdating(false);
-    }
-  };
+    if (!confirmChange) return;
 
-  const handlePostponeEvent = async () => {
-    if (!postponeReason) return alert("Please provide a reason for postponing the event.");
-    try {
-      const confirmPostpone = window.confirm("Confirm event rescheduling? All users will receive direct notification updates.");
-      if (!confirmPostpone) return;
+    setIsVenueUpdating(true);
 
-      setIsPostponeUpdating(true);
-      await axios.put(`http://localhost:5000/api/events/${id}/postpone`, { date: eventDate, reason: postponeReason }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      alert("Event rescheduled cleanly! Emails sent out successfully.");
-      setPostponeReason("");
-    } catch (err) {
-      alert(err.message);
-    } finally {
-      setIsPostponeUpdating(false);
-    }
-  };
+    console.log("Changing venue:", venue);
+    console.log("Event ID:", id);
 
-  const handleCancelEvent = async () => {
-    const reason = window.prompt("Enter the reason for cancellation:");
-    if (reason === null) return;
+    await axios.put(
+      `http://localhost:5000/api/events/change-venue/${id}`,
+      {
+        venue: venue
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
 
-    try {
-      const doubleCheck = window.confirm("CRITICAL WARNING: Cancel event entirely? This cannot be undone.");
-      if (!doubleCheck) return;
+    alert("Venue updated successfully! Broadcast emails have been sent.");
 
-      await axios.post(`http://localhost:5000/api/events/${id}/cancel`, { reason }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      alert("Event cancelled successfully.");
-      navigate("/manage-events");
-    } catch (err) {
-      alert("Cancellation failed.");
-    }
-  };
+  } catch (err) {
+    console.log("VENUE UPDATE ERROR:", err.response?.data || err.message);
+    alert("Venue update failed.");
+  } finally {
+    setIsVenueUpdating(false);
+  }
+};
+
+const handlePostponeEvent = async () => {
+
+  if (!eventDate) {
+    return alert("Please select new date");
+  }
+
+  if (!postponeReason) {
+    return alert("Please provide a reason");
+  }
+
+  try {
+
+    const confirmPostpone = window.confirm(
+      "Confirm rescheduling? All registered users will be notified."
+    );
+
+    if(!confirmPostpone) return;
+
+
+    setIsPostponeUpdating(true);
+
+
+    console.log("POSTPONE EVENT ID:", id);
+    console.log("NEW DATE:", eventDate);
+    console.log("REASON:", postponeReason);
+
+
+    const res = await axios.put(
+      `http://localhost:5000/api/events/${id}/postpone`,
+      {
+        date:eventDate,
+        reason:postponeReason
+      },
+      {
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      }
+    );
+
+
+    console.log("POSTPONE RESPONSE:",res.data);
+
+
+    alert("Event rescheduled successfully");
+
+
+    setPostponeReason("");
+
+
+  } catch(err){
+
+    console.log(
+      "POSTPONE ERROR:",
+      err.response?.data || err.message
+    );
+
+    alert("Postpone failed");
+
+  } finally {
+
+    setIsPostponeUpdating(false);
+
+  }
+
+};
+
+ const handleCancelEvent = async()=>{
+
+const reason = window.prompt(
+"Enter cancellation reason:"
+);
+
+if(reason===null) return;
+
+
+try{
+
+const confirmCancel = window.confirm(
+"Cancel this event permanently?"
+);
+
+
+if(!confirmCancel) return;
+
+
+console.log("CANCEL EVENT ID:",id);
+console.log("REASON:",reason);
+
+
+
+const res = await axios.post(
+
+`http://localhost:5000/api/events/${id}/cancel`,
+
+{
+reason:reason
+},
+
+{
+headers:{
+Authorization:`Bearer ${token}`
+}
+}
+
+);
+
+
+console.log("CANCEL RESPONSE:",res.data);
+
+
+alert("Event cancelled successfully");
+
+
+navigate("/manage-events");
+
+
+}
+
+catch(err){
+
+console.log(
+"CANCEL ERROR:",
+err.response?.data || err.message
+);
+
+
+alert("Cancellation failed");
+
+}
+
+};
   const handleCompleteEvent = async () => {
   try {
     const confirmComplete = window.confirm(

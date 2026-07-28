@@ -23,6 +23,8 @@ const {
   getEventRegistrations
 } = require("../controllers/eventController");
 
+console.log("COMPLETE EVENT FUNCTION:", completeEvent);
+
 const storage = multer.memoryStorage();
 
 const upload = multer({
@@ -82,10 +84,11 @@ router.put(
 );
 
 
+
 // Postpone Event
 
 router.put(
-  "/postpone/:id",
+  "/:id/postpone",
   protect,
   postponeEvent
 );

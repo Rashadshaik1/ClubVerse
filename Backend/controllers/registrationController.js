@@ -180,26 +180,17 @@ if(event){
 exports.getMyRegs = async (req, res) => {
   try {
 
-    console.log("========== GET MY REGS ==========");
-    console.log("User ID:", req.user._id);
-    console.log("Email:", req.user.email);
-
     const regs = await Registration.find({
       userId: req.user._id
     })
-      .populate("eventId", "title")
+      .populate({
+        path: "eventId",
+        populate: {
+          path: "clubId",
+          select: "name"
+        }
+      })
       .populate("userId", "name email");
-
-    console.log("Total Registrations:", regs.length);
-
-    regs.forEach((reg) => {
-      console.log(
-        "Event:",
-        reg.eventId?.title,
-        "| User:",
-        reg.userId?.email
-      );
-    });
 
     res.json({
       success: true,
@@ -207,11 +198,11 @@ exports.getMyRegs = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
 
     res.status(500).json({
       error: error.message
     });
+
   }
 };
 
