@@ -20,20 +20,20 @@ export default function EventFeedCard({ event }) {
 
   return (
 
-    <div
-      className="
-      overflow-hidden
-      rounded-3xl
-      bg-white/70
-      backdrop-blur-xl
-      border border-[#DDD4F2]
-      shadow-lg
-      hover:shadow-2xl
-      hover:-translate-y-2
-      transition-all
-      duration-300
-      "
-    >
+   <div
+  className="
+  overflow-hidden
+  rounded-3xl
+  bg-white/70
+  backdrop-blur-xl
+  border border-[#DDD4F2]
+  shadow-lg
+  hover:shadow-2xl
+  hover:-translate-y-2
+  transition-all
+  duration-300
+  "
+>
 
       {/* ================= POSTER ================= */}
 
@@ -41,11 +41,12 @@ export default function EventFeedCard({ event }) {
 
         <img
           src={
-            event.poster ||
-            "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200"
-          }
+  event.banner ||
+  event.poster ||
+  "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200"
+}
           alt={event.title}
-          className="w-full h-60 object-cover"
+          className="w-full h-40 object-cover"
         />
 
         {/* Club Type */}
@@ -84,9 +85,9 @@ export default function EventFeedCard({ event }) {
 
       {/* ================= CONTENT ================= */}
 
-      <div className="p-6">
+      <div className="p-5">
 
-        <h2 className="text-2xl font-bold text-[#4B2E91]">
+        <h2 className="text-lg font-bold text-[#4B2E91] line-clamp-2 min-h-[56px]">
 
           {event.title}
 
@@ -104,13 +105,13 @@ export default function EventFeedCard({ event }) {
 
         </div>
 
-        <p className="mt-4 text-gray-600 leading-7 line-clamp-3">
+        <p className="mt-3 text-sm text-gray-600 leading-6 line-clamp-2 min-h-[48px]">
 
           {event.description}
 
         </p>
 
-        <div className="mt-6 grid grid-cols-2 gap-4">
+        <div className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
 
           <div className="flex items-center gap-3">
 
@@ -184,45 +185,47 @@ export default function EventFeedCard({ event }) {
 
         {/* Buttons */}
 
-        <div className="mt-8 flex gap-4">
+      <div className="mt-5 flex gap-2">
 
-          <button
-            onClick={openEvent}
-            className="
-            flex-1
-            py-3
-            rounded-xl
-            font-semibold
-            text-white
-            bg-gradient-to-r
-            from-[#6D4BC3]
-            to-[#8D76D8]
-            hover:scale-105
-            transition"
-          >
+  <button
+    onClick={openEvent}
+    className="
+      flex-[2]
+      py-2.5
+      rounded-xl
+      font-semibold
+      text-white
+      bg-gradient-to-r
+      from-[#6D4BC3]
+      to-[#8D76D8]
+      shadow-md
+      hover:scale-[1.02]
+      transition-all
+      duration-300
+    "
+  >
+    Register Now
+  </button>
 
-            Register Now
+  <button
+    onClick={openEvent}
+    className="
+      flex-1
+      py-2.5
+      rounded-xl
+      border
+      border-[#6D4BC3]
+      text-[#6D4BC3]
+      font-medium
+      hover:bg-[#F4F1FF]
+      transition-all
+      duration-300
+    "
+  >
+    Details
+  </button>
 
-          </button>
-
-          <button
-            onClick={openEvent}
-            className="
-            flex-1
-            py-3
-            rounded-xl
-            border
-            border-[#6D4BC3]
-            text-[#6D4BC3]
-            hover:bg-[#F4F1FF]
-            transition"
-          >
-
-            View Details
-
-          </button>
-
-        </div>
+</div>
 
       </div>
 

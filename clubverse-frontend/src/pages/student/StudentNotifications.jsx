@@ -36,6 +36,7 @@ export default function StudentNotifications() {
 
       setNotifications(res.data.data || []);
 
+
     } catch (err) {
 
       console.log(err);
@@ -111,7 +112,7 @@ export default function StudentNotifications() {
                   <div>
 
                     <h2 className="font-bold text-xl text-[#4B2E91]">
-                      {item.title}
+                     {item.type === "EVENT_UPDATE" ? "Event Update" : "Notification"}
                     </h2>
 
                     <p className="mt-3 text-gray-600 leading-7">

@@ -15,6 +15,7 @@ const {
   changeVenue,
   postponeEvent,
   cancelEvent,
+  completeEvent,
   uploadGalleryImages,
   getGalleryImages,
   deleteGalleryImage,
@@ -98,7 +99,11 @@ router.post(
   protect,
   cancelEvent
 );
-
+router.put(
+  "/complete/:id",
+  protect,
+  completeEvent
+);
 
 
 /* ================= GET ALL EVENTS ================= */

@@ -8,7 +8,8 @@ const {
   deleteBoard,
   syncMember,
   removeMember,
-  getClubMemberCount
+  getClubMemberCount,
+   getBoardByClubId,
 } = require("../controllers/boardController");
 
 const { protect } = require("../middlewares/authMiddleware"); // Mee global authorization protection lock hook middleware 
@@ -25,6 +26,12 @@ router.get(
 "/club/:clubId/member-count",
 protect,
 getClubMemberCount
+
+);
+router.get(
+  "/club/:clubId",
+  protect,
+  getBoardByClubId
 );
 
 module.exports = router;

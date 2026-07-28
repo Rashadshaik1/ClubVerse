@@ -136,3 +136,28 @@ exports.getClubMemberCount = async (req,res)=>{
 
   }
 };
+// ================= GET BOARD BY CLUB ID (Student) =================
+exports.getBoardByClubId = async (req, res) => {
+  try {
+    const board = await Board.findOne({
+      clubId: req.params.clubId,
+    });
+
+    if (!board) {
+      return res.json({
+        success: true,
+        data: null,
+      });
+    }
+
+    res.json({
+      success: true,
+      data: board,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

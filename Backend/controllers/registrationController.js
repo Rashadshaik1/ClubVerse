@@ -23,7 +23,7 @@ exports.registerEvent = async (req, res) => {
 
     // STEP 2: Get logged-in user id
 
-    const userId = req.user.id;
+    const userId = req.user._id;
 
 
 
@@ -32,7 +32,9 @@ exports.registerEvent = async (req, res) => {
     const { eventId } = req.body;
 
 
-
+console.log("===== REGISTER EVENT =====");
+console.log("User ID:", userId);
+console.log("Event ID:", eventId);
 
     // 🚫 STEP 4: Check duplicate registration
 
@@ -45,7 +47,7 @@ exports.registerEvent = async (req, res) => {
     });
 
 
-
+console.log("Exists:", exists);
     if(exists){
 
       return res.status(400).json({
@@ -69,17 +71,32 @@ exports.registerEvent = async (req, res) => {
 
     });
 
+console.log("===== REGISTRATION CREATED =====");
+console.log("New Registration:", reg);
 
+const total = await Registration.countDocuments();
+console.log("Total Registrations:", total);
 
 
 
     // 🔔 STEP 6: CHECK REGISTRATION MILESTONE
 
-    const event =
-    await Event.findById(eventId);
+    const event = await Event.findById(eventId);
 
+console.log("EVENT FOR NOTIFICATION:", event);
 
+if(event){
 
+  const notification = await Notification.create({
+    userId: userId,
+    relatedEvent: eventId,
+    message: `You have successfully registered for "${event.title}" 🎉`,
+    type: "REGISTRATION"
+  });
+
+  console.log("NOTIFICATION CREATED:", notification);
+
+}
     if(event){
 
 
@@ -160,59 +177,43 @@ exports.registerEvent = async (req, res) => {
 
 // ================= GET MY REGISTRATIONS =================
 
-exports.getMyRegs = async(req,res)=>{
+exports.getMyRegs = async (req, res) => {
+  try {
 
+    console.log("========== GET MY REGS ==========");
+    console.log("User ID:", req.user._id);
+    console.log("Email:", req.user.email);
 
-try{
+    const regs = await Registration.find({
+      userId: req.user._id
+    })
+      .populate("eventId", "title")
+      .populate("userId", "name email");
 
+    console.log("Total Registrations:", regs.length);
 
-// Get all registrations of logged-in user
+    regs.forEach((reg) => {
+      console.log(
+        "Event:",
+        reg.eventId?.title,
+        "| User:",
+        reg.userId?.email
+      );
+    });
 
-const regs =
-await Registration.find({
+    res.json({
+      success: true,
+      data: regs
+    });
 
-userId:req.user.id
+  } catch (error) {
+    console.log(error);
 
-})
-
-.populate(
-"eventId"
-)
-
-.populate(
-"userId",
-"name email"
-);
-
-
-
-
-res.json({
-
-success:true,
-
-data:regs
-
-});
-
-
-
-}
-catch(error){
-
-
-res.status(500).json({
-
-error:error.message
-
-});
-
-
-}
-
-
+    res.status(500).json({
+      error: error.message
+    });
+  }
 };
-
 
 // ================= GET EVENT REGISTRATIONS (CLUB ADMIN) =================
 

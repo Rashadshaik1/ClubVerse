@@ -200,6 +200,33 @@ setRegistrations(regRes.data.data);
       alert("Cancellation failed.");
     }
   };
+  const handleCompleteEvent = async () => {
+  try {
+    const confirmComplete = window.confirm(
+      "Are you sure you want to mark this event as completed?"
+    );
+
+    if (!confirmComplete) return;
+
+    await axios.put(
+      `http://localhost:5000/api/events/complete/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    alert("Event marked as completed.");
+
+    window.location.reload();
+
+  } catch (err) {
+    console.log(err);
+    alert("Failed to complete event.");
+  }
+};
 
   const handlePosterChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -307,6 +334,7 @@ setRegistrations(regRes.data.data);
           </div>
           
           {isUpcoming && (
+            
             <button 
               onClick={handleCancelEvent}
               className="bg-red-500/10 hover:bg-red-500 text-red-600 hover:text-white border border-red-500/20 px-5 py-2.5 rounded-2xl text-xs font-black shadow-sm transition-all transform hover:-translate-y-0.5"

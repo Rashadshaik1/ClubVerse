@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import axios from "axios";
 
 import {
   Bell,
@@ -21,6 +22,33 @@ export default function StudentNavbar({ user }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+  useEffect(() => {
+  const fetchNotificationCount = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get(
+        "http://localhost:5000/api/student-notifications",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const unread = res.data.data.filter(
+  (item) => !item.isRead
+);
+
+setNotificationCount(unread.length);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchNotificationCount();
+}, []);
 
 const menuRef = useRef(null);
 
@@ -123,8 +151,8 @@ const handleLogout = () => {
 
             const Icon = item.icon;
 
-            const active =
-              location.pathname === item.path;
+           const active =
+  location.pathname.startsWith(item.path);
 
             return (
 
@@ -173,11 +201,13 @@ const handleLogout = () => {
     className="text-[#6D4BC3]"
   />
 
+ {notificationCount > 0 && (
   <span
     className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center"
   >
-    2
+    {notificationCount}
   </span>
+)}
 
 </button>
 

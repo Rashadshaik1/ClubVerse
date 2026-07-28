@@ -3,6 +3,32 @@ const Registration = require("../models/Registration");
 const Notification = require("../models/Notification");
 const nodemailer = require("nodemailer");
 
+const updateEventStatus = async (event) => {
+  if (!event) return;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const eventDate = new Date(event.date);
+  eventDate.setHours(0, 0, 0, 0);
+
+  let newStatus = event.status;
+
+  if (event.status !== "cancelled") {
+    if (eventDate.getTime() < today.getTime()) {
+      newStatus = "completed";
+    } else if (eventDate.getTime() === today.getTime()) {
+      newStatus = "ongoing";
+    } else {
+      newStatus = "upcoming";
+    }
+
+    if (event.status !== newStatus) {
+      event.status = newStatus;
+      await event.save();
+    }
+  }
+};
 // ================= NODEMAILER CONFIGURATION =================
 // `.env` lo unna EMAIL, EMAIL_PASS references ni auto-detect chestundi
 const transporter = nodemailer.createTransport({
@@ -102,7 +128,10 @@ exports.createEvent = async (req, res) => {
 // ================= GET ALL EVENTS =================
 exports.getEvents = async (req, res) => {
   try {
-    const events = await Event.find().populate("clubId", "name email");
+    const events = await Event.find().populate("clubId", "name email type");
+    for (const event of events) {
+  await updateEventStatus(event);
+}
     return res.json({
       success: true,
       events
@@ -118,7 +147,10 @@ exports.getEvents = async (req, res) => {
 // ================= GET SINGLE EVENT =================
 exports.getEventById = async (req, res) => {
   try {
-    const event = await Event.findById(req.params.id).populate("clubId");
+    const event = await Event.findById(req.params.id).populate(
+  "clubId",
+  "name email type"
+);
 
     if (!event) {
       return res.status(404).json({
@@ -126,7 +158,7 @@ exports.getEventById = async (req, res) => {
         message: "Event not found"
       });
     }
-
+await updateEventStatus(event);
     const registrations = await Registration.find({ eventId: req.params.id });
 
     return res.json({
@@ -155,6 +187,9 @@ exports.getClubEvents = async (req, res) => {
     }
 
     const events = await Event.find({ clubId }).sort({ createdAt: -1 });
+    for (const event of events) {
+  await updateEventStatus(event);
+}
 
     return res.json({
       success: true,
@@ -181,7 +216,9 @@ exports.getMyEvents = async (req, res) => {
     const events = await Event.find({
       clubId: req.user._id
     }).sort({ createdAt: -1 });
-
+for (const event of events) {
+  await updateEventStatus(event);
+}
     // ✅ FIX: Mapping structure into standard 'data' block payload array matching frontend
     return res.json({
       success: true,
@@ -580,6 +617,35 @@ exports.cancelEvent = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message
+    });
+  }
+};
+
+exports.completeEvent = async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found",
+      });
+    }
+
+    event.status = "completed";
+
+    await event.save();
+
+    return res.json({
+      success: true,
+      message: "Event marked as completed",
+      event,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
     });
   }
 };

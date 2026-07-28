@@ -77,6 +77,7 @@ const protect = async (req, res, next) => {
             }
 
             req.user = account;
+            req.user.id = req.user._id.toString();
 
             // Pass control to next middleware/route
             next();

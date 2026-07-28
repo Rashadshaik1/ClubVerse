@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import StudentNavbar from "./StudentNavbar"; // Adjust path as per your file tree
 
 export default function ClubsPage() {
+  const navigate = useNavigate();
   const [clubs, setClubs] = useState([]);
   const [filteredClubs, setFilteredClubs] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -93,22 +95,41 @@ setFilteredClubs(clubData);
                   className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 border border-purple-50/50 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between transform hover:-translate-y-1"
                 >
                   <div>
-                    <div className="flex justify-between items-center mb-4">
-                      {/* Badge showing category */}
-                      <span className={`px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wide ${
-                        club.type?.toLowerCase() === "technical" ? "bg-blue-100 text-blue-700" :
-                        club.type?.toLowerCase() === "cultural" ? "bg-pink-100 text-pink-700" :
-                        "bg-green-100 text-green-700"
-                      }`}>
-                        {club.type
-  ? club.type.charAt(0).toUpperCase() + club.type.slice(1)
-  : "General"}
-                      </span>
-                    </div>
+                    <div className="flex justify-between items-start mb-5">
 
-                    <h3 className="text-2xl font-bold text-slate-800 line-clamp-1">
-                      {club.name}
-                    </h3>
+  <div className="flex items-center gap-3">
+
+    <img
+      src={
+        club.logo ||
+        "https://ui-avatars.com/api/?name=" +
+          encodeURIComponent(club.name)
+      }
+      alt={club.name}
+      className="w-14 h-14 rounded-full object-cover border-2 border-[#DDD4F2] shadow"
+    />
+
+    <span
+      className={`px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wide ${
+        club.type?.toLowerCase() === "technical"
+          ? "bg-blue-100 text-blue-700"
+          : club.type?.toLowerCase() === "cultural"
+          ? "bg-pink-100 text-pink-700"
+          : "bg-green-100 text-green-700"
+      }`}
+    >
+      {club.type
+        ? club.type.charAt(0).toUpperCase() + club.type.slice(1)
+        : "General"}
+    </span>
+
+  </div>
+
+</div>
+
+                    <h3 className="text-xl font-bold text-slate-800 mt-2 line-clamp-1">
+  {club.name}
+</h3>
                     
                     <p className="text-slate-500 mt-2 text-sm line-clamp-3">
                       {club.description || "No description provided for this club yet."}
@@ -116,13 +137,16 @@ setFilteredClubs(clubData);
                   </div>
 
                   <div className="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <div className="text-xs text-slate-400">
-                      👤 Lead: <span className="text-slate-600 font-medium">{club.lead || "N/A"}</span>
-                    </div>
+                    <div className="text-sm text-gray-500">
+  📍 {club.location || "GVP Campus"}
+</div>
                     
-                    <button className="px-5 py-2 rounded-2xl bg-[#6D4BC3] hover:bg-[#5B3CA7] text-white font-semibold shadow-sm transition-colors text-sm">
-                      View Club
-                    </button>
+                    <button
+  onClick={() => navigate(`/student/club/${club._id}`)}
+  className="px-5 py-2 rounded-2xl bg-[#6D4BC3] hover:bg-[#5B3CA7] text-white font-semibold shadow-sm transition-colors text-sm"
+>
+  View Club
+</button>
                   </div>
                 </div>
               ))

@@ -12,6 +12,8 @@ import StudentProfile from "./pages/student/StudentProfile";
 import Clubs from "./pages/student/Clubs";
 import StudentEventDetails from "./pages/student/StudentEventDetails";
 import MyRegistrations from "./pages/student/MyRegistrations";
+import ClubDetails from "./pages/student/ClubDetails";
+import ClubEvents from "./pages/student/ClubEvents";
 
 // ================= CLUB =================
 import ClubLogin from "./pages/club/ClubLogin";
@@ -54,7 +56,15 @@ export default function App() {
   path="/student-notifications"
   element={<StudentNotifications />}
 />
+<Route
+  path="/student/club/:id"
+  element={<ClubDetails />}
+/>
 
+<Route
+ path="/student/clubs/:id/events"
+ element={<ClubEvents />}
+/>
         {/* ================= CLUB ================= */}
         <Route path="/club-login" element={<ClubLogin />} />
         <Route path="/club-dashboard" element={<Dashboard />} />

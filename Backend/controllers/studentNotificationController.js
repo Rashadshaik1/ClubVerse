@@ -25,22 +25,12 @@ exports.getStudentNotifications = async (req, res) => {
 
     );
 
-    const notifications = await Notification.find({
-
-      clubId: {
-
-        $in: clubIds
-
-      }
-
-    })
-
-    .sort({
-
-      createdAt: -1
-
-    });
-
+   const notifications = await Notification.find({
+  $or: [
+    { userId: req.user._id },
+    { clubId: { $in: clubIds } }
+  ]
+}).sort({ createdAt: -1 });
     res.json({
 
       success: true,
@@ -63,4 +53,29 @@ exports.getStudentNotifications = async (req, res) => {
 
   }
 
+};
+exports.markNotificationsRead = async (req,res)=>{
+  try{
+
+    await Notification.updateMany(
+      {
+        userId:req.user._id,
+        isRead:false
+      },
+      {
+        isRead:true
+      }
+    );
+
+    res.json({
+      success:true
+    });
+
+  }catch(error){
+
+    res.status(500).json({
+      message:error.message
+    });
+
+  }
 };

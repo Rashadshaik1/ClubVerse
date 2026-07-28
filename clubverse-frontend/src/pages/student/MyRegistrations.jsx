@@ -87,7 +87,7 @@ export default function MyRegistrations() {
 
         ) : (
 
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
             {registrations.map((reg) => {
 
@@ -97,16 +97,16 @@ export default function MyRegistrations() {
 
                 <div
                   key={reg._id}
-                  className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition"
+                  className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border border-gray-100"
                 >
 
-                  <img
-                    src={event.poster}
+                 <img
+  src={event.banner || event.poster}
                     alt={event.title}
-                    className="w-full h-52 object-cover"
+                    className="w-full h-44 object-cover"
                   />
 
-                  <div className="p-6">
+                  <div className="p-5">
 
                     <span
                       className={`
@@ -131,30 +131,30 @@ export default function MyRegistrations() {
                       {event.status.toUpperCase()}
                     </span>
 
-                    <h2 className="text-2xl font-bold text-[#4B2E91]">
+                   <h2 className="text-xl font-bold text-[#4B2E91] line-clamp-2">
                       {event.title}
                     </h2>
 
                     <div className="mt-5 space-y-3">
 
-                      <div className="flex gap-3">
+                     <div className="flex items-center gap-3 text-gray-600">
                         <Building2 size={18}/>
                         <span>{event.clubId?.name}</span>
                       </div>
 
-                      <div className="flex gap-3">
+                      <div className="flex items-center gap-3 text-gray-600">
                         <CalendarDays size={18}/>
                         <span>
                           {new Date(event.date).toLocaleDateString()}
                         </span>
                       </div>
 
-                      <div className="flex gap-3">
+                      <div className="flex items-center gap-3 text-gray-600">
                         <Clock3 size={18}/>
                         <span>{event.time}</span>
                       </div>
 
-                      <div className="flex gap-3">
+                      <div className="flex items-center gap-3 text-gray-600">
                         <MapPin size={18}/>
                         <span>{event.venue}</span>
                       </div>

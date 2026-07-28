@@ -2,6 +2,8 @@ const Club = require("../models/Club");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Notification = require("../models/Notification");
+const Event = require("../models/Event");
+const Board = require("../models/Board");
 
 
 // ================= LOGIN CLUB =================
@@ -82,8 +84,71 @@ exports.getClubs = async (req, res) => {
 
   }
 };
+// ================= GET SINGLE CLUB =================
+exports.getClubById = async (req, res) => {
+  try {
+    const club = await Club.findById(req.params.id).select("-password");
+
+    if (!club) {
+      return res.status(404).json({
+        success: false,
+        message: "Club not found",
+      });
+    }
+
+    // Club events
+    const events = await Event.find({
+  clubId: club._id,
+  status: "upcoming",
+  date: { $gte: new Date() }
+}).sort({ date: 1 });
+
+    // Latest board
+    const board = await Board.findOne({
+      clubId: club._id,
+    }).sort({ createdAt: -1 });
+
+    const totalEvents = await Event.countDocuments({
+  clubId: club._id
+});
+
+const upcomingEvents = await Event.countDocuments({
+  clubId: club._id,
+  status: "upcoming",
+  date: { $gte: new Date() }
+});
+
+const completedEvents = await Event.countDocuments({
+  clubId: club._id,
+  status: "completed"
+});
+
+  res.status(200).json({
+  success: true,
+  data: {
+    ...club.toObject(),
+
+    events,
+
+    executiveTeam: board ? board.members : [],
+
+    stats: {
+      totalEvents,
+      upcomingEvents,
+      completedEvents
+    }
+  },
+});
 
 
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 // ================= GET PROFILE =================
 exports.getProfile = async (req, res) => {
   try {
