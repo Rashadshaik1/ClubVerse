@@ -35,21 +35,18 @@ exports.sendRegisterOtp = async (req, res) => {
       password,
       expires: Date.now() + 5 * 60 * 1000
     };
-console.log("EMAIL =", process.env.EMAIL);
-console.log("EMAIL_PASS EXISTS =", !!process.env.EMAIL_PASS);
-  const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+
+const transporter = nodemailer.createTransport({
+  host: "smtp-relay.brevo.com",
   port: 587,
   secure: false,
-  requireTLS: true,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.EMAIL_PASS
-  },
-  family: 4
+  }
 });
 
-console.log("Creating transporter...");
+
 
 await transporter.verify();
 console.log("✅ Gmail Connected Successfully");
@@ -157,16 +154,14 @@ exports.resendOtp = async (req, res) => {
     otpStore[email].otp = otp;
     otpStore[email].expires = Date.now() + 5 * 60 * 1000;
 
-    const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+const transporter = nodemailer.createTransport({
+  host: "smtp-relay.brevo.com",
   port: 587,
   secure: false,
-  requireTLS: true,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.EMAIL_PASS
-  },
-  family: 4
+  }
 });
 
     await transporter.sendMail({
@@ -216,16 +211,14 @@ exports.sendForgotPasswordOtp = async (req, res) => {
       expires: Date.now() + 5 * 60 * 1000
     };
 
-    const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+const transporter = nodemailer.createTransport({
+  host: "smtp-relay.brevo.com",
   port: 587,
   secure: false,
-  requireTLS: true,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.EMAIL_PASS
-  },
-  family: 4
+  }
 });
 
     await transporter.sendMail({
