@@ -36,13 +36,11 @@ exports.sendRegisterOtp = async (req, res) => {
       expires: Date.now() + 5 * 60 * 1000
     };
 
-    const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
+  const transporter = nodemailer.createTransport({
+  service: "gmail",
   auth: {
-    user: process.env.EMAIL.trim(),
-    pass: process.env.EMAIL_PASS.replace(/\s/g, "")
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS
   }
 });
 
