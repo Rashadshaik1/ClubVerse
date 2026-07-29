@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const Club = require("../models/Club"); // <-- Added
+const Club = require("../models/club"); // <-- Added
 
 // Middleware to protect routes
 // Only users with a valid JWT token can access routes using this middleware
