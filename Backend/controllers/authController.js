@@ -1,7 +1,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
+const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 
 const allowedDomain = "@gvpce.ac.in";
@@ -36,27 +37,11 @@ exports.sendRegisterOtp = async (req, res) => {
       expires: Date.now() + 5 * 60 * 1000
     };
 
-const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASS
-  }
+await sendEmail({
+  to: email,
+  subject: "ClubVerse OTP Verification",
+  text: `Your OTP is: ${otp}`
 });
-
-
-
-// await transporter.verify();
-console.log("✅ Gmail Connected Successfully");
-
-    await transporter.sendMail({
-      from: process.env.EMAIL,
-      to: email,
-      subject: "ClubVerse OTP Verification",
-      text: `Your OTP is: ${otp}`
-    });
 
     res.json({ msg: "OTP sent to email" });
 
@@ -154,22 +139,11 @@ exports.resendOtp = async (req, res) => {
     otpStore[email].otp = otp;
     otpStore[email].expires = Date.now() + 5 * 60 * 1000;
 
-const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASS
-  }
+await sendEmail({
+  to: email,
+  subject: "ClubVerse OTP Verification",
+  text: `Your new ClubVerse OTP is: ${otp}`
 });
-
-    await transporter.sendMail({
-      from: process.env.EMAIL,
-      to: email,
-      subject: "ClubVerse OTP Verification",
-      text: `Your new ClubVerse OTP is: ${otp}`
-    });
 
     res.json({
       success: true,
@@ -211,22 +185,11 @@ exports.sendForgotPasswordOtp = async (req, res) => {
       expires: Date.now() + 5 * 60 * 1000
     };
 
-const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASS
-  }
+await sendEmail({
+  to: email,
+  subject: "ClubVerse Password Reset OTP",
+  text: `Your password reset OTP is: ${otp}`
 });
-
-    await transporter.sendMail({
-      from: process.env.EMAIL,
-      to: email,
-      subject: "ClubVerse Password Reset OTP",
-      text: `Your password reset OTP is: ${otp}`
-    });
 
     res.json({
       success: true,
