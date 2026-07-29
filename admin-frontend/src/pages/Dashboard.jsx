@@ -21,19 +21,19 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         const [uRes, eRes, cRes] = await Promise.all([
-  fetch("http://127.0.0.1:5000/api/admin/users", {
+  fetch("https://clubverse-nsgq.onrender.com/api/admin/users", {
     headers: { 
       Authorization: `Bearer ${localStorage.getItem("token")}` 
     },
   }),
 
-  fetch("http://127.0.0.1:5000/api/admin/events", {
+  fetch("https://clubverse-nsgq.onrender.com/api/admin/events", {
     headers: { 
       Authorization: `Bearer ${localStorage.getItem("token")}` 
     },
   }),
 
-  fetch("http://127.0.0.1:5000/api/admin/clubs", {
+  fetch("https://clubverse-nsgq.onrender.com/api/admin/clubs", {
     headers: { 
       Authorization: `Bearer ${localStorage.getItem("token")}` 
     },

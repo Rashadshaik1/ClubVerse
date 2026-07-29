@@ -43,7 +43,7 @@ export default function ClubDetails() {
 
       // 1. Get clubs
       const clubRes = await fetch(
-        "http://127.0.0.1:5000/api/admin/clubs",
+        "https://clubverse-nsgq.onrender.com/api/admin/clubs",
         {
           headers
         }
@@ -60,7 +60,7 @@ export default function ClubDetails() {
 
       setClub(foundClub);
       const memberRes = await fetch(
- `http://127.0.0.1:5000/api/boards/club/${id}/member-count`,
+ `https://clubverse-nsgq.onrender.com/api/boards/club/${id}/member-count`,
  {
   headers
  }
@@ -77,7 +77,7 @@ setMemberCount(memberData.count || 0);
       // 2. Get all events
 
       const eventRes = await fetch(
-        "http://127.0.0.1:5000/api/admin/events",
+        "https://clubverse-nsgq.onrender.com/api/admin/events",
         {
           headers
         }
@@ -192,7 +192,7 @@ count:monthMap[month]
   const handleDelete = async () => {
     if (!window.confirm("Delete this club?")) return;
 
-    await fetch(`http://127.0.0.1:5000/api/admin/club/${id}`, {
+    await fetch(`https://clubverse-nsgq.onrender.com/api/admin/club/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -204,7 +204,7 @@ count:monthMap[month]
 
   const handleBlock = async () => {
     const res = await fetch(
-      `http://127.0.0.1:5000/api/admin/block-club/${id}`,
+      `https://clubverse-nsgq.onrender.com/api/admin/block-club/${id}`,
       {
         method: "PUT",
         headers: {

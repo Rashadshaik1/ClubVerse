@@ -13,7 +13,7 @@ export default function ClubTypePage() {
   useEffect(() => {
     const fetchClubs = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:5000/api/admin/clubs", {
+        const res = await fetch("https://clubverse-nsgq.onrender.com/api/admin/clubs", {
   headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   },

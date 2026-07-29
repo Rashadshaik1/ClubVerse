@@ -21,7 +21,7 @@ export default function EventAnalytics() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:5000/api/admin/events", {
+        const res = await fetch("https://clubverse-nsgq.onrender.com/api/admin/events", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

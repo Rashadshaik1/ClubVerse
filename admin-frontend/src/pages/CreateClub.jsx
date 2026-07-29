@@ -49,7 +49,7 @@ export default function CreateClub() {
 
     try {
       const res = await fetch(
-        "http://127.0.0.1:5000/api/admin/create-club",
+        "https://clubverse-nsgq.onrender.com/api/admin/create-club",
         {
           method: "POST",
           headers: {
