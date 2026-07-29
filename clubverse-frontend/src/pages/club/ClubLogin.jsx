@@ -22,13 +22,16 @@ export default function AdminLogin() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://clubverse-nsgq.onrender.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
-      });
+     const res = await fetch(
+  "https://clubverse-nsgq.onrender.com/api/clubs/login",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(form),
+  }
+);
 
       const data = await res.json();
 
