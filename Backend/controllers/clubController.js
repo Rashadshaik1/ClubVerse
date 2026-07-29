@@ -1,4 +1,4 @@
-const Club = require("../models/Club");
+const Club = require("../models/club");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Notification = require("../models/Notification");
