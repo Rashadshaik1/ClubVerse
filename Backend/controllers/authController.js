@@ -48,7 +48,7 @@ const transporter = nodemailer.createTransport({
 
 
 
-await transporter.verify();
+// await transporter.verify();
 console.log("✅ Gmail Connected Successfully");
 
     await transporter.sendMail({
