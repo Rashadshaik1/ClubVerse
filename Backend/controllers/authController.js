@@ -38,11 +38,15 @@ exports.sendRegisterOtp = async (req, res) => {
 console.log("EMAIL =", process.env.EMAIL);
 console.log("EMAIL_PASS EXISTS =", !!process.env.EMAIL_PASS);
   const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  requireTLS: true,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.EMAIL_PASS
-  }
+  },
+  family: 4
 });
 
 console.log("Creating transporter...");
@@ -154,12 +158,16 @@ exports.resendOtp = async (req, res) => {
     otpStore[email].expires = Date.now() + 5 * 60 * 1000;
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  requireTLS: true,
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS
+  },
+  family: 4
+});
 
     await transporter.sendMail({
       from: process.env.EMAIL,
@@ -209,14 +217,16 @@ exports.sendForgotPasswordOtp = async (req, res) => {
     };
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL.trim(),
-        pass: process.env.EMAIL_PASS.replace(/\s/g, "")
-      }
-    });
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  requireTLS: true,
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS
+  },
+  family: 4
+});
 
     await transporter.sendMail({
       from: process.env.EMAIL,
