@@ -53,7 +53,7 @@ const isCompleted = event?.status === "completed";
     try {
 
       const res = await axios.get(
-        `http://localhost:5000/api/events/${id}`
+        `https://clubverse-nsgq.onrender.com/api/events/${id}`
       );
 console.log("EVENT FROM API:", res.data.event);
      setEvent({
@@ -80,7 +80,7 @@ console.log("EVENT FROM API:", res.data.event);
   try {
 
     const res = await axios.get(
-      `http://localhost:5000/api/events/${id}/gallery`
+      `https://clubverse-nsgq.onrender.com/api/events/${id}/gallery`
     );
 
     setGallery(res.data.gallery || []);
@@ -98,7 +98,7 @@ console.log("EVENT FROM API:", res.data.event);
     const token = localStorage.getItem("token");
 
     const res = await axios.get(
-      "http://localhost:5000/api/registration",
+      "https://clubverse-nsgq.onrender.com/api/registration",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -127,7 +127,7 @@ console.log("EVENT FROM API:", res.data.event);
     const token = localStorage.getItem("token");
 
     await axios.post(
-      "http://localhost:5000/api/registration",
+      "https://clubverse-nsgq.onrender.com/api/registration",
       {
         eventId: id,
       },
@@ -169,7 +169,7 @@ const submitFeedback = async () => {
 
     const res = await axios.post(
 
-      `http://localhost:5000/api/events/${id}/feedback`,
+      `https://clubverse-nsgq.onrender.com/api/events/${id}/feedback`,
 
       {
         rating,

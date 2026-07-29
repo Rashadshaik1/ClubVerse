@@ -28,7 +28,7 @@ export default function ManageEvents() {
           return;
         }
 
-        const res = await axios.get("http://localhost:5000/api/events/my", {
+        const res = await axios.get("https://clubverse-nsgq.onrender.com/api/events/my", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -77,7 +77,7 @@ export default function ManageEvents() {
     const token = localStorage.getItem("token");
 
     // await axios.put(
-    //   `http://localhost:5000/api/events/${eventId}/complete`,
+    //   `https://clubverse-nsgq.onrender.com/api/events/${eventId}/complete`,
     //   {},
     //   {
     //     headers: {
@@ -90,7 +90,7 @@ console.log("EVENT ID:", eventId);
 console.log("NEW VENUE:", newVenue);
 
 await axios.put(
- `http://localhost:5000/api/events/change-venue/${eventId}`,
+ `https://clubverse-nsgq.onrender.com/api/events/change-venue/${eventId}`,
  {
    venue: newVenue
  },

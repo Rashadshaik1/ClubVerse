@@ -28,7 +28,7 @@ export default function Members() {
 
   const token = localStorage.getItem("token");
   const axiosConfig = { headers: { Authorization: `Bearer ${token}` } };
-  const API_BASE = "http://localhost:5000/api";
+  const API_BASE = "https://clubverse-nsgq.onrender.com/api";
 
   useEffect(() => { fetchBoards(); }, []);
   useEffect(() => { if (activeBoard) { fetchMembers(activeBoard._id); } }, [activeBoard]);

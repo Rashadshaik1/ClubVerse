@@ -75,7 +75,7 @@ const fetchClubProfile = async () => {
     const token = localStorage.getItem("token");
 
     const res = await axios.get(
-      "http://localhost:5000/api/clubs/profile",
+      "https://clubverse-nsgq.onrender.com/api/clubs/profile",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -142,7 +142,7 @@ const fetchClubProfile = async () => {
     const token = localStorage.getItem("token");
 
     await axios.put(
-      "http://localhost:5000/api/clubs/profile",
+      "https://clubverse-nsgq.onrender.com/api/clubs/profile",
       {
         description: about,
         establishedYear: estYear,
@@ -183,7 +183,7 @@ const changePassword = async () => {
     const token = localStorage.getItem("token");
 
     const res = await axios.put(
-      "http://localhost:5000/api/clubs/change-password",
+      "https://clubverse-nsgq.onrender.com/api/clubs/change-password",
       passwordForm,
       {
         headers: {

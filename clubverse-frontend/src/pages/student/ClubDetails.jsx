@@ -27,7 +27,7 @@ const ClubDetails = () => {
 const fetchClub = async () => {
   try {
     const res = await axios.get(
-      `http://localhost:5000/api/clubs/${id}`
+      `https://clubverse-nsgq.onrender.com/api/clubs/${id}`
     );
 
     console.log(res.data);

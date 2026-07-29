@@ -26,7 +26,7 @@ export default function StudentNotifications() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/student-notifications",
+        "https://clubverse-nsgq.onrender.com/api/student-notifications",
         {
           headers: {
             Authorization: `Bearer ${token}`,

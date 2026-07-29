@@ -31,7 +31,7 @@ export default function Dashboard() {
   const [monthlyAnalytics, setMonthlyAnalytics] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API_BASE = "http://localhost:5000/api";
+  const API_BASE = "https://clubverse-nsgq.onrender.com/api";
   const token = localStorage.getItem("token");
   const axiosConfig = { headers: { Authorization: `Bearer ${token}` } };
 

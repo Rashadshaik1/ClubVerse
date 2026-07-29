@@ -30,7 +30,7 @@ export default function StudentHome() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/auth/me",
+        "https://clubverse-nsgq.onrender.com/api/auth/me",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ export default function StudentHome() {
   const fetchEvents = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/events"
+        "https://clubverse-nsgq.onrender.com/api/events"
       );
 
       const events = res.data.events || [];
@@ -95,11 +95,11 @@ export default function StudentHome() {
         await Promise.all([
 
           axios.get(
-            "http://localhost:5000/api/clubs"
+            "https://clubverse-nsgq.onrender.com/api/clubs"
           ),
 
           axios.get(
-            "http://localhost:5000/api/registration",
+            "https://clubverse-nsgq.onrender.com/api/registration",
             {
               headers: {
                 Authorization:

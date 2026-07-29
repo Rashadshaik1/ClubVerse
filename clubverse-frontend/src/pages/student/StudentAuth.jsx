@@ -56,7 +56,7 @@ const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/auth/login",
+        "https://clubverse-nsgq.onrender.com/api/auth/login",
         {
           method: "POST",
           headers: {
@@ -117,7 +117,7 @@ navigate("/student-home");
       setLoading(true);
 
       const res = await fetch(
-        "http://localhost:5000/api/auth/register-send-otp",
+        "https://clubverse-nsgq.onrender.com/api/auth/register-send-otp",
         {
           method: "POST",
           headers: {
@@ -152,7 +152,7 @@ navigate("/student-home");
       setLoading(true);
 
       const res = await fetch(
-        "http://localhost:5000/api/auth/verify-otp-register",
+        "https://clubverse-nsgq.onrender.com/api/auth/verify-otp-register",
         {
           method: "POST",
           headers: {
@@ -217,7 +217,7 @@ const resendOTP = async () => {
     setError("");
 
     const res = await fetch(
-      "http://localhost:5000/api/auth/resend-otp",
+      "https://clubverse-nsgq.onrender.com/api/auth/resend-otp",
       {
         method: "POST",
         headers: {
@@ -265,7 +265,7 @@ const sendForgotOtp = async (e) => {
     setLoading(true);
 
     const res = await fetch(
-      "http://localhost:5000/api/auth/forgot-password",
+      "https://clubverse-nsgq.onrender.com/api/auth/forgot-password",
       {
         method: "POST",
         headers: {
@@ -312,7 +312,7 @@ const handleResetPassword = async (e) => {
     setLoading(true);
 
     const res = await fetch(
-      "http://localhost:5000/api/auth/reset-password",
+      "https://clubverse-nsgq.onrender.com/api/auth/reset-password",
       {
         method: "POST",
         headers: {

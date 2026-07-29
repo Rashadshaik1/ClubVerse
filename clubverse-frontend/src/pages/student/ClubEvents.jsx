@@ -27,7 +27,7 @@ const ClubEvents = () => {
     const token = localStorage.getItem("token");
 
 const res = await axios.get(
-  `http://localhost:5000/api/events/club/${id}`,
+  `https://clubverse-nsgq.onrender.com/api/events/club/${id}`,
   {
     headers: {
       Authorization: `Bearer ${token}`,

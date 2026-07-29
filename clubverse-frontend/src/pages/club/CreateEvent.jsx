@@ -128,7 +128,7 @@ export default function CreateEvent() {
       });
 
       const res = await axios.post(
-        "http://localhost:5000/api/events",
+        "https://clubverse-nsgq.onrender.com/api/events",
         payload,
         {
           headers: {

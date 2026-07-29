@@ -64,13 +64,13 @@ export default function EventDashboard() {
     const fetchEventData = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:5000/api/events/${id}`, {
+        const res = await axios.get(`https://clubverse-nsgq.onrender.com/api/events/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
         const eventData = res.data.event;
 const regRes = await axios.get(
-  `http://localhost:5000/api/events/${id}/registrations`,
+  `https://clubverse-nsgq.onrender.com/api/events/${id}/registrations`,
   {
     headers: {
       Authorization: `Bearer ${token}`
@@ -161,7 +161,7 @@ setRegistrations(regRes.data.data);
     console.log("Event ID:", id);
 
     await axios.put(
-      `http://localhost:5000/api/events/change-venue/${id}`,
+      `https://clubverse-nsgq.onrender.com/api/events/change-venue/${id}`,
       {
         venue: venue
       },
@@ -210,7 +210,7 @@ const handlePostponeEvent = async () => {
 
 
     const res = await axios.put(
-      `http://localhost:5000/api/events/${id}/postpone`,
+      `https://clubverse-nsgq.onrender.com/api/events/${id}/postpone`,
       {
         date:eventDate,
         reason:postponeReason
@@ -275,7 +275,7 @@ console.log("REASON:",reason);
 
 const res = await axios.post(
 
-`http://localhost:5000/api/events/${id}/cancel`,
+`https://clubverse-nsgq.onrender.com/api/events/${id}/cancel`,
 
 {
 reason:reason
@@ -323,7 +323,7 @@ alert("Cancellation failed");
     if (!confirmComplete) return;
 
     await axios.put(
-      `http://localhost:5000/api/events/complete/${id}`,
+      `https://clubverse-nsgq.onrender.com/api/events/complete/${id}`,
       {},
       {
         headers: {
@@ -355,7 +355,7 @@ alert("Cancellation failed");
     try {
       const payload = new FormData();
       payload.append("poster", poster);
-      await axios.put(`http://localhost:5000/api/events/${id}/poster`, payload, {
+      await axios.put(`https://clubverse-nsgq.onrender.com/api/events/${id}/poster`, payload, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
       });
       alert("Poster updated successfully!");
@@ -366,7 +366,7 @@ alert("Cancellation failed");
 
   const saveCapacityThreshold = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/events/${id}`, { maxParticipants }, {
+      await axios.put(`https://clubverse-nsgq.onrender.com/api/events/${id}`, { maxParticipants }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert("Capacity updated successfully!");
@@ -376,7 +376,7 @@ alert("Cancellation failed");
   };
 
   const downloadAttendanceSheet = () => {
-    window.open(`http://localhost:5000/api/events/${id}/export-attendance?token=${token}`, "_blank");
+    window.open(`https://clubverse-nsgq.onrender.com/api/events/${id}/export-attendance?token=${token}`, "_blank");
   };
 
   const handleGallerySelectionAndPreview = (e) => {
@@ -408,7 +408,7 @@ alert("Cancellation failed");
         formData.append("images", file); 
       });
 
-      await axios.post(`http://localhost:5000/api/events/${id}/gallery`, formData, {
+      await axios.post(`https://clubverse-nsgq.onrender.com/api/events/${id}/gallery`, formData, {
         headers: { 
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data"

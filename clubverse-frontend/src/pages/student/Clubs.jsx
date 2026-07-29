@@ -21,7 +21,7 @@ export default function ClubsPage() {
     try {
       setLoading(true);
       // Hitting your backend clubController route
-      const res = await axios.get("http://localhost:5000/api/clubs");
+      const res = await axios.get("https://clubverse-nsgq.onrender.com/api/clubs");
       
       // Assuming res.data returns an array of clubs directly
       const clubData = (res.data || []).map((club) => ({

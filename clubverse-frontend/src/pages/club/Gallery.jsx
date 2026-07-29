@@ -31,7 +31,7 @@ export default function Gallery() {
         return;
       }
 
-      const res = await axios.get("http://localhost:5000/api/events/my", {
+      const res = await axios.get("https://clubverse-nsgq.onrender.com/api/events/my", {
         headers: { Authorization: `Bearer ${token}` }
       });
 

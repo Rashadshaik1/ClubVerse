@@ -50,7 +50,7 @@ export default function ClubNavbar() {
 
 
       const res = await fetch(
-        `http://localhost:5000/api/notifications/${clubId}`
+        `https://clubverse-nsgq.onrender.com/api/notifications/${clubId}`
       );
 
 
@@ -159,7 +159,7 @@ if (response.success) {
       try {
 
         await fetch(
-          `http://localhost:5000/api/notifications/read/${club._id}`,
+          `https://clubverse-nsgq.onrender.com/api/notifications/read/${club._id}`,
           {
             method: "PUT"
           }

@@ -25,7 +25,7 @@ export default function AIChatbot() {
     setInput("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/ai/chat", {
+      const res = await axios.post("https://clubverse-nsgq.onrender.com/api/ai/chat", {
         messages: newMessages
       });
 

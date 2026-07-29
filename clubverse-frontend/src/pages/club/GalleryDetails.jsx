@@ -21,7 +21,7 @@ export default function GalleryDetails() {
   const fetchEventGallery = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`http://localhost:5000/api/events/${id}`, {
+      const res = await axios.get(`https://clubverse-nsgq.onrender.com/api/events/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEvent(res.data.event);
@@ -45,7 +45,7 @@ export default function GalleryDetails() {
     try {
       setUploading(true);
       const token = localStorage.getItem("token");
-      await axios.post(`http://localhost:5000/api/events/${id}/gallery`, formData, {
+      await axios.post(`https://clubverse-nsgq.onrender.com/api/events/${id}/gallery`, formData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
       });
       fetchEventGallery(); // అప్‌లోడ్ అయ్యాక డేటా రిఫ్రెష్
@@ -63,7 +63,7 @@ export default function GalleryDetails() {
     const token = localStorage.getItem("token");
 
     await axios.delete(
-      `http://localhost:5000/api/events/${id}/gallery/${imageId}`,
+      `https://clubverse-nsgq.onrender.com/api/events/${id}/gallery/${imageId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
