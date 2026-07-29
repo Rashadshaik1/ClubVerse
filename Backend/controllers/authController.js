@@ -35,7 +35,8 @@ exports.sendRegisterOtp = async (req, res) => {
       password,
       expires: Date.now() + 5 * 60 * 1000
     };
-
+console.log("EMAIL =", process.env.EMAIL);
+console.log("EMAIL_PASS EXISTS =", !!process.env.EMAIL_PASS);
   const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -43,6 +44,8 @@ exports.sendRegisterOtp = async (req, res) => {
     pass: process.env.EMAIL_PASS
   }
 });
+
+console.log("Creating transporter...");
 
 await transporter.verify();
 console.log("✅ Gmail Connected Successfully");
