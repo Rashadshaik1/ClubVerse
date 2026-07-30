@@ -131,9 +131,9 @@ const handleLogout = () => {
 
           <div>
 
-            <h1 className="text-2xl font-bold text-[#4B2E91]">
-              ClubVerse
-            </h1>
+           <h1 className="text-2xl font-bold text-[#7966AD]">
+  ClubVerse
+</h1>
 
             <p className="text-xs text-gray-500">
               Student Portal
