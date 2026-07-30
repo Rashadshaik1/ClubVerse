@@ -3,10 +3,12 @@ import {
   Users,
   Ticket,
   Trophy,
-  TrendingUp
+  TrendingUp,
+  ArrowUpRight
 } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useNavigate } from "react-router-dom";
 
 export default function QuickStats({
   ongoingCount,
@@ -15,31 +17,43 @@ export default function QuickStats({
   clubsCount,
   loading,
 }) {
+  const navigate = useNavigate();
+
+  const scrollToSection = (id) => {
+  document.getElementById(id)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+};
   const stats = [
     {
-      title: "Ongoing",
-      value: ongoingCount,
-      icon: Calendar,
-      gradient: "from-[#6D4BC3] to-[#8D76D8]",
-    },
+  title: "Ongoing",
+  value: ongoingCount,
+  icon: Calendar,
+  gradient: "from-[#6D4BC3] to-[#8D76D8]",
+  action: () => scrollToSection("ongoing-events"),
+},
     {
-      title: "Upcoming",
-      value: upcomingCount,
-      icon: Ticket,
-      gradient: "from-[#8D76D8] to-[#A78BFA]",
-    },
+  title: "Upcoming",
+  value: upcomingCount,
+  icon: Ticket,
+  gradient: "from-[#8D76D8] to-[#A78BFA]",
+  action: () => scrollToSection("upcoming-events"),
+},
     {
-      title: "Registered",
-      value: registeredCount,
-      icon: Trophy,
-      gradient: "from-[#7C5CDB] to-[#C084FC]",
-    },
-    {
-      title: "Active Clubs",
-      value: clubsCount,
-      icon: Users,
-      gradient: "from-[#5B3EB6] to-[#8D76D8]",
-    },
+  title: "Registered",
+  value: registeredCount,
+  icon: Trophy,
+  gradient: "from-[#7C5CDB] to-[#C084FC]",
+  action: () => navigate("/student/my-registrations"),
+},
+   {
+  title: "Active Clubs",
+  value: clubsCount,
+  icon: Users,
+  gradient: "from-[#5B3EB6] to-[#8D76D8]",
+  action: () => navigate("/student-clubs"),
+},
   ];
 
   return (
@@ -52,27 +66,45 @@ export default function QuickStats({
 
           return (
             <div
-              key={index}
-              className="
-              group
-              relative
-              overflow-hidden
-              rounded-2xl
-              border
-              border-[#DDD4F2]
-              bg-white/75
-              backdrop-blur-xl
-              p-5
-              shadow-md
-              hover:shadow-xl
-              hover:-translate-y-1
-              transition-all
-              duration-300"
-            >
+  key={index}
+ onClick={!loading ? item.action : undefined}
+  className={`
+group
+relative
+overflow-hidden
+rounded-2xl
+border
+border-[#DDD4F2]
+bg-white/75
+backdrop-blur-xl
+p-5
+shadow-md
+hover:shadow-2xl
+hover:-translate-y-2
+hover:scale-[1.02]
+transition-all
+duration-300
+${loading ? "cursor-default" : "cursor-pointer"}
+`}
+>
 
               {/* Glow */}
-              <div className="absolute right-0 top-0 w-24 h-24 rounded-full bg-[#EEE7FF] blur-3xl opacity-60"></div>
-
+             <div
+  className="
+    absolute
+    right-0
+    top-0
+    w-24
+    h-24
+    rounded-full
+    bg-[#EEE7FF]
+    blur-3xl
+    opacity-60
+    group-hover:scale-150
+    transition-all
+    duration-500
+  "
+></div>
               <div className="relative flex items-start justify-between">
 
                 <div>
@@ -134,14 +166,31 @@ export default function QuickStats({
     justify-center
     text-white
     shadow-lg
-    group-hover:rotate-6
-    group-hover:scale-110
+ group-hover:rotate-12
+group-hover:scale-125
+duration-300
     transition`}
   >
     <Icon size={22} />
   </div>
 )}
-
+{!loading && item.action && (
+  <ArrowUpRight
+    size={18}
+    className="
+      absolute
+      top-2
+      right-2
+      text-[#6D4BC3]
+      opacity-0
+      group-hover:opacity-100
+      group-hover:translate-x-1
+      group-hover:-translate-y-1
+      transition-all
+      duration-300
+    "
+  />
+)}
               </div>
 
               <div

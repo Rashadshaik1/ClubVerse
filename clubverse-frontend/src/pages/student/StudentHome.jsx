@@ -213,7 +213,10 @@ const fetchStats = async () => {
 
         {/* ================= LIVE EVENTS ================= */}
 
-        <section className="mt-14">
+        <section
+  id="ongoing-events"
+  className="mt-14"
+>
 
           <div className="flex justify-between items-center">
 
@@ -284,7 +287,10 @@ const fetchStats = async () => {
 
         {/* ================= UPCOMING ================= */}
 
-        <section className="mt-20">
+        <section
+  id="upcoming-events"
+  className="mt-20"
+>
 
           <div className="flex justify-between items-center">
 
