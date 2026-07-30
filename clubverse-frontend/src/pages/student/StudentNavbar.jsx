@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import gvpceLogo from "../../assets/gvpce-logo.png";
 import axios from "axios";
 
 import {
@@ -186,9 +187,20 @@ const handleLogout = () => {
 
         {/* ================= RIGHT ================= */}
 
-        <div className="flex items-center gap-5">
+<div className="flex items-center gap-5">
 
-          {/* Notification */}
+  {/* College Logo */}
+
+  <div className="hidden md:flex w-12 h-12 rounded-full bg-white/70 border border-[#DDD4F2] shadow-sm items-center justify-center">
+  <img
+    src={gvpceLogo}
+    alt="GVPCE Logo"
+    className="w-9 h-9 object-contain"
+  />
+</div>
+
+
+  {/* Notification */}
 
           <button
   onClick={() => navigate("/student-notifications")}
