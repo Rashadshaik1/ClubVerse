@@ -1,7 +1,8 @@
 const Event = require("../models/Event");
 const Registration = require("../models/Registration");
 const Notification = require("../models/Notification");
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
+const sendEmail = require("../utils/sendEmail");
 
 const updateEventStatus = async (event) => {
   if (!event) return;
@@ -329,55 +330,27 @@ console.log("🔥 CHANGE VENUE API HIT");
     if(emailList.length > 0){
 
 
-      const mailOptions = {
+   await sendEmail({
+  to: emailList,
+  subject: `⚠️ Venue Changed Alert: ${event.title}`,
+  html: `
+    <div style="font-family:Arial;padding:20px">
+      <h2 style="color:#048c92">
+        Important Update Regarding ${event.title}
+      </h2>
 
-        from:process.env.EMAIL,
+      <p>Hello Participant,</p>
 
-        to:emailList.join(","),
+      <p>Please note that the venue for the event has been updated.</p>
 
-        subject:
-        `⚠️ Venue Changed Alert: ${event.title}`,
+      <p><b>Event:</b> ${event.title}</p>
 
-        html:`
+      <p><b>New Venue:</b> ${venue}</p>
 
-        <div style="font-family:Arial;padding:20px">
-
-          <h2 style="color:#048c92">
-            Important Update Regarding ${event.title}
-          </h2>
-
-
-          <p>Hello Participant,</p>
-
-
-          <p>
-          Please note that the venue for the event has been updated.
-          </p>
-
-
-          <p>
-          <b>Event:</b> ${event.title}
-          </p>
-
-
-          <p>
-          <b>New Venue:</b> ${venue}
-          </p>
-
-
-          <p>
-          Please make note of the updated venue.
-          </p>
-
-
-        </div>
-
-        `
-
-      };
-
-
-      await transporter.sendMail(mailOptions);
+      <p>Please make note of the updated venue.</p>
+    </div>
+  `
+});
 
 
       console.log(
@@ -518,53 +491,33 @@ exports.postponeEvent = async (req,res)=>{
     if(emailList.length > 0){
 
 
-      const mailOptions = {
+      await sendEmail({
+  to: emailList,
+  subject: `⏰ Event Postponed Notice: ${event.title}`,
+  html: `
+    <div style="font-family:Arial;padding:20px">
 
-        from:process.env.EMAIL,
+      <h2 style="color:#048c92">
+        Event Rescheduled: ${event.title}
+      </h2>
 
-        to:emailList.join(","),
+      <p>Hello Participant,</p>
 
-        subject:
-        `⏰ Event Postponed Notice: ${event.title}`,
+      <p>The event has been postponed.</p>
 
+      <p>
+        <b>New Date:</b>
+        ${new Date(date).toLocaleDateString()}
+      </p>
 
-        html:`
+      <p>
+        <b>Reason:</b>
+        ${reason || "Not specified"}
+      </p>
 
-        <div style="font-family:Arial;padding:20px">
-
-          <h2 style="color:#048c92">
-            Event Rescheduled: ${event.title}
-          </h2>
-
-
-          <p>Hello Participant,</p>
-
-
-          <p>
-          The event has been postponed.
-          </p>
-
-
-          <p>
-          <b>New Date:</b>
-          ${new Date(date).toLocaleDateString()}
-          </p>
-
-
-          <p>
-          <b>Reason:</b>
-          ${reason || "Not specified"}
-          </p>
-
-
-        </div>
-
-        `
-
-      };
-
-
-      await transporter.sendMail(mailOptions);
+    </div>
+  `
+});
 
 
       console.log(
@@ -735,53 +688,35 @@ exports.cancelEvent = async (req,res)=>{
     if(emailList.length > 0){
 
 
-      const mailOptions = {
+      await sendEmail({
+  to: emailList,
+  subject: `❌ Event Cancelled: ${event.title}`,
+  html: `
+    <div style="font-family:Arial;padding:20px">
 
-        from:process.env.EMAIL,
+      <h2 style="color:#d9534f">
+        Event Cancellation Notice
+      </h2>
 
-        to:emailList.join(","),
+      <p>Hello Participant,</p>
 
+      <p>
+        We regret to inform you that the event has been cancelled.
+      </p>
 
-        subject:
-        `❌ Event Cancelled: ${event.title}`,
+      <p>
+        <b>Event:</b> ${event.title}
+      </p>
 
+      <p>
+        <b>Reason:</b> ${reason || "Not specified"}
+      </p>
 
-        html:`
+    </div>
+  `
+});
 
-        <div style="font-family:Arial;padding:20px">
-
-          <h2 style="color:#d9534f">
-            Event Cancellation Notice
-          </h2>
-
-
-          <p>Hello Participant,</p>
-
-
-          <p>
-          We regret to inform you that the event has been cancelled.
-          </p>
-
-
-          <p>
-          <b>Event:</b> ${event.title}
-          </p>
-
-
-          <p>
-          <b>Reason:</b>
-          ${reason || "Not specified"}
-          </p>
-
-
-        </div>
-
-        `
-
-      };
-
-
-      await transporter.sendMail(mailOptions);
+console.log("CANCEL EMAILS SENT");
 
 
       console.log(
