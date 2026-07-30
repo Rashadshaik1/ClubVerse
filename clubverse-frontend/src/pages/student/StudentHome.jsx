@@ -7,20 +7,46 @@ import UpcomingEventCard from "../../pages/student/UpcomingEventCard";
 import EventFeedCard from "../../pages/student/EventFeedCard";
 import WelcomeBanner from "../../pages/student/WelcomeBanner";
 import QuickStats from "../../pages/student/QuickStats";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function SkeletonCard() {
   return (
-    <div className="rounded-3xl bg-white shadow-md p-4 animate-pulse">
+    <div className="rounded-3xl bg-white shadow-lg p-4 border border-gray-100">
 
-      <div className="h-44 bg-gray-200 rounded-2xl"></div>
+     <Skeleton
+  height={180}
+  borderRadius={20}
+  baseColor="#ECE8F8"
+  highlightColor="#F8F7FC"
+/>
 
-      <div className="mt-4 h-5 bg-gray-200 rounded w-3/4"></div>
+      <div className="mt-4">
+        <Skeleton
+  height={24}
+  width="75%"
+  baseColor="#ECE8F8"
+  highlightColor="#F8F7FC"
+/>
+      </div>
 
-      <div className="mt-3 h-4 bg-gray-200 rounded"></div>
+      <div className="mt-3">
+        <Skeleton
+  height={16}
+  count={2}
+  baseColor="#ECE8F8"
+  highlightColor="#F8F7FC"
+/>
+      </div>
 
-      <div className="mt-2 h-4 bg-gray-200 rounded w-2/3"></div>
-
-      <div className="mt-5 h-10 bg-gray-200 rounded-xl"></div>
+      <div className="mt-4">
+        <Skeleton
+  height={42}
+  borderRadius={12}
+  baseColor="#ECE8F8"
+  highlightColor="#F8F7FC"
+/>
+      </div>
 
     </div>
   );
