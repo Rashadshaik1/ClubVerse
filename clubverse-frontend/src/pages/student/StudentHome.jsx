@@ -73,7 +73,9 @@ const [loadingStats, setLoadingStats] = useState(true);
   // ================= USER =================
 
   const fetchUser = async () => {
-    try {
+  setLoadingUser(true);
+
+  try {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
@@ -86,9 +88,11 @@ const [loadingStats, setLoadingStats] = useState(true);
       );
 
       setUser(res.data.user);
-    } catch (err) {
-      console.log(err);
-    }
+   } catch (err) {
+  console.log(err);
+} finally {
+  setLoadingUser(false);
+}
   };
 
   // ================= EVENTS =================
@@ -137,9 +141,10 @@ const [loadingStats, setLoadingStats] = useState(true);
 
   // ================= STATS =================
 
-  const fetchStats = async () => {
-    try {
+const fetchStats = async () => {
+  setLoadingStats(true);
 
+  try {
       const token = localStorage.getItem("token");
 
       const [clubsRes, regRes] =
@@ -166,9 +171,11 @@ const [loadingStats, setLoadingStats] = useState(true);
         regRes.data.data.length || 0
       );
 
-    } catch (err) {
-      console.log(err);
-    }
+   } catch (err) {
+  console.log(err);
+} finally {
+  setLoadingStats(false);
+}
   };
 
   return (
@@ -183,9 +190,9 @@ const [loadingStats, setLoadingStats] = useState(true);
 
         <div className="pt-8">
 
-        <WelcomeBanner
+<WelcomeBanner
   user={user}
-  loading={!user}
+  loading={loadingUser}
 />
 
         </div>
@@ -194,17 +201,13 @@ const [loadingStats, setLoadingStats] = useState(true);
 
         <div className="mt-10">
 
-          <QuickStats
-
-            ongoingCount={ongoingEvents.length}
-
-            upcomingCount={upcomingEvents.length}
-
-            registeredCount={registeredCount}
-
-            clubsCount={clubsCount}
-
-          />
+       <QuickStats
+  ongoingCount={ongoingEvents.length}
+  upcomingCount={upcomingEvents.length}
+  registeredCount={registeredCount}
+  clubsCount={clubsCount}
+  loading={loadingStats}
+/>
 
         </div>
 
