@@ -9,6 +9,7 @@ import WelcomeBanner from "../../pages/student/WelcomeBanner";
 import QuickStats from "../../pages/student/QuickStats";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import EventCarousel from "../../pages/student/EventCarousel";
 
 function SkeletonCard() {
   return (
@@ -318,62 +319,79 @@ const fetchStats = async () => {
 
           </div>
 
-         <div
+<EventCarousel itemsLength={upcomingEvents.length}>
+
+{
+loadingEvents ? (
+
+<>
+{[1,2,3].map((i)=>(
+<div
+key={i}
+className="min-w-[320px] md:min-w-[360px]"
+>
+<SkeletonCard/>
+</div>
+))}
+</>
+
+)
+
+:
+
+upcomingEvents.length ? (
+
+upcomingEvents.map((event)=>(
+
+<div
+key={event._id}
 className="
-flex
-gap-6
-mt-8
-overflow-x-auto
-pb-4
-scroll-smooth
-snap-x
-snap-mandatory
+min-w-[320px]
+md:min-w-[360px]
+snap-start
 "
 >
 
-    {
-  loadingEvents ? (
+<UpcomingEventCard
+event={event}
+/>
 
-    <>
-      {[1, 2].map((i) => (
-        <SkeletonCard key={i} />
-      ))}
-    </>
+</div>
 
-  ) : upcomingEvents.length ? (
-
-upcomingEvents.map((event) => (
-  <div
-    key={event._id}
-    className="
-    min-w-[320px]
-    md:min-w-[360px]
-    snap-start
-    "
-  >
-    <UpcomingEventCard
-      event={event}
-    />
-  </div>
 ))
 
-  ) : (
+)
 
-    <div className="col-span-2 rounded-3xl bg-white/60 backdrop-blur-xl shadow-lg p-12 text-center">
+:
 
-      <h2 className="text-2xl font-bold text-[#6D4BC3]">
-        No Upcoming Events
-      </h2>
+(
+<div className="
+w-full
+rounded-3xl
+bg-white/60
+backdrop-blur-xl
+shadow-lg
+p-12
+text-center
+">
 
-      <p className="text-gray-500 mt-3">
-        New events will appear here.
-      </p>
+<h2 className="text-2xl font-bold text-[#6D4BC3]">
+No Upcoming Events
+</h2>
 
-    </div>
+<p className="text-gray-500 mt-3">
+New events will appear here.
+</p>
 
-  )
+</div>
+)
+
 }
-          </div>
+
+</EventCarousel>
+
+  
+      
 
         </section>
 
@@ -396,31 +414,35 @@ upcomingEvents.map((event) => (
 
           </p>
 
-          <div
-className="
-flex
-gap-6
-mt-8
-overflow-x-auto
-pb-4
-scroll-smooth
-snap-x
-snap-mandatory
-"
+         <EventCarousel 
+itemsLength={
+[...ongoingEvents,...upcomingEvents].length
+}
 >
 
-           {
-  loadingEvents ? (
+{
+loadingEvents ? (
 
-    <>
-      {[1, 2, 3, 4].map((i) => (
-        <SkeletonCard key={i} />
-      ))}
-    </>
+<>
+{[1,2,3].map((i)=>(
+<div
+key={i}
+className="
+min-w-[320px]
+md:min-w-[360px]
+"
+>
+<SkeletonCard/>
+</div>
+))}
+</>
 
-  ) : [...ongoingEvents, ...upcomingEvents].length ? (
+)
 
-[...ongoingEvents, ...upcomingEvents].map((event)=>(
+:
+
+[...ongoingEvents,...upcomingEvents].map((event)=>(
+
 <div
 key={event._id}
 className="
@@ -435,26 +457,14 @@ event={event}
 />
 
 </div>
+
 ))
 
-  ) : (
-
-    <div className="col-span-2 rounded-3xl bg-white/60 backdrop-blur-xl shadow-lg p-14 text-center">
-
-      <h2 className="text-2xl font-bold text-[#6D4BC3]">
-        No Events Available
-      </h2>
-
-      <p className="mt-3 text-gray-500">
-        Clubs haven't posted any events yet.
-      </p>
-
-    </div>
-
-  )
 }
-          </div>
 
+</EventCarousel>
+
+           
         </section>
 
       </div>
