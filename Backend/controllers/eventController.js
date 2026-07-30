@@ -31,14 +31,7 @@ const updateEventStatus = async (event) => {
   }
 };
 // ================= NODEMAILER CONFIGURATION =================
-// `.env` lo unna EMAIL, EMAIL_PASS references ni auto-detect chestundi
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+
 
 // ================= CREATE EVENT =================
 exports.createEvent = async (req, res) => {
