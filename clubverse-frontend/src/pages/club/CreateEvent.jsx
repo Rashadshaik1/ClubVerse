@@ -143,7 +143,7 @@ const navigate = useNavigate();
 
       console.log("EVENT CREATED:", res.data);
       alert("Event Created Successfully!");
-      navigate("/club/manage-events");
+      navigate("/manage-events");
     } catch (err) {
       console.error("CREATE EVENT ERROR:", err.response?.data || err.message);
       const errMsg =
