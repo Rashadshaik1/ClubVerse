@@ -318,7 +318,18 @@ const fetchStats = async () => {
 
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-7 mt-8">
+         <div
+className="
+flex
+gap-6
+mt-8
+overflow-x-auto
+pb-4
+scroll-smooth
+snap-x
+snap-mandatory
+"
+>
 
     {
   loadingEvents ? (
@@ -331,12 +342,20 @@ const fetchStats = async () => {
 
   ) : upcomingEvents.length ? (
 
-    upcomingEvents.map((event) => (
-      <UpcomingEventCard
-        key={event._id}
-        event={event}
-      />
-    ))
+upcomingEvents.map((event) => (
+  <div
+    key={event._id}
+    className="
+    min-w-[320px]
+    md:min-w-[360px]
+    snap-start
+    "
+  >
+    <UpcomingEventCard
+      event={event}
+    />
+  </div>
+))
 
   ) : (
 
@@ -377,7 +396,18 @@ const fetchStats = async () => {
 
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+          <div
+className="
+flex
+gap-6
+mt-8
+overflow-x-auto
+pb-4
+scroll-smooth
+snap-x
+snap-mandatory
+"
+>
 
            {
   loadingEvents ? (
@@ -390,12 +420,22 @@ const fetchStats = async () => {
 
   ) : [...ongoingEvents, ...upcomingEvents].length ? (
 
-    [...ongoingEvents, ...upcomingEvents].map((event) => (
-      <EventFeedCard
-        key={event._id}
-        event={event}
-      />
-    ))
+[...ongoingEvents, ...upcomingEvents].map((event)=>(
+<div
+key={event._id}
+className="
+min-w-[320px]
+md:min-w-[360px]
+snap-start
+"
+>
+
+<EventFeedCard
+event={event}
+/>
+
+</div>
+))
 
   ) : (
 
