@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useEffect, useRef } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function StudentAuth() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const [forgotPassword, setForgotPassword] = useState(false);
 const [forgotStep, setForgotStep] = useState(1);
 const [newPassword, setNewPassword] = useState("");
 const [confirmNewPassword, setConfirmNewPassword] = useState("");
+const [rememberMe, setRememberMe] = useState(false);
 
   const [form, setForm] = useState({
   name: "",
@@ -45,57 +47,84 @@ const [confirmNewPassword, setConfirmNewPassword] = useState("");
   }
 }, [step, timer]);
 
+useEffect(() => {
+  const savedEmail = localStorage.getItem("rememberEmail");
+  const savedPassword = localStorage.getItem("rememberPassword");
+  const savedRemember = localStorage.getItem("rememberMe");
+
+  if (savedRemember === "true") {
+    setRememberMe(true);
+
+    setForm((prev) => ({
+      ...prev,
+      email: savedEmail || "",
+      password: savedPassword || "",
+    }));
+  }
+}, []);
+
 
 
 
   // ================= LOGIN =================
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-    try {
-      const res = await fetch(
-        "https://clubverse-nsgq.onrender.com/api/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: form.email,
-            password: form.password
-          })
-        }
-      );
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.msg || "Login Failed");
-        return;
+  try {
+    const res = await fetch(
+      "https://clubverse-nsgq.onrender.com/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password
+        })
       }
+    );
 
-      localStorage.setItem("token", data.token);
+    const data = await res.json();
 
-// Save complete student object
-localStorage.setItem(
-  "student",
-  JSON.stringify(data.user)
-);
-
-// (Optional) Backward compatibility if other pages use "user"
-localStorage.setItem(
-  "user",
-  JSON.stringify(data.user)
-);
-
-navigate("/student-home");
-
-    } catch {
-      setError("Server Error");
+    if (!res.ok) {
+      setError(data.msg || "Login Failed");
+      return;
     }
-  };
+
+    localStorage.setItem("token", data.token);
+
+    localStorage.setItem(
+      "student",
+      JSON.stringify(data.user)
+    );
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(data.user)
+    );
+    // Remember Me
+if (rememberMe) {
+  localStorage.setItem("rememberMe", "true");
+  localStorage.setItem("rememberEmail", form.email);
+  localStorage.setItem("rememberPassword", form.password);
+} else {
+  localStorage.removeItem("rememberMe");
+  localStorage.removeItem("rememberEmail");
+  localStorage.removeItem("rememberPassword");
+}
+
+    navigate("/student-home");
+
+  } catch {
+    setError("Server Error");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // ================= SEND OTP =================
 
@@ -384,37 +413,37 @@ const handleResetPassword = async (e) => {
             className="flex flex-col gap-3"
           >
 
-            <input
-              type="email"
-              placeholder="Email"
-              value={form.email}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  email: e.target.value
-                })
-              }
-              className="p-3 rounded-lg bg-white/60 border border-[#DDD4F2] focus:outline-none focus:ring-2 focus:ring-[#8D76D8]"
-            />
+       <input
+  type="email"
+  name="email"
+  autoComplete="email"
+  placeholder="Email"
+  value={form.email}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      email: e.target.value
+    })
+  }
+  className="p-3 rounded-lg bg-white/60 border border-[#DDD4F2] focus:outline-none focus:ring-2 focus:ring-[#8D76D8]"
+/>
 
             <div className="relative">
 
               <input
-                type={
-                  showPassword
-                    ? "text"
-                    : "password"
-                }
-                placeholder="Password"
-                value={form.password}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    password: e.target.value
-                  })
-                }
-                className="w-full p-3 rounded-lg bg-white/60 border border-[#DDD4F2] focus:outline-none focus:ring-2 focus:ring-[#8D76D8]"
-              />
+  type={showPassword ? "text" : "password"}
+  name="password"
+  autoComplete="current-password"
+  placeholder="Password"
+  value={form.password}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      password: e.target.value
+    })
+  }
+  className="w-full p-3 rounded-lg bg-white/60 border border-[#DDD4F2] focus:outline-none focus:ring-2 focus:ring-[#8D76D8]"
+/>
 
               <button
                 type="button"
@@ -434,13 +463,18 @@ const handleResetPassword = async (e) => {
 
             </div>
 
-            <button
-              className="py-2 rounded-full text-white font-semibold bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8]"
-            >
-              Login
-            </button>
+            <div className="flex items-center justify-between mt-2">
 
-            <div className="text-right">
+  <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+    <input
+      type="checkbox"
+      checked={rememberMe}
+      onChange={(e) => setRememberMe(e.target.checked)}
+      className="accent-[#6D4BC3]"
+    />
+    Remember Me
+  </label>
+
   <button
     type="button"
     onClick={() => {
@@ -449,11 +483,33 @@ const handleResetPassword = async (e) => {
       setError("");
       setOtp(["", "", "", "", "", ""]);
     }}
-    className="text-sm text-[#6D4BC3] hover:underline font-medium mt-2"
+    className="text-sm text-[#6D4BC3] hover:underline font-medium"
   >
     Forgot Password?
   </button>
+
 </div>
+
+  <button
+  type="submit"
+  disabled={loading}
+  className={`py-2 rounded-full text-white font-semibold bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] flex items-center justify-center gap-2 transition-all duration-300 ${
+    loading
+      ? "opacity-80 cursor-not-allowed"
+      : "hover:scale-[1.02]"
+  }`}
+>
+  {loading ? (
+    <>
+      <Loader2 className="w-5 h-5 animate-spin" />
+      Logging in...
+    </>
+  ) : (
+    "Login"
+  )}
+</button>
+
+   
 
           </form>
         )}
