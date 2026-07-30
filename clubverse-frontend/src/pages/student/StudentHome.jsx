@@ -8,6 +8,24 @@ import EventFeedCard from "../../pages/student/EventFeedCard";
 import WelcomeBanner from "../../pages/student/WelcomeBanner";
 import QuickStats from "../../pages/student/QuickStats";
 
+function SkeletonCard() {
+  return (
+    <div className="rounded-3xl bg-white shadow-md p-4 animate-pulse">
+
+      <div className="h-44 bg-gray-200 rounded-2xl"></div>
+
+      <div className="mt-4 h-5 bg-gray-200 rounded w-3/4"></div>
+
+      <div className="mt-3 h-4 bg-gray-200 rounded"></div>
+
+      <div className="mt-2 h-4 bg-gray-200 rounded w-2/3"></div>
+
+      <div className="mt-5 h-10 bg-gray-200 rounded-xl"></div>
+
+    </div>
+  );
+}
+
 export default function StudentHome() {
   const [user, setUser] = useState(null);
 
@@ -16,6 +34,7 @@ export default function StudentHome() {
 
   const [clubsCount, setClubsCount] = useState(0);
   const [registeredCount, setRegisteredCount] = useState(0);
+  const [loadingEvents, setLoadingEvents] = useState(true);
 
   useEffect(() => {
     fetchUser();
@@ -46,8 +65,10 @@ export default function StudentHome() {
 
   // ================= EVENTS =================
 
-  const fetchEvents = async () => {
-    try {
+ const fetchEvents = async () => {
+  setLoadingEvents(true);
+
+  try {
       const res = await axios.get(
         "https://clubverse-nsgq.onrender.com/api/events"
       );
@@ -79,9 +100,11 @@ export default function StudentHome() {
       setOngoingEvents(ongoing);
       setUpcomingEvents(upcoming);
 
-    } catch (err) {
-      console.log(err);
-    }
+   } catch (err) {
+  console.log(err);
+} finally {
+  setLoadingEvents(false);
+}
   };
 
   // ================= STATS =================
@@ -186,41 +209,40 @@ export default function StudentHome() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
 
-            {
+{
+  loadingEvents ? (
 
-              ongoingEvents.length ?
+    <>
+      {[1, 2, 3, 4].map((i) => (
+        <SkeletonCard key={i} />
+      ))}
+    </>
 
-                ongoingEvents.map((event) => (
+  ) : ongoingEvents.length ? (
 
-                  <OngoingEventCard
+    ongoingEvents.map((event) => (
+      <OngoingEventCard
+        key={event._id}
+        event={event}
+      />
+    ))
 
-                    key={event._id}
+  ) : (
 
-                    event={event}
+    <div className="col-span-2 rounded-3xl bg-white/60 backdrop-blur-xl shadow-lg p-12 text-center">
 
-                  />
+      <h2 className="text-2xl font-bold text-[#6D4BC3]">
+        No Live Events
+      </h2>
 
-                ))
+      <p className="text-gray-500 mt-3">
+        Check back later.
+      </p>
 
-                :
+    </div>
 
-                <div className="col-span-2 rounded-3xl bg-white/60 backdrop-blur-xl shadow-lg p-12 text-center">
-
-                  <h2 className="text-2xl font-bold text-[#6D4BC3]">
-
-                    No Live Events
-
-                  </h2>
-
-                  <p className="text-gray-500 mt-3">
-
-                    Check back later.
-
-                  </p>
-
-                </div>
-
-            }
+  )
+}
 
           </div>
 
@@ -258,42 +280,40 @@ export default function StudentHome() {
 
           <div className="grid lg:grid-cols-2 gap-7 mt-8">
 
-            {
+    {
+  loadingEvents ? (
 
-              upcomingEvents.length ?
+    <>
+      {[1, 2].map((i) => (
+        <SkeletonCard key={i} />
+      ))}
+    </>
 
-                upcomingEvents.map((event) => (
+  ) : upcomingEvents.length ? (
 
-                  <UpcomingEventCard
+    upcomingEvents.map((event) => (
+      <UpcomingEventCard
+        key={event._id}
+        event={event}
+      />
+    ))
 
-                    key={event._id}
+  ) : (
 
-                    event={event}
+    <div className="col-span-2 rounded-3xl bg-white/60 backdrop-blur-xl shadow-lg p-12 text-center">
 
-                  />
+      <h2 className="text-2xl font-bold text-[#6D4BC3]">
+        No Upcoming Events
+      </h2>
 
-                ))
+      <p className="text-gray-500 mt-3">
+        New events will appear here.
+      </p>
 
-                :
+    </div>
 
-                <div className="col-span-2 rounded-3xl bg-white/60 backdrop-blur-xl shadow-lg p-12 text-center">
-
-                  <h2 className="text-2xl font-bold text-[#6D4BC3]">
-
-                    No Upcoming Events
-
-                  </h2>
-
-                  <p className="text-gray-500 mt-3">
-
-                    New events will appear here.
-
-                  </p>
-
-                </div>
-
-            }
-
+  )
+}
           </div>
 
         </section>
@@ -319,42 +339,40 @@ export default function StudentHome() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
 
-            {
+           {
+  loadingEvents ? (
 
-              [...ongoingEvents, ...upcomingEvents].length ?
+    <>
+      {[1, 2, 3, 4].map((i) => (
+        <SkeletonCard key={i} />
+      ))}
+    </>
 
-                [...ongoingEvents, ...upcomingEvents].map((event) => (
+  ) : [...ongoingEvents, ...upcomingEvents].length ? (
 
-                  <EventFeedCard
+    [...ongoingEvents, ...upcomingEvents].map((event) => (
+      <EventFeedCard
+        key={event._id}
+        event={event}
+      />
+    ))
 
-                    key={event._id}
+  ) : (
 
-                    event={event}
+    <div className="col-span-2 rounded-3xl bg-white/60 backdrop-blur-xl shadow-lg p-14 text-center">
 
-                  />
+      <h2 className="text-2xl font-bold text-[#6D4BC3]">
+        No Events Available
+      </h2>
 
-                ))
+      <p className="mt-3 text-gray-500">
+        Clubs haven't posted any events yet.
+      </p>
 
-                :
+    </div>
 
-                <div className="col-span-2 rounded-3xl bg-white/60 backdrop-blur-xl shadow-lg p-14 text-center">
-
-                  <h2 className="text-2xl font-bold text-[#6D4BC3]">
-
-                    No Events Available
-
-                  </h2>
-
-                  <p className="mt-3 text-gray-500">
-
-                    Clubs haven't posted any events yet.
-
-                  </p>
-
-                </div>
-
-            }
-
+  )
+}
           </div>
 
         </section>
