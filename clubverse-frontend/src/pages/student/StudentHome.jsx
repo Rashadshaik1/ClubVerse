@@ -61,6 +61,8 @@ export default function StudentHome() {
   const [clubsCount, setClubsCount] = useState(0);
   const [registeredCount, setRegisteredCount] = useState(0);
   const [loadingEvents, setLoadingEvents] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(true);
+const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
     fetchUser();
@@ -181,7 +183,10 @@ export default function StudentHome() {
 
         <div className="pt-8">
 
-          <WelcomeBanner user={user} />
+        <WelcomeBanner
+  user={user}
+  loading={!user}
+/>
 
         </div>
 

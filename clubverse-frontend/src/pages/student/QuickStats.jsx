@@ -5,12 +5,15 @@ import {
   Trophy,
   TrendingUp
 } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function QuickStats({
   ongoingCount,
   upcomingCount,
   registeredCount,
   clubsCount,
+  loading,
 }) {
   const stats = [
     {
@@ -79,34 +82,65 @@ export default function QuickStats({
                   </p>
 
                   <h2 className="mt-2 text-3xl font-bold text-[#4B2E91]">
-                    {item.value}
-                  </h2>
+  {loading ? (
+    <Skeleton
+      width={55}
+      height={34}
+      borderRadius={8}
+      baseColor="#ECE8F8"
+      highlightColor="#F8F7FC"
+    />
+  ) : (
+    item.value
+  )}
+</h2>
 
-                  <div className="mt-3 flex items-center gap-1 text-xs text-[#6D4BC3]">
-                    <TrendingUp size={13} />
-                    <span>Live Statistics</span>
-                  </div>
+<div className="mt-3">
+  {loading ? (
+    <Skeleton
+      width={90}
+      height={14}
+      baseColor="#ECE8F8"
+      highlightColor="#F8F7FC"
+    />
+  ) : (
+    <div className="flex items-center gap-1 text-xs text-[#6D4BC3]">
+      <TrendingUp size={13} />
+      <span>Live Statistics</span>
+    </div>
+  )}
+</div>
 
                 </div>
 
-                <div
-                  className={`
-                  w-12
-                  h-12
-                  rounded-xl
-                  bg-gradient-to-r
-                  ${item.gradient}
-                  flex
-                  items-center
-                  justify-center
-                  text-white
-                  shadow-lg
-                  group-hover:rotate-6
-                  group-hover:scale-110
-                  transition`}
-                >
-                  <Icon size={22} />
-                </div>
+               {loading ? (
+  <Skeleton
+    width={48}
+    height={48}
+    borderRadius={12}
+    baseColor="#ECE8F8"
+    highlightColor="#F8F7FC"
+  />
+) : (
+  <div
+    className={`
+    w-12
+    h-12
+    rounded-xl
+    bg-gradient-to-r
+    ${item.gradient}
+    flex
+    items-center
+    justify-center
+    text-white
+    shadow-lg
+    group-hover:rotate-6
+    group-hover:scale-110
+    transition`}
+  >
+    <Icon size={22} />
+  </div>
+)}
 
               </div>
 

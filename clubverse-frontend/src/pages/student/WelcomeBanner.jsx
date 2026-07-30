@@ -3,8 +3,10 @@ import {
   CalendarDays,
   ArrowRight
 } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-export default function WelcomeBanner({ user }) {
+export default function WelcomeBanner({ user, loading }) {
   const hour = new Date().getHours();
 
   let greeting = "Good Evening 🌙";
@@ -71,35 +73,73 @@ export default function WelcomeBanner({ user }) {
 
               <Sparkles size={16} />
 
-              <span className="text-sm font-medium">
-                ClubVerse Student Portal
-              </span>
+{loading ? (
+  <Skeleton
+    width={160}
+    height={18}
+    baseColor="#A88CF6"
+    highlightColor="#CDBDFF"
+  />
+) : (
+  <span className="text-sm font-medium">
+    ClubVerse Student Portal
+  </span>
+)}
 
             </div>
 
-            <h1 className="mt-5 text-4xl lg:text-5xl font-bold leading-tight">
+           <h1 className="mt-5 text-4xl lg:text-5xl font-bold leading-tight">
 
-              {greeting}
+  {loading ? (
+    <>
+      <Skeleton
+        width={240}
+        height={40}
+        baseColor="#A88CF6"
+        highlightColor="#CDBDFF"
+      />
 
-              <br />
+      <div className="mt-3">
+        <Skeleton
+          width={180}
+          height={42}
+          baseColor="#A88CF6"
+          highlightColor="#CDBDFF"
+        />
+      </div>
+    </>
+  ) : (
+    <>
+      {greeting}
+      <br />
+      <span className="text-[#F8F5FF]">
+        {user?.name || "Student"} 👋
+      </span>
+    </>
+  )}
 
-              <span className="text-[#F8F5FF]">
-                {user?.name || "Student"} 👋
-              </span>
+</h1>
+          <p className="mt-4 max-w-2xl text-white/90 leading-7">
 
-            </h1>
+  {loading ? (
+    <>
+      <Skeleton
+        count={3}
+        baseColor="#A88CF6"
+        highlightColor="#CDBDFF"
+      />
+    </>
+  ) : (
+    <>
+      {message}
+      <br />
+      Discover workshops, hackathons, technical,
+      cultural and social events happening across
+      your campus.
+    </>
+  )}
 
-            <p className="mt-4 max-w-2xl text-white/90 leading-7">
-
-              {message}
-
-              <br />
-
-              Discover workshops, hackathons, technical,
-              cultural and social events happening across
-              your campus.
-
-            </p>
+</p>
 
             <div className="mt-6 flex flex-wrap gap-4">
 
@@ -113,9 +153,18 @@ export default function WelcomeBanner({ user }) {
                     Today
                   </p>
 
-                  <p className="font-medium text-sm">
-                    {today}
-                  </p>
+                {loading ? (
+  <Skeleton
+    width={120}
+    height={16}
+    baseColor="#A88CF6"
+    highlightColor="#CDBDFF"
+  />
+) : (
+  <p className="font-medium text-sm">
+    {today}
+  </p>
+)}
 
                 </div>
 
@@ -129,32 +178,40 @@ export default function WelcomeBanner({ user }) {
 
           <div className="flex items-center">
 
-            <button
-              onClick={scrollToEvents}
-              className="
-              group
-              px-7
-              py-4
-              rounded-2xl
-              bg-white
-              text-[#6D4BC3]
-              font-semibold
-              shadow-lg
-              hover:scale-105
-              transition-all
-              flex
-              items-center
-              gap-2"
-            >
+           {loading ? (
+  <Skeleton
+    width={180}
+    height={58}
+    borderRadius={16}
+    baseColor="#A88CF6"
+    highlightColor="#CDBDFF"
+  />
+) : (
+  <button
+    onClick={scrollToEvents}
+    className="
+    group
+    px-7
+    py-4
+    rounded-2xl
+    bg-white
+    text-[#6D4BC3]
+    font-semibold
+    shadow-lg
+    hover:scale-105
+    transition-all
+    flex
+    items-center
+    gap-2"
+  >
+    Explore Events
 
-              Explore Events
-
-              <ArrowRight
-                size={18}
-                className="group-hover:translate-x-1 transition"
-              />
-
-            </button>
+    <ArrowRight
+      size={18}
+      className="group-hover:translate-x-1 transition"
+    />
+  </button>
+)}
 
           </div>
 
