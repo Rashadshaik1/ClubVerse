@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
 
 export default function CreateEvent() {
+const navigate = useNavigate();
+
   const club = JSON.parse(localStorage.getItem("club") || "{}");
   const today = new Date().toISOString().split("T")[0];
 
@@ -140,7 +143,7 @@ export default function CreateEvent() {
 
       console.log("EVENT CREATED:", res.data);
       alert("Event Created Successfully!");
-      window.location.href = "/club/manage-events";
+      navigate("/club/manage-events");
     } catch (err) {
       console.error("CREATE EVENT ERROR:", err.response?.data || err.message);
       const errMsg =
