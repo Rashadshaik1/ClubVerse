@@ -11,6 +11,518 @@ import {
   ArrowRight,
   Globe,
 } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
+function ClubDetailsSkeleton() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#F6F4FF] via-[#EEF2FF] to-[#E8F3FF]">
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+        {/* ================= BANNER ================= */}
+
+        <div className="
+          relative
+          h-56
+          sm:h-64
+          lg:h-72
+          rounded-3xl
+          overflow-hidden
+          shadow-lg
+        ">
+
+          <Skeleton
+            width="100%"
+            height="100%"
+            baseColor="#ECE8F8"
+            highlightColor="#F8F7FC"
+          />
+
+          {/* Logo + Club Name */}
+
+          <div className="
+            absolute
+            bottom-5
+            sm:bottom-8
+            left-5
+            sm:left-8
+            flex
+            items-center
+            gap-3
+            sm:gap-6
+          ">
+
+            <Skeleton
+              circle
+              width={window.innerWidth < 640 ? 80 : 112}
+              height={window.innerWidth < 640 ? 80 : 112}
+              baseColor="#ECE8F8"
+              highlightColor="#F8F7FC"
+            />
+
+            <div>
+
+              <Skeleton
+                width={window.innerWidth < 640 ? 150 : 220}
+                height={32}
+                borderRadius={8}
+                baseColor="#ECE8F8"
+                highlightColor="#F8F7FC"
+              />
+
+              <div className="mt-2">
+
+                <Skeleton
+                  width={100}
+                  height={18}
+                  borderRadius={8}
+                  baseColor="#ECE8F8"
+                  highlightColor="#F8F7FC"
+                />
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* ================= MAIN CONTENT ================= */}
+
+        <div className="
+          grid
+          grid-cols-1
+          lg:grid-cols-4
+          gap-6
+          mt-8
+        ">
+
+          {/* LEFT */}
+
+          <div className="lg:col-span-3 space-y-6">
+
+            {/* ABOUT */}
+
+            <div className="bg-white rounded-2xl p-5 sm:p-6 shadow">
+
+              <Skeleton
+                width={170}
+                height={28}
+                borderRadius={8}
+                baseColor="#ECE8F8"
+                highlightColor="#F8F7FC"
+              />
+
+              <div className="mt-4">
+
+                <Skeleton
+                  count={4}
+                  height={16}
+                  baseColor="#ECE8F8"
+                  highlightColor="#F8F7FC"
+                />
+
+              </div>
+
+            </div>
+
+
+            {/* STATS */}
+
+            <div className="
+              grid
+              grid-cols-1
+              sm:grid-cols-3
+              gap-5
+            ">
+
+              {[1, 2, 3].map((item) => (
+
+                <div
+                  key={item}
+                  className="
+                    bg-white
+                    rounded-2xl
+                    p-6
+                    shadow
+                    flex
+                    items-center
+                    gap-4
+                  "
+                >
+
+                  <Skeleton
+                    circle
+                    width={34}
+                    height={34}
+                    baseColor="#ECE8F8"
+                    highlightColor="#F8F7FC"
+                  />
+
+                  <div>
+
+                    <Skeleton
+                      width={55}
+                      height={30}
+                      borderRadius={8}
+                      baseColor="#ECE8F8"
+                      highlightColor="#F8F7FC"
+                    />
+
+                    <div className="mt-2">
+
+                      <Skeleton
+                        width={100}
+                        height={16}
+                        borderRadius={8}
+                        baseColor="#ECE8F8"
+                        highlightColor="#F8F7FC"
+                      />
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+
+
+            {/* FACULTY */}
+
+            <div className="bg-white rounded-2xl shadow p-5 sm:p-6">
+
+              <Skeleton
+                width={220}
+                height={28}
+                borderRadius={8}
+                baseColor="#ECE8F8"
+                highlightColor="#F8F7FC"
+              />
+
+              <div className="flex items-center gap-5 mt-6">
+
+                <Skeleton
+                  circle
+                  width={80}
+                  height={80}
+                  baseColor="#ECE8F8"
+                  highlightColor="#F8F7FC"
+                />
+
+                <div className="flex-1">
+
+                  <Skeleton
+                    width={180}
+                    height={22}
+                    borderRadius={8}
+                    baseColor="#ECE8F8"
+                    highlightColor="#F8F7FC"
+                  />
+
+                  <div className="mt-2">
+
+                    <Skeleton
+                      width={130}
+                      height={16}
+                      borderRadius={8}
+                      baseColor="#ECE8F8"
+                      highlightColor="#F8F7FC"
+                    />
+
+                  </div>
+
+                  <div className="mt-2">
+
+                    <Skeleton
+                      width={220}
+                      height={16}
+                      borderRadius={8}
+                      baseColor="#ECE8F8"
+                      highlightColor="#F8F7FC"
+                    />
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* ================= RIGHT SIDEBAR ================= */}
+
+          <div className="space-y-6">
+
+            {/* CONTACT */}
+
+            <div className="bg-white rounded-2xl shadow p-6">
+
+              <Skeleton
+                width={110}
+                height={24}
+                borderRadius={8}
+                baseColor="#ECE8F8"
+                highlightColor="#F8F7FC"
+              />
+
+              <div className="mt-6 space-y-5">
+
+                <Skeleton
+                  width="90%"
+                  height={18}
+                  borderRadius={8}
+                  baseColor="#ECE8F8"
+                  highlightColor="#F8F7FC"
+                />
+
+                <Skeleton
+                  width="65%"
+                  height={18}
+                  borderRadius={8}
+                  baseColor="#ECE8F8"
+                  highlightColor="#F8F7FC"
+                />
+
+              </div>
+
+            </div>
+
+
+            {/* CLUB INFO */}
+
+            <div className="bg-white rounded-2xl shadow p-6">
+
+              <Skeleton
+                width={170}
+                height={24}
+                borderRadius={8}
+                baseColor="#ECE8F8"
+                highlightColor="#F8F7FC"
+              />
+
+              <div className="mt-6 space-y-4">
+
+                {[1, 2, 3].map((item) => (
+
+                  <Skeleton
+                    key={item}
+                    width="80%"
+                    height={18}
+                    borderRadius={8}
+                    baseColor="#ECE8F8"
+                    highlightColor="#F8F7FC"
+                  />
+
+                ))}
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* ================= EXECUTIVE TEAM ================= */}
+
+        <div className="bg-white rounded-3xl shadow-lg p-5 sm:p-8 mt-8">
+
+          <Skeleton
+            width={190}
+            height={28}
+            borderRadius={8}
+            baseColor="#ECE8F8"
+            highlightColor="#F8F7FC"
+          />
+
+          <div className="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            md:grid-cols-3
+            lg:grid-cols-4
+            gap-6
+            mt-6
+          ">
+
+            {[1, 2, 3, 4].map((item) => (
+
+              <div
+                key={item}
+                className="border rounded-2xl p-5 text-center"
+              >
+
+                <Skeleton
+                  circle
+                  width={96}
+                  height={96}
+                  baseColor="#ECE8F8"
+                  highlightColor="#F8F7FC"
+                />
+
+                <div className="mt-4">
+
+                  <Skeleton
+                    width="65%"
+                    height={20}
+                    borderRadius={8}
+                    baseColor="#ECE8F8"
+                    highlightColor="#F8F7FC"
+                  />
+
+                </div>
+
+                <div className="mt-2">
+
+                  <Skeleton
+                    width="50%"
+                    height={16}
+                    borderRadius={8}
+                    baseColor="#ECE8F8"
+                    highlightColor="#F8F7FC"
+                  />
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+
+        {/* ================= UPCOMING EVENTS ================= */}
+
+        <div className="bg-white rounded-3xl shadow-lg p-5 sm:p-8 mt-8">
+
+          <div className="
+            flex
+            flex-col
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+            gap-3
+            mb-6
+          ">
+
+            <Skeleton
+              width={190}
+              height={28}
+              borderRadius={8}
+              baseColor="#ECE8F8"
+              highlightColor="#F8F7FC"
+            />
+
+            <Skeleton
+              width={130}
+              height={20}
+              borderRadius={8}
+              baseColor="#ECE8F8"
+              highlightColor="#F8F7FC"
+            />
+
+          </div>
+
+
+          <div className="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-3
+            gap-6
+          ">
+
+            {[1, 2, 3].map((item) => (
+
+              <div
+                key={item}
+                className="
+                  border
+                  rounded-2xl
+                  overflow-hidden
+                "
+              >
+
+                <Skeleton
+                  height={176}
+                  width="100%"
+                  baseColor="#ECE8F8"
+                  highlightColor="#F8F7FC"
+                />
+
+                <div className="p-4">
+
+                  <Skeleton
+                    width="80%"
+                    height={22}
+                    borderRadius={8}
+                    baseColor="#ECE8F8"
+                    highlightColor="#F8F7FC"
+                  />
+
+                  <div className="mt-3">
+
+                    <Skeleton
+                      width="70%"
+                      height={16}
+                      borderRadius={8}
+                      baseColor="#ECE8F8"
+                      highlightColor="#F8F7FC"
+                    />
+
+                  </div>
+
+                  <div className="mt-2">
+
+                    <Skeleton
+                      width="60%"
+                      height={16}
+                      borderRadius={8}
+                      baseColor="#ECE8F8"
+                      highlightColor="#F8F7FC"
+                    />
+
+                  </div>
+
+                  <div className="mt-4">
+
+                    <Skeleton
+                      width={95}
+                      height={38}
+                      borderRadius={12}
+                      baseColor="#ECE8F8"
+                      highlightColor="#F8F7FC"
+                    />
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
 
 const ClubDetails = () => {
   const { id } = useParams();
@@ -41,12 +553,14 @@ const fetchClub = async () => {
   }
 };
 
-  if (loading)
-    return (
-      <div className="min-h-screen flex justify-center items-center text-lg font-medium text-[#6D4BC3]">
-        Loading Club Details...
-      </div>
-    );
+ if (loading) {
+  return (
+    <>
+      <StudentNavbar />
+      <ClubDetailsSkeleton />
+    </>
+  );
+}
 
   if (!club)
     return (
