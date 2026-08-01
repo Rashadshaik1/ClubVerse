@@ -143,10 +143,10 @@ router.put(
   protect,
   fixEventCoordinators
 );
+
 /* ================= GET SINGLE EVENT ================= */
 
-// Always keep this last
-
+// Always keep general dynamic single-param routes LAST
 router.get(
   "/:id",
   getEventById
