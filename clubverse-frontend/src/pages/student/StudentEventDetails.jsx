@@ -18,77 +18,189 @@ import {
   UserRound,
   X,
 } from "lucide-react";
-
 function EventDetailsSkeleton() {
+  const shimmerBase = "#ECE8F8";
+  const shimmerHighlight = "#F8F7FC";
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F6F4FF] via-[#EEF2FF] to-[#E8F3FF]">
 
-      <div className="h-56 bg-gray-200 animate-pulse" />
+      {/* Banner */}
+      <div
+        className="w-full h-56 animate-pulse"
+        style={{
+          backgroundColor: shimmerBase,
+        }}
+      />
 
       <div className="max-w-6xl mx-auto px-6 py-10">
 
         <div className="grid lg:grid-cols-3 gap-8">
 
+          {/* LEFT */}
           <div className="lg:col-span-2">
 
+            {/* Poster */}
             <div className="-mt-20 relative mb-8">
 
-              <div className="
-                w-48
-sm:w-56
-md:w-64
-h-64
-sm:h-72
-md:h-80
-                rounded-3xl
-                bg-gray-200
-                animate-pulse
-              " />
+              <div
+                className="
+                  w-48
+                  sm:w-56
+                  md:w-64
+                  h-64
+                  sm:h-72
+                  md:h-80
+                  rounded-3xl
+                  animate-pulse
+                "
+                style={{
+                  backgroundColor: shimmerBase,
+                }}
+              />
 
             </div>
 
-            <div className="h-10 w-3/4 bg-gray-200 rounded-xl animate-pulse" />
+            {/* Title */}
+            <div
+              className="
+                h-10
+                w-3/4
+                rounded-xl
+                animate-pulse
+              "
+              style={{
+                backgroundColor: shimmerBase,
+              }}
+            />
 
-            <div className="mt-6 bg-white rounded-3xl p-6 shadow-lg">
+            {/* About Event */}
+            <div
+              className="
+                mt-6
+                bg-white
+                rounded-3xl
+                p-6
+                shadow-lg
+              "
+            >
 
-              <div className="h-7 w-40 bg-gray-200 rounded animate-pulse" />
+              <div
+                className="
+                  h-7
+                  w-40
+                  rounded
+                  animate-pulse
+                "
+                style={{
+                  backgroundColor: shimmerBase,
+                }}
+              />
 
               <div className="mt-5 space-y-3">
-                <div className="h-4 bg-gray-200 rounded animate-pulse" />
-                <div className="h-4 bg-gray-200 rounded animate-pulse" />
-                <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse" />
+
+                <div
+                  className="h-4 rounded animate-pulse"
+                  style={{
+                    backgroundColor: shimmerBase,
+                  }}
+                />
+
+                <div
+                  className="h-4 rounded animate-pulse"
+                  style={{
+                    backgroundColor: shimmerBase,
+                  }}
+                />
+
+                <div
+                  className="
+                    h-4
+                    w-2/3
+                    rounded
+                    animate-pulse
+                  "
+                  style={{
+                    backgroundColor: shimmerBase,
+                  }}
+                />
+
               </div>
 
             </div>
 
+            {/* Rules + Requirements */}
             <div className="grid md:grid-cols-2 gap-6 mt-8">
 
-              <div className="h-40 bg-gray-200 rounded-3xl animate-pulse" />
+              <div
+                className="
+                  h-40
+                  rounded-3xl
+                  animate-pulse
+                "
+                style={{
+                  backgroundColor: shimmerBase,
+                }}
+              />
 
-              <div className="h-40 bg-gray-200 rounded-3xl animate-pulse" />
+              <div
+                className="
+                  h-40
+                  rounded-3xl
+                  animate-pulse
+                "
+                style={{
+                  backgroundColor: shimmerBase,
+                }}
+              />
 
             </div>
 
           </div>
 
+          {/* RIGHT */}
           <div>
 
-            <div className="bg-white rounded-3xl shadow-xl p-7">
+            <div
+              className="
+                bg-white
+                rounded-3xl
+                shadow-xl
+                p-7
+              "
+            >
 
-              <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-6" />
+              {/* Heading */}
+              <div
+                className="
+                  h-8
+                  w-48
+                  rounded
+                  animate-pulse
+                  mb-6
+                "
+                style={{
+                  backgroundColor: shimmerBase,
+                }}
+              />
 
+              {/* Information blocks */}
               <div className="space-y-4">
 
-                {[1,2,3,4,5].map((item) => (
+                {[1, 2, 3, 4, 5].map((item) => (
+
                   <div
                     key={item}
                     className="
                       h-20
                       rounded-2xl
-                      bg-gray-200
                       animate-pulse
                     "
+                    style={{
+                      backgroundColor: shimmerBase,
+                    }}
                   />
+
                 ))}
 
               </div>
