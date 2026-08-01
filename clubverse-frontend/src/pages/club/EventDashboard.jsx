@@ -447,15 +447,23 @@ alert("Cancellation failed");
             </h1>
           </div>
           
-          {isUpcoming && (
-            
-            <button 
-              onClick={handleCancelEvent}
-              className="bg-red-500/10 hover:bg-red-500 text-red-600 hover:text-white border border-red-500/20 px-5 py-2.5 rounded-2xl text-xs font-black shadow-sm transition-all transform hover:-translate-y-0.5"
-            >
-              Cancel Event
-            </button>
-          )}
+{isUpcoming && (
+  <div className="flex items-center gap-3">
+    <button 
+      onClick={handleCompleteEvent}
+      className="bg-green-500/10 hover:bg-green-500 text-green-600 hover:text-white border border-green-500/20 px-5 py-2.5 rounded-2xl text-xs font-black shadow-sm transition-all transform hover:-translate-y-0.5"
+    >
+      Mark as Completed
+    </button>
+
+    <button 
+      onClick={handleCancelEvent}
+      className="bg-red-500/10 hover:bg-red-500 text-red-600 hover:text-white border border-red-500/20 px-5 py-2.5 rounded-2xl text-xs font-black shadow-sm transition-all transform hover:-translate-y-0.5"
+    >
+      Cancel Event
+    </button>
+  </div>
+)}
         </div>
 
         {/* MAIN DASHBOARD GRID */}
@@ -466,9 +474,26 @@ alert("Cancellation failed");
             {/* EVENT POSTER CARD */}
             <div className="bg-white/60 backdrop-blur-xl p-5 rounded-3xl border border-[#cceeee] shadow-sm">
               <h3 className="text-sm font-black text-gray-700 uppercase tracking-wider mb-4">Event Poster</h3>
-              <div className="w-full h-80 rounded-2xl border border-[#cceeee] bg-white/50 overflow-hidden flex items-center justify-center p-2 shadow-inner">
-                <img src={posterPreview || "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500"} className="w-full h-full object-cover rounded-xl" alt="Poster" />
-              </div>
+<div
+  onClick={() => {
+    const imageUrl =
+      posterPreview ||
+      "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500";
+
+    window.open(imageUrl, "_blank");
+  }}
+  className="w-full h-80 rounded-2xl border border-[#cceeee] bg-white/50 overflow-hidden flex items-center justify-center p-2 shadow-inner cursor-pointer group"
+  title="Click to view poster"
+>
+  <img
+    src={
+      posterPreview ||
+      "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500"
+    }
+    className="w-full h-full object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-300"
+    alt="Poster"
+  />
+</div>
               {isUpcoming && (
                 <div className="mt-4 space-y-2">
                   <input type="file" id="dashboardPosterFile" className="hidden" accept="image/*" onChange={handlePosterChange} />
