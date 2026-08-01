@@ -126,7 +126,13 @@ router.get(
   getEventRegistrations
 );
 
+// ================= FIX EVENT COORDINATORS =================
 
+router.put(
+  "/:id/fix-coordinators",
+  protect,
+  fixEventCoordinators
+);
 /* ================= GET SINGLE EVENT ================= */
 
 // Always keep this last
@@ -162,9 +168,5 @@ router.post(
   addFeedback
 );
 
-router.put(
-  "/:id/fix-coordinators",
-  protect,
-  fixEventCoordinators
-);
+
 module.exports = router;

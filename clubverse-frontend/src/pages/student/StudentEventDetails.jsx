@@ -155,7 +155,7 @@ useEffect(() => {
   fetchEvent();
   checkRegistration();
   fetchGallery();
-}, []);
+}, [id]);
 
 const fetchUser = async () => {
   try {
@@ -691,9 +691,15 @@ className="mt-6 w-full py-4 rounded-2xl bg-[#6D4BC3] text-white font-semibold ho
       </p>
     </div>
   </div>
-  {/* EVENT COORDINATORS */}
+ {/* EVENT COORDINATORS */}
 
-{event.coordinators?.length > 0 && (
+{(
+  event.coordinators?.length > 0 ||
+  event.contactName ||
+  event.contactEmail ||
+  event.contactPhone
+) && (
+
   <div className="mt-6">
 
     <h3 className="text-lg font-bold text-[#4B2E91] mb-4">
@@ -702,73 +708,110 @@ className="mt-6 w-full py-4 rounded-2xl bg-[#6D4BC3] text-white font-semibold ho
 
     <div className="space-y-4">
 
-      {event.coordinators.slice(0, 2).map((coordinator, index) => (
-        <div
-          key={index}
-          className="
-            rounded-2xl
-            bg-[#F8F7FF]
-            border
-            border-[#E8E1F8]
-            p-4
-          "
-        >
+      {(
+        event.coordinators?.length > 0
+          ? event.coordinators
+          : [
+              {
+                name: event.contactName,
+                email: event.contactEmail,
+                phone: event.contactPhone,
+              },
+            ]
+      )
+        .slice(0, 2)
+        .map((coordinator, index) => (
 
-          <div className="flex items-center gap-3">
+          <div
+            key={index}
+            className="
+              rounded-2xl
+              bg-[#F8F7FF]
+              border
+              border-[#E8E1F8]
+              p-4
+            "
+          >
 
-            <div className="
-              w-10
-              h-10
-              rounded-full
-              bg-[#EDE9FE]
-              flex
-              items-center
-              justify-center
-            ">
-              <UserRound
-                size={19}
-                className="text-[#6D4BC3]"
-              />
+            <div className="flex items-center gap-3">
+
+              <div
+                className="
+                  w-10
+                  h-10
+                  rounded-full
+                  bg-[#EDE9FE]
+                  flex
+                  items-center
+                  justify-center
+                "
+              >
+                <UserRound
+                  size={19}
+                  className="text-[#6D4BC3]"
+                />
+              </div>
+
+              <div>
+
+                <p className="text-xs text-gray-500">
+                  Coordinator {index + 1}
+                </p>
+
+                <p className="font-semibold text-gray-800">
+                  {coordinator.name || "Event Coordinator"}
+                </p>
+
+              </div>
+
             </div>
 
-            <div>
-              <p className="text-xs text-gray-500">
-                Coordinator {index + 1}
-              </p>
+            <div className="mt-3 space-y-2">
 
-              <p className="font-semibold text-gray-800">
-                {coordinator.name}
-              </p>
+              {coordinator.email && (
+                <a
+                  href={`mailto:${coordinator.email}`}
+                  className="
+                    flex
+                    items-center
+                    gap-2
+                    text-sm
+                    text-gray-600
+                    hover:text-[#6D4BC3]
+                  "
+                >
+                  <Mail size={16} />
+                  {coordinator.email}
+                </a>
+              )}
+
+              {coordinator.phone && (
+                <a
+                  href={`tel:${coordinator.phone}`}
+                  className="
+                    flex
+                    items-center
+                    gap-2
+                    text-sm
+                    text-gray-600
+                    hover:text-[#6D4BC3]
+                  "
+                >
+                  <Phone size={16} />
+                  {coordinator.phone}
+                </a>
+              )}
+
             </div>
 
           </div>
 
-          <div className="mt-3 space-y-2">
-
-            <a
-              href={`mailto:${coordinator.email}`}
-              className="flex items-center gap-2 text-sm text-gray-600 hover:text-[#6D4BC3]"
-            >
-              <Mail size={16} />
-              {coordinator.email}
-            </a>
-
-            <a
-              href={`tel:${coordinator.phone}`}
-              className="flex items-center gap-2 text-sm text-gray-600 hover:text-[#6D4BC3]"
-            >
-              <Phone size={16} />
-              {coordinator.phone}
-            </a>
-
-          </div>
-
-        </div>
-      ))}
+        ))}
 
     </div>
 
   </div>
+
 )}
 
   <div className="flex items-center gap-4 bg-[#F8F7FF] rounded-2xl p-4">
