@@ -54,27 +54,51 @@ exports.getStudentNotifications = async (req, res) => {
   }
 
 };
-exports.markNotificationsRead = async (req,res)=>{
-  try{
+// ================= MARK STUDENT NOTIFICATIONS AS READ =================
 
+exports.markNotificationsRead = async (req, res) => {
+  try {
+
+    // Get all clubs in which the student has registered
+    const registrations = await Registration.find({
+      userId: req.user._id
+    }).populate({
+      path: "eventId",
+      select: "clubId"
+    });
+
+    const clubIds = registrations
+      .map((reg) => reg.eventId?.clubId)
+      .filter(Boolean);
+
+    // Mark both personal and club notifications as read
     await Notification.updateMany(
       {
-        userId:req.user._id,
-        isRead:false
+        $or: [
+          { userId: req.user._id },
+          { clubId: { $in: clubIds } }
+        ],
+        isRead: false
       },
       {
-        isRead:true
+        $set: {
+          isRead: true
+        }
       }
     );
 
-    res.json({
-      success:true
+    return res.json({
+      success: true,
+      message: "Notifications marked as read"
     });
 
-  }catch(error){
+  } catch (error) {
 
-    res.status(500).json({
-      message:error.message
+    console.log("MARK NOTIFICATIONS READ ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message
     });
 
   }
