@@ -128,6 +128,7 @@ router.get(
 );
 
 // ================= EXPORT ATTENDANCE CSV =================
+console.log("🔥 EXPORT ATTENDANCE ROUTE REGISTERED");
 
 router.get(
   "/:id/export-attendance",

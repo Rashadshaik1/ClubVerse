@@ -1106,7 +1106,8 @@ exports.fixEventCoordinators = async (req, res) => {
 // ================= EXPORT EVENT ATTENDANCE CSV =================
 
 exports.exportAttendance = async (req, res) => {
-  console.log("🔥 EXPORT ATTENDANCE ROUTE HIT:", req.params.id);
+  console.log("🔥 EXPORT ATTENDANCE FUNCTION HIT");
+  console.log("EVENT ID:", req.params.id);
 
   try {
     const { id } = req.params;
