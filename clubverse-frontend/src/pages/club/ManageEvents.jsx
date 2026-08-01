@@ -72,48 +72,7 @@ export default function ManageEvents() {
     return "COMPLETED";
   };
 
-  const markCompleted = async (eventId) => {
-  try {
-    const token = localStorage.getItem("token");
-
-    // await axios.put(
-    //   `https://clubverse-nsgq.onrender.com/api/events/${eventId}/complete`,
-    //   {},
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   }
-    // );
-
-console.log("EVENT ID:", eventId);
-console.log("NEW VENUE:", newVenue);
-
-await axios.put(
- `https://clubverse-nsgq.onrender.com/api/events/change-venue/${eventId}`,
- {
-   venue: newVenue
- },
- {
-   headers:{
-     Authorization:`Bearer ${token}`
-   }
- }
-);
-    setEvents((prev) =>
-      prev.map((event) =>
-        event._id === eventId
-          ? { ...event, status: "completed" }
-          : event
-      )
-    );
-
-    alert("Event marked as completed.");
-  } catch (err) {
-    console.log(err);
-    alert("Failed to mark event as completed.");
-  }
-};
+ 
 
   if (loading) {
   return <Loader />;
@@ -252,18 +211,6 @@ await axios.put(
   </div>
 </div>
 
-{currentStatus !== "COMPLETED" &&
- event.status !== "cancelled" && (
-  <button
-    onClick={(e) => {
-      e.stopPropagation();
-      markCompleted(event._id);
-    }}
-    className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-xl font-semibold transition"
-  >
-    Mark as Completed
-  </button>
-)}
                   </div>
                 </div>
               );
