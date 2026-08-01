@@ -20,7 +20,8 @@ const {
   getGalleryImages,
   deleteGalleryImage,
   addFeedback,
-  getEventRegistrations
+  getEventRegistrations,
+    fixEventCoordinators
 } = require("../controllers/eventController");
 
 console.log("COMPLETE EVENT FUNCTION:", completeEvent);
@@ -161,5 +162,9 @@ router.post(
   addFeedback
 );
 
-
+router.put(
+  "/:id/fix-coordinators",
+  protect,
+  fixEventCoordinators
+);
 module.exports = router;

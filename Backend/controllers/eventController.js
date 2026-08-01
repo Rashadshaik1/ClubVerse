@@ -1055,3 +1055,51 @@ exports.completeEvent = async (req, res) => {
 
   }
 };
+// ================= FIX EXISTING EVENT COORDINATORS =================
+
+exports.fixEventCoordinators = async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found",
+      });
+    }
+
+    // If coordinators already exist, don't overwrite them
+    if (event.coordinators && event.coordinators.length > 0) {
+      return res.json({
+        success: true,
+        message: "Coordinators already exist",
+        coordinators: event.coordinators,
+      });
+    }
+
+    // Convert existing contact details into coordinator
+    event.coordinators = [
+      {
+        name: event.contactName || "",
+        email: event.contactEmail || "",
+        phone: event.contactPhone || "",
+      },
+    ];
+
+    await event.save();
+
+    return res.json({
+      success: true,
+      message: "Coordinator details added successfully",
+      coordinators: event.coordinators,
+    });
+
+  } catch (error) {
+    console.log("FIX COORDINATORS ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
