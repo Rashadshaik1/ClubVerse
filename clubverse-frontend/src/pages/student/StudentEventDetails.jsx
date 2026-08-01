@@ -13,7 +13,97 @@ import {
   Clock,
   Star,
   Image,
+  Mail,
+  Phone,
+  UserRound,
+  X,
 } from "lucide-react";
+
+function EventDetailsSkeleton() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#F6F4FF] via-[#EEF2FF] to-[#E8F3FF]">
+
+      <div className="h-56 bg-gray-200 animate-pulse" />
+
+      <div className="max-w-6xl mx-auto px-6 py-10">
+
+        <div className="grid lg:grid-cols-3 gap-8">
+
+          <div className="lg:col-span-2">
+
+            <div className="-mt-20 relative mb-8">
+
+              <div className="
+                w-48
+sm:w-56
+md:w-64
+h-64
+sm:h-72
+md:h-80
+                rounded-3xl
+                bg-gray-200
+                animate-pulse
+              " />
+
+            </div>
+
+            <div className="h-10 w-3/4 bg-gray-200 rounded-xl animate-pulse" />
+
+            <div className="mt-6 bg-white rounded-3xl p-6 shadow-lg">
+
+              <div className="h-7 w-40 bg-gray-200 rounded animate-pulse" />
+
+              <div className="mt-5 space-y-3">
+                <div className="h-4 bg-gray-200 rounded animate-pulse" />
+                <div className="h-4 bg-gray-200 rounded animate-pulse" />
+                <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse" />
+              </div>
+
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 mt-8">
+
+              <div className="h-40 bg-gray-200 rounded-3xl animate-pulse" />
+
+              <div className="h-40 bg-gray-200 rounded-3xl animate-pulse" />
+
+            </div>
+
+          </div>
+
+          <div>
+
+            <div className="bg-white rounded-3xl shadow-xl p-7">
+
+              <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-6" />
+
+              <div className="space-y-4">
+
+                {[1,2,3,4,5].map((item) => (
+                  <div
+                    key={item}
+                    className="
+                      h-20
+                      rounded-2xl
+                      bg-gray-200
+                      animate-pulse
+                    "
+                  />
+                ))}
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
 
 export default function StudentEventDetails() {
 
@@ -38,15 +128,54 @@ const [comment, setComment] = useState("");
 const [submittingFeedback, setSubmittingFeedback] = useState(false);
 const [showPoster, setShowPoster] = useState(false);
 
+const [showRegisterModal, setShowRegisterModal] = useState(false);
+
+const [user, setUser] = useState(null);
+
+const [mobile, setMobile] = useState("");
+
+const [registering, setRegistering] = useState(false);
+
 const isUpcoming = event?.status === "upcoming";
 const isOngoing = event?.status === "ongoing";
 const isCompleted = event?.status === "completed";
 
-  useEffect(() => {
+const maxParticipants = Number(event?.maxParticipants || 0);
+
+const remainingSeats =
+  maxParticipants > 0
+    ? Math.max(maxParticipants - totalRegistrations, 0)
+    : null;
+
+const registrationFull =
+  maxParticipants > 0 && remainingSeats === 0;
+
+useEffect(() => {
+  fetchUser();
   fetchEvent();
   checkRegistration();
   fetchGallery();
 }, []);
+
+const fetchUser = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get(
+      "https://clubverse-nsgq.onrender.com/api/auth/me",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setUser(res.data.user);
+
+  } catch (err) {
+    console.log("USER FETCH ERROR:", err);
+  }
+};
 
   const fetchEvent = async () => {
 
@@ -122,7 +251,25 @@ console.log("EVENT FROM API:", res.data.event);
 };
   const handleRegister = async () => {
 
+  if (!mobile.trim()) {
+    alert("Please enter your mobile number.");
+    return;
+  }
+
+  if (!/^[6-9]\d{9}$/.test(mobile)) {
+    alert("Please enter a valid 10-digit mobile number.");
+    return;
+  }
+
+  if (registrationFull) {
+    alert("Registration is full.");
+    setShowRegisterModal(false);
+    return;
+  }
+
   try {
+
+    setRegistering(true);
 
     const token = localStorage.getItem("token");
 
@@ -130,6 +277,7 @@ console.log("EVENT FROM API:", res.data.event);
       "https://clubverse-nsgq.onrender.com/api/registration",
       {
         eventId: id,
+        mobile,
       },
       {
         headers: {
@@ -139,18 +287,26 @@ console.log("EVENT FROM API:", res.data.event);
     );
 
     setRegistered(true);
-setTotalRegistrations((prev) => prev + 1);
+
+    setTotalRegistrations((prev) => prev + 1);
+
+    setShowRegisterModal(false);
+
     setShowSuccess(true);
 
   } catch (err) {
 
     alert(
       err.response?.data?.msg ||
+      err.response?.data?.message ||
       "Registration Failed"
     );
 
-  }
+  } finally {
 
+    setRegistering(false);
+
+  }
 };
 
 const submitFeedback = async () => {
@@ -206,15 +362,9 @@ const submitFeedback = async () => {
 
 
 
-  if (loading) {
-
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
-
-  }
+if (loading) {
+  return <EventDetailsSkeleton />;
+}
 
   if (!event) {
 
@@ -278,9 +428,9 @@ const submitFeedback = async () => {
 </p>
 
 </div>
-<div className="flex items-center justify-between">
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
 
-<h1 className="text-4xl font-bold text-[#4B2E91]">
+<h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#4B2E91]">
 
 {event.title}
 
@@ -541,6 +691,85 @@ className="mt-6 w-full py-4 rounded-2xl bg-[#6D4BC3] text-white font-semibold ho
       </p>
     </div>
   </div>
+  {/* EVENT COORDINATORS */}
+
+{event.coordinators?.length > 0 && (
+  <div className="mt-6">
+
+    <h3 className="text-lg font-bold text-[#4B2E91] mb-4">
+      Event Coordinators
+    </h3>
+
+    <div className="space-y-4">
+
+      {event.coordinators.slice(0, 2).map((coordinator, index) => (
+        <div
+          key={index}
+          className="
+            rounded-2xl
+            bg-[#F8F7FF]
+            border
+            border-[#E8E1F8]
+            p-4
+          "
+        >
+
+          <div className="flex items-center gap-3">
+
+            <div className="
+              w-10
+              h-10
+              rounded-full
+              bg-[#EDE9FE]
+              flex
+              items-center
+              justify-center
+            ">
+              <UserRound
+                size={19}
+                className="text-[#6D4BC3]"
+              />
+            </div>
+
+            <div>
+              <p className="text-xs text-gray-500">
+                Coordinator {index + 1}
+              </p>
+
+              <p className="font-semibold text-gray-800">
+                {coordinator.name}
+              </p>
+            </div>
+
+          </div>
+
+          <div className="mt-3 space-y-2">
+
+            <a
+              href={`mailto:${coordinator.email}`}
+              className="flex items-center gap-2 text-sm text-gray-600 hover:text-[#6D4BC3]"
+            >
+              <Mail size={16} />
+              {coordinator.email}
+            </a>
+
+            <a
+              href={`tel:${coordinator.phone}`}
+              className="flex items-center gap-2 text-sm text-gray-600 hover:text-[#6D4BC3]"
+            >
+              <Phone size={16} />
+              {coordinator.phone}
+            </a>
+
+          </div>
+
+        </div>
+      ))}
+
+    </div>
+
+  </div>
+)}
 
   <div className="flex items-center gap-4 bg-[#F8F7FF] rounded-2xl p-4">
   <Users className="text-[#6D4BC3]" size={22} />
@@ -552,12 +781,21 @@ className="mt-6 w-full py-4 rounded-2xl bg-[#6D4BC3] text-white font-semibold ho
       {event.maxParticipants || "Unlimited"}
     </p>
 
-    {event.maxParticipants > 0 && (
-      <p className="text-sm text-green-600 mt-1">
-        Available Seats:{" "}
-        {event.maxParticipants - (event.totalRegistrations || 0)}
-      </p>
-    )}
+ {maxParticipants > 0 && (
+  <p
+    className={`text-sm font-semibold mt-1 ${
+      registrationFull
+        ? "text-red-600"
+        : remainingSeats <= 5
+        ? "text-orange-600"
+        : "text-green-600"
+    }`}
+  >
+    {registrationFull
+      ? "🔴 Registration Full"
+      : `Available Seats: ${remainingSeats}`}
+  </p>
+)}
   </div>
 </div>
 
@@ -598,34 +836,37 @@ className="mt-6 w-full py-4 rounded-2xl bg-[#6D4BC3] text-white font-semibold ho
   )}
 
 </div>
-              {isUpcoming && (
+             {isUpcoming && (
+  <button
+    disabled={registered || registrationFull}
+    onClick={() => setShowRegisterModal(true)}
+    className={`
+      w-full
+      mt-6
+      py-4
+      rounded-2xl
+      font-bold
+      text-white
+      shadow-xl
+      transition-all
+      duration-300
 
-<button
-  disabled={registered}
-  onClick={handleRegister}
-  className={`
-    w-full
-    mt-6
-    py-4
-    rounded-2xl
-    font-bold
-    text-white
-    shadow-xl
-    transition-all
-    duration-300
-
-    ${
-      registered
-        ? "bg-green-500 cursor-not-allowed"
-        : "bg-gradient-to-r from-[#6D4BC3] to-[#8B5CF6] hover:scale-105 hover:shadow-2xl"
-    }
-  `}
->
-  {registered ? "✅ Already Registered" : "Register Now"}
-</button>
-
+      ${
+        registered
+          ? "bg-green-500 cursor-not-allowed"
+          : registrationFull
+          ? "bg-gray-400 cursor-not-allowed"
+          : "bg-gradient-to-r from-[#6D4BC3] to-[#8B5CF6] hover:scale-[1.02] hover:shadow-2xl"
+      }
+    `}
+  >
+    {registered
+      ? "✅ Already Registered"
+      : registrationFull
+      ? "🔴 Registration Full"
+      : "Register Now"}
+  </button>
 )}
-
             </div>
 
           </div>
@@ -651,6 +892,201 @@ className="mt-6 w-full py-4 rounded-2xl bg-[#6D4BC3] text-white font-semibold ho
     >
       ×
     </button>
+  </div>
+)}
+
+{showRegisterModal && (
+  <div
+    className="
+      fixed
+      inset-0
+      z-[60]
+      bg-black/50
+      backdrop-blur-sm
+      flex
+      items-center
+      justify-center
+      p-4
+    "
+  >
+
+    <div
+      className="
+        w-full
+        max-w-md
+        bg-white
+        rounded-3xl
+        shadow-2xl
+        p-6
+        md:p-8
+        relative
+      "
+    >
+
+      {/* Close */}
+
+      <button
+        onClick={() => setShowRegisterModal(false)}
+        className="
+          absolute
+          top-4
+          right-4
+          w-9
+          h-9
+          rounded-full
+          bg-gray-100
+          flex
+          items-center
+          justify-center
+          hover:bg-gray-200
+        "
+      >
+        <X size={18} />
+      </button>
+
+      <h2 className="text-2xl font-bold text-[#4B2E91]">
+        Confirm Registration
+      </h2>
+
+      <p className="text-gray-500 text-sm mt-2">
+        Enter your details to confirm your participation.
+      </p>
+
+      {/* NAME */}
+
+      <div className="mt-6">
+
+        <label className="text-sm font-semibold text-gray-700">
+          Name
+        </label>
+
+        <input
+          type="text"
+          value={user?.name || ""}
+          readOnly
+          className="
+            w-full
+            mt-2
+            px-4
+            py-3
+            rounded-xl
+            border
+            border-gray-200
+            bg-gray-50
+            text-gray-700
+            outline-none
+          "
+        />
+
+      </div>
+
+      {/* EMAIL */}
+
+      <div className="mt-4">
+
+        <label className="text-sm font-semibold text-gray-700">
+          Email
+        </label>
+
+        <input
+          type="email"
+          value={user?.email || ""}
+          readOnly
+          className="
+            w-full
+            mt-2
+            px-4
+            py-3
+            rounded-xl
+            border
+            border-gray-200
+            bg-gray-50
+            text-gray-700
+            outline-none
+          "
+        />
+
+      </div>
+
+      {/* MOBILE */}
+
+      <div className="mt-4">
+
+        <label className="text-sm font-semibold text-gray-700">
+          Mobile Number
+        </label>
+
+        <input
+          type="tel"
+          value={mobile}
+          onChange={(e) =>
+            setMobile(e.target.value.replace(/\D/g, "").slice(0, 10))
+          }
+          placeholder="Enter 10-digit mobile number"
+          className="
+            w-full
+            mt-2
+            px-4
+            py-3
+            rounded-xl
+            border
+            border-gray-300
+            focus:border-[#6D4BC3]
+            focus:ring-2
+            focus:ring-[#6D4BC3]/20
+            outline-none
+          "
+        />
+
+      </div>
+
+      {/* BUTTONS */}
+
+      <div className="flex gap-3 mt-7">
+
+        <button
+          onClick={() => setShowRegisterModal(false)}
+          disabled={registering}
+          className="
+            flex-1
+            py-3
+            rounded-xl
+            border
+            border-gray-300
+            text-gray-600
+            font-semibold
+            hover:bg-gray-50
+          "
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={handleRegister}
+          disabled={registering}
+          className="
+            flex-[1.5]
+            py-3
+            rounded-xl
+            bg-gradient-to-r
+            from-[#6D4BC3]
+            to-[#8B5CF6]
+            text-white
+            font-semibold
+            shadow-lg
+            hover:shadow-xl
+            disabled:opacity-60
+          "
+        >
+          {registering
+            ? "Registering..."
+            : "Confirm Registration"}
+        </button>
+
+      </div>
+
+    </div>
+
   </div>
 )}
       <SuccessModal

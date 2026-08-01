@@ -80,6 +80,22 @@ const eventSchema = new mongoose.Schema(
       default: "",
     },
 
+    coordinators: [
+  {
+    name: {
+      type: String,
+      default: "",
+    },
+    email: {
+      type: String,
+      default: "",
+    },
+    phone: {
+      type: String,
+      default: "",
+    },
+  },
+],
     status: {
   type: String,
   enum: [

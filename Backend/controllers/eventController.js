@@ -74,6 +74,32 @@ exports.createEvent = async (req, res) => {
     const contactEmail = req.body.coordinator1Email || "";
     const contactPhone = req.body.coordinator1Phone || "";
 
+    const coordinators = [];
+
+if (
+  req.body.coordinator1Name ||
+  req.body.coordinator1Email ||
+  req.body.coordinator1Phone
+) {
+  coordinators.push({
+    name: req.body.coordinator1Name || "",
+    email: req.body.coordinator1Email || "",
+    phone: req.body.coordinator1Phone || "",
+  });
+}
+
+if (
+  req.body.coordinator2Name ||
+  req.body.coordinator2Email ||
+  req.body.coordinator2Phone
+) {
+  coordinators.push({
+    name: req.body.coordinator2Name || "",
+    email: req.body.coordinator2Email || "",
+    phone: req.body.coordinator2Phone || "",
+  });
+}
+
     // ✅ CHANGED HERE: via.placeholder error crash avvakunda highly optimized Unsplash URLs default fallbacks ga petta
     const poster = req.files?.poster?.[0] 
       ? `data:${req.files.poster[0].mimetype};base64,${req.files.poster[0].buffer.toString("base64")}` 
@@ -83,27 +109,28 @@ exports.createEvent = async (req, res) => {
       ? `data:${req.files.banner[0].mimetype};base64,${req.files.banner[0].buffer.toString("base64")}` 
       : "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200";
 
-    const event = await Event.create({
-      title,
-      category,
-      description,
-      date,
-      time,
-      venue,
-      poster,
-      banner,
-      registrationOpenDate,
-      registrationCloseDate,
-      maxParticipants: maxParticipants ? Number(maxParticipants) : undefined,
-      rules,
-      requirements,
-      contactName,
-      contactEmail,
-      contactPhone,
-      // 👇 CHANGED HERE: Lowercase 'upcoming' to match your strict Mongoose enum setup
-      status: status || "upcoming", 
-      clubId: req.user._id 
-    });
+ const event = await Event.create({
+  title,
+  category,
+  description,
+  date,
+  time,
+  venue,
+  poster,
+  banner,
+  registrationOpenDate,
+  registrationCloseDate,
+  maxParticipants: maxParticipants ? Number(maxParticipants) : undefined,
+  rules,
+  requirements,
+  contactName,
+  contactEmail,
+  contactPhone,
+  coordinators,
+  status: status || "upcoming",
+  clubId: req.user._id
+});
+
     return res.status(201).json({
       success: true,
       message: "Event created successfully",
