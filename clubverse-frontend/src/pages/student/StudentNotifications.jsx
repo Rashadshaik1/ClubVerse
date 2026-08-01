@@ -7,20 +7,43 @@ import {
   Bell,
   CalendarDays,
   Clock3,
-  CheckCircle,
 } from "lucide-react";
 
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
+
+/* =========================================================
+   NOTIFICATION SKELETON
+========================================================= */
+
 function NotificationSkeleton() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F6F4FF] via-[#EEF2FF] to-[#E8F3FF]">
 
-      <div className="max-w-5xl mx-auto px-6 py-10">
+      <StudentNavbar />
 
-        {/* Page Heading */}
-        <div className="flex items-center gap-4 mb-10">
+      <div className="
+        max-w-5xl
+        mx-auto
+        px-4
+        sm:px-6
+        lg:px-8
+        py-6
+        sm:py-8
+        lg:py-10
+      ">
+
+        {/* PAGE HEADING */}
+
+        <div className="
+          flex
+          items-center
+          gap-3
+          sm:gap-4
+          mb-7
+          sm:mb-10
+        ">
 
           <Skeleton
             circle
@@ -31,8 +54,8 @@ function NotificationSkeleton() {
           />
 
           <Skeleton
-            height={40}
-            width={220}
+            height={36}
+            width={190}
             borderRadius={10}
             baseColor="#ECE8F8"
             highlightColor="#F8F7FC"
@@ -40,9 +63,10 @@ function NotificationSkeleton() {
 
         </div>
 
-        {/* Notification Cards */}
 
-        <div className="space-y-6">
+        {/* NOTIFICATION CARDS */}
+
+        <div className="space-y-4 sm:space-y-6">
 
           {[1, 2, 3, 4].map((item) => (
 
@@ -50,32 +74,42 @@ function NotificationSkeleton() {
               key={item}
               className="
                 bg-white
-                rounded-3xl
+                rounded-2xl
+                sm:rounded-3xl
                 shadow-lg
-                p-7
+                p-4
+                sm:p-6
+                lg:p-7
                 border-l-4
                 border-[#ECE8F8]
               "
             >
 
-              <div className="flex justify-between items-start">
+              {/* TITLE + BADGE */}
+
+              <div className="
+                flex
+                flex-col
+                sm:flex-row
+                sm:justify-between
+                sm:items-start
+                gap-3
+              ">
 
                 <div className="w-full">
 
-                  {/* Title */}
                   <Skeleton
-                    height={24}
-                    width="35%"
+                    height={22}
+                    width="40%"
                     borderRadius={8}
                     baseColor="#ECE8F8"
                     highlightColor="#F8F7FC"
                   />
 
-                  {/* Message */}
                   <div className="mt-4">
 
                     <Skeleton
-                      height={16}
+                      height={15}
                       count={2}
                       baseColor="#ECE8F8"
                       highlightColor="#F8F7FC"
@@ -85,7 +119,7 @@ function NotificationSkeleton() {
 
                 </div>
 
-                {/* NEW badge */}
+
                 <Skeleton
                   width={55}
                   height={24}
@@ -96,8 +130,18 @@ function NotificationSkeleton() {
 
               </div>
 
-              {/* Date + Time */}
-              <div className="flex gap-6 mt-6">
+
+              {/* DATE + TIME */}
+
+              <div className="
+                flex
+                flex-col
+                sm:flex-row
+                gap-3
+                sm:gap-6
+                mt-5
+                sm:mt-6
+              ">
 
                 <Skeleton
                   width={120}
@@ -129,106 +173,237 @@ function NotificationSkeleton() {
   );
 }
 
+
+/* =========================================================
+   STUDENT NOTIFICATIONS
+========================================================= */
+
 export default function StudentNotifications() {
 
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+  /* =======================================================
+     FETCH NOTIFICATIONS
+  ======================================================= */
+
   useEffect(() => {
     fetchNotifications();
   }, []);
 
+
   const fetchNotifications = async () => {
 
-  try {
+    try {
 
-    const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-    // STEP 1: Get notifications
-    const res = await axios.get(
-      "https://clubverse-nsgq.onrender.com/api/student-notifications",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
 
-    const fetchedNotifications =
-      res.data.data || [];
+      // STEP 1: GET NOTIFICATIONS
 
-    // STEP 2: Display notifications
-    setNotifications(fetchedNotifications);
+      const res = await axios.get(
+        "https://clubverse-nsgq.onrender.com/api/student-notifications",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    // STEP 3: Mark notifications as read
-    await axios.put(
-      "https://clubverse-nsgq.onrender.com/api/student-notifications/read",
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
 
-    // STEP 4: Update UI
-    setNotifications(
-      fetchedNotifications.map((notification) => ({
-        ...notification,
-        isRead: true,
-      }))
-    );
+      const fetchedNotifications =
+        res.data.data || [];
 
-  } catch (err) {
 
-    console.log(
-      "NOTIFICATION ERROR:",
-      err
-    );
+      // STEP 2: DISPLAY NOTIFICATIONS
 
-  } finally {
+      setNotifications(fetchedNotifications);
 
-    setLoading(false);
 
+      // STEP 3: MARK ALL AS READ
+
+      await axios.put(
+        "https://clubverse-nsgq.onrender.com/api/student-notifications/read",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+
+      // STEP 4: UPDATE UI
+
+      setNotifications(
+        fetchedNotifications.map((notification) => ({
+          ...notification,
+          isRead: true,
+        }))
+      );
+
+
+    } catch (err) {
+
+      console.log(
+        "NOTIFICATION ERROR:",
+        err
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+
+  /* =======================================================
+     LOADING
+  ======================================================= */
+
+  if (loading) {
+    return <NotificationSkeleton />;
   }
 
-};
-if (loading) {
-  return <NotificationSkeleton />;
-}
+
+  /* =======================================================
+     PAGE
+  ======================================================= */
 
   return (
 
-    <div className="min-h-screen bg-gradient-to-br from-[#F6F4FF] via-[#EEF2FF] to-[#E8F3FF]">
+    <div className="
+      min-h-screen
+      bg-gradient-to-br
+      from-[#F6F4FF]
+      via-[#EEF2FF]
+      to-[#E8F3FF]
+    ">
 
       <StudentNavbar />
 
-      <div className="max-w-5xl mx-auto px-6 py-10">
 
-        <div className="flex items-center gap-4 mb-10">
+      <div className="
+        max-w-5xl
+        mx-auto
+        px-4
+        sm:px-6
+        lg:px-8
+        py-6
+        sm:py-8
+        lg:py-10
+      ">
 
-          <Bell className="text-[#6D4BC3]" size={34} />
 
-          <h1 className="text-4xl font-bold text-[#4B2E91]">
+        {/* =================================================
+            PAGE HEADER
+        ================================================= */}
+
+        <div className="
+          flex
+          items-center
+          gap-3
+          sm:gap-4
+          mb-7
+          sm:mb-10
+        ">
+
+          <div className="
+            w-11
+            h-11
+            sm:w-12
+            sm:h-12
+            rounded-2xl
+            bg-white
+            shadow-md
+            flex
+            items-center
+            justify-center
+            flex-shrink-0
+          ">
+
+            <Bell
+              className="text-[#6D4BC3]"
+              size={24}
+            />
+
+          </div>
+
+
+          <h1 className="
+            text-2xl
+            sm:text-3xl
+            lg:text-4xl
+            font-bold
+            text-[#4B2E91]
+          ">
             Notifications
           </h1>
 
         </div>
 
+
+        {/* =================================================
+            EMPTY STATE
+        ================================================= */}
+
         {notifications.length === 0 ? (
 
-          <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
+          <div className="
+            bg-white
+            rounded-2xl
+            sm:rounded-3xl
+            shadow-lg
+            p-8
+            sm:p-10
+            lg:p-12
+            text-center
+          ">
 
-            <Bell
-              size={60}
-              className="mx-auto text-[#B5A6E6]"
-            />
+            <div className="
+              w-16
+              h-16
+              sm:w-20
+              sm:h-20
+              mx-auto
+              rounded-full
+              bg-[#F3F0FF]
+              flex
+              items-center
+              justify-center
+            ">
 
-            <h2 className="text-2xl font-bold text-[#4B2E91] mt-5">
+              <Bell
+                size={34}
+                className="text-[#B5A6E6]"
+              />
+
+            </div>
+
+
+            <h2 className="
+              text-xl
+              sm:text-2xl
+              font-bold
+              text-[#4B2E91]
+              mt-5
+            ">
               No Notifications
             </h2>
 
-            <p className="text-gray-500 mt-3">
+
+            <p className="
+              text-gray-500
+              mt-3
+              text-sm
+              sm:text-base
+              max-w-md
+              mx-auto
+              leading-6
+            ">
               We'll notify you whenever something important happens.
             </p>
 
@@ -236,32 +411,95 @@ if (loading) {
 
         ) : (
 
-          <div className="space-y-6">
+
+          /* =================================================
+             NOTIFICATION LIST
+          ================================================= */
+
+          <div className="space-y-4 sm:space-y-6">
 
             {notifications.map((item) => (
 
               <div
                 key={item._id}
-                className="bg-white rounded-3xl shadow-lg p-7 border-l-4 border-[#6D4BC3]"
+                className="
+                  bg-white
+                  rounded-2xl
+                  sm:rounded-3xl
+                  shadow-lg
+                  p-4
+                  sm:p-6
+                  lg:p-7
+                  border-l-4
+                  border-[#6D4BC3]
+                  transition-all
+                  duration-300
+                  hover:shadow-xl
+                "
               >
 
-                <div className="flex justify-between items-start">
 
-                  <div>
+                {/* =========================================
+                    TITLE + NEW BADGE
+                ========================================= */}
 
-                    <h2 className="font-bold text-xl text-[#4B2E91]">
-                     {item.type === "EVENT_UPDATE" ? "Event Update" : "Notification"}
+                <div className="
+                  flex
+                  flex-col
+                  sm:flex-row
+                  sm:justify-between
+                  sm:items-start
+                  gap-3
+                ">
+
+
+                  <div className="min-w-0">
+
+                    <h2 className="
+                      font-bold
+                      text-lg
+                      sm:text-xl
+                      text-[#4B2E91]
+                      break-words
+                    ">
+                      {item.type === "EVENT_UPDATE"
+                        ? "Event Update"
+                        : "Notification"}
                     </h2>
 
-                    <p className="mt-3 text-gray-600 leading-7">
+
+                    <p className="
+                      mt-2
+                      sm:mt-3
+                      text-gray-600
+                      leading-6
+                      sm:leading-7
+                      text-sm
+                      sm:text-base
+                      break-words
+                    ">
                       {item.message}
                     </p>
 
                   </div>
 
+
+                  {/* NEW */}
+
                   {!item.isRead && (
 
-                    <span className="bg-red-500 text-white text-xs px-3 py-1 rounded-full">
+                    <span className="
+                      self-start
+                      flex-shrink-0
+                      bg-red-500
+                      text-white
+                      text-[10px]
+                      sm:text-xs
+                      px-3
+                      py-1
+                      rounded-full
+                      font-semibold
+                    ">
                       NEW
                     </span>
 
@@ -269,21 +507,65 @@ if (loading) {
 
                 </div>
 
-                <div className="flex gap-6 mt-6 text-gray-500">
 
-                  <div className="flex gap-2 items-center">
+                {/* =========================================
+                    DATE + TIME
+                ========================================= */}
 
-                    <CalendarDays size={18} />
+                <div className="
+                  flex
+                  flex-col
+                  xs:flex-row
+                  sm:flex-row
+                  gap-3
+                  sm:gap-6
+                  mt-5
+                  sm:mt-6
+                  text-gray-500
+                  text-sm
+                ">
 
-                    {new Date(item.createdAt).toLocaleDateString()}
+
+                  {/* DATE */}
+
+                  <div className="
+                    flex
+                    gap-2
+                    items-center
+                  ">
+
+                    <CalendarDays
+                      size={17}
+                      className="flex-shrink-0"
+                    />
+
+                    <span>
+                      {new Date(
+                        item.createdAt
+                      ).toLocaleDateString()}
+                    </span>
 
                   </div>
 
-                  <div className="flex gap-2 items-center">
 
-                    <Clock3 size={18} />
+                  {/* TIME */}
 
-                    {new Date(item.createdAt).toLocaleTimeString()}
+                  <div className="
+                    flex
+                    gap-2
+                    items-center
+                  ">
+
+                    <Clock3
+                      size={17}
+                      className="flex-shrink-0"
+                    />
+
+                    <span>
+                      {new Date(
+                        item.createdAt
+                      ).toLocaleTimeString()}
+                    </span>
 
                   </div>
 
