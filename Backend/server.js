@@ -30,6 +30,8 @@ app.use(cors());
 
 // ================= ROUTES =================
 
+
+
 app.use(
   "/api/auth",
   require("./routes/authRoutes")
@@ -41,6 +43,12 @@ app.use(
   require("./routes/clubRoutes")
 );
 
+
+// PUT THIS RIGHT BEFORE YOUR app.use("/api/events", ...)
+app.use("/api/events", (req, res, next) => {
+  console.log("📥 Incoming request to Events Router:", req.method, req.originalUrl);
+  next();
+});
 
 app.use(
   "/api/events",
