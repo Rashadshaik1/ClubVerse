@@ -378,6 +378,9 @@ alert("Cancellation failed");
 
 const downloadAttendanceSheet = async () => {
   try {
+
+    console.log("TOKEN BEFORE EXPORT:", token);
+
     const response = await axios.get(
       `https://clubverse-nsgq.onrender.com/api/events/${id}/export-attendance`,
       {
