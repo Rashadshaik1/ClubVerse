@@ -54,9 +54,10 @@ export default function EventDashboard() {
   const [venue, setVenue] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [postponeReason, setPostponeReason] = useState("");
-  const [maxParticipants, setMaxParticipants] = useState("");
+  const [maxParticipants, setMaxParticipants] = useState(0);
   const [poster, setPoster] = useState(null);
   const [posterPreview, setPosterPreview] = useState("");
+  const [showPosterModal, setShowPosterModal] = useState(false);
 
   const inputStyle = "w-full border border-[#cceeee] bg-white/50 rounded-2xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#048c92] transition-all duration-200";
 
@@ -475,13 +476,7 @@ alert("Cancellation failed");
             <div className="bg-white/60 backdrop-blur-xl p-5 rounded-3xl border border-[#cceeee] shadow-sm">
               <h3 className="text-sm font-black text-gray-700 uppercase tracking-wider mb-4">Event Poster</h3>
 <div
-  onClick={() => {
-    const imageUrl =
-      posterPreview ||
-      "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500";
-
-    window.open(imageUrl, "_blank");
-  }}
+  onClick={() => setShowPosterModal(true)}
   className="w-full h-80 rounded-2xl border border-[#cceeee] bg-white/50 overflow-hidden flex items-center justify-center p-2 shadow-inner cursor-pointer group"
   title="Click to view poster"
 >
@@ -494,6 +489,10 @@ alert("Cancellation failed");
     alt="Poster"
   />
 </div>
+
+<p className="text-[10px] text-gray-400 text-center mt-2">
+  Click the poster to view
+</p>
               {isUpcoming && (
                 <div className="mt-4 space-y-2">
                   <input type="file" id="dashboardPosterFile" className="hidden" accept="image/*" onChange={handlePosterChange} />
@@ -627,7 +626,23 @@ className="flex justify-between border-b py-3"
                       <div>
                         <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5">Capacity Limit</label>
                         <div className="flex gap-2">
-                          <input type="number" value={maxParticipants} onChange={(e) => setMaxParticipants(e.target.value)} className={inputStyle} placeholder="Max slots" />
+                          <input
+  type="number"
+  min="0"
+  value={maxParticipants ?? 0}
+  onChange={(e) => {
+    const value = e.target.value;
+
+    if (value === "") {
+      setMaxParticipants(0);
+      return;
+    }
+
+    setMaxParticipants(Math.max(0, Number(value)));
+  }}
+  className={inputStyle}
+  placeholder="Max slots"
+/>
                           <button onClick={saveCapacityThreshold} className="bg-gray-800 hover:bg-gray-900 text-white text-xs font-black px-4 rounded-2xl transition shadow-sm">
                             Apply
                           </button>
@@ -758,6 +773,35 @@ className="flex justify-between border-b py-3"
             )}
           </div>
         </div>
+
+        {/* POSTER PREVIEW MODAL */}
+        {showPosterModal && (
+          <div
+            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setShowPosterModal(false)}
+          >
+            <div
+              className="relative max-w-5xl max-h-[90vh] w-full flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowPosterModal(false)}
+                className="absolute -top-4 -right-4 z-10 w-10 h-10 rounded-full bg-white text-gray-700 text-xl font-bold shadow-lg hover:bg-gray-100 transition"
+              >
+                ×
+              </button>
+
+              <img
+                src={
+                  posterPreview ||
+                  "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1000"
+                }
+                alt="Full Event Poster"
+                className="max-h-[90vh] max-w-full object-contain rounded-2xl shadow-2xl"
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
