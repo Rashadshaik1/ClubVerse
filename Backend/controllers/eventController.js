@@ -1103,3 +1103,130 @@ exports.fixEventCoordinators = async (req, res) => {
     });
   }
 };
+// ================= EXPORT EVENT ATTENDANCE CSV =================
+
+exports.exportAttendance = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Get event details
+    const event = await Event.findById(id).populate(
+      "clubId",
+      "name"
+    );
+
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found",
+      });
+    }
+
+    // Get registered students
+    const registrations = await Registration.find({
+      eventId: id,
+    })
+      .populate(
+  "userId",
+  "name email rollNumber department year mobile"
+)
+      .sort({
+        createdAt: 1,
+      });
+
+    // ================= CSV HEADER INFORMATION =================
+
+    let csv = "";
+
+    // ClubVerse branding
+    csv += "CLUBVERSE\n";
+    csv += "\n";
+
+    // Event information
+    csv += `Event Name,${escapeCsv(event.title || "")}\n`;
+    csv += `Club Name,${escapeCsv(event.clubId?.name || "")}\n`;
+    csv += `Event Date,${escapeCsv(
+      event.date
+        ? new Date(event.date).toLocaleDateString("en-IN")
+        : ""
+    )}\n`;
+
+    csv += `Total Registered,${registrations.length}\n`;
+
+    csv += "\n";
+
+    // ================= TABLE HEADER =================
+
+    csv += "S.No,Name,Roll Number,Email,Mobile,Department,Year\n";
+
+    // ================= STUDENT DATA =================
+
+    registrations.forEach((registration, index) => {
+      const student = registration.userId || {};
+
+ csv += [
+  index + 1,
+  escapeCsv(student.name || ""),
+  escapeCsv(student.rollNumber || ""),
+  escapeCsv(student.email || ""),
+  escapeCsv(registration.mobile || student.mobile || ""),
+  escapeCsv(student.department || ""),
+  escapeCsv(student.year || ""),
+].join(",");
+
+      csv += "\n";
+    });
+
+    // ================= RESPONSE =================
+
+    res.setHeader(
+      "Content-Type",
+      "text/csv; charset=utf-8"
+    );
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${safeFileName(
+        event.title || "event"
+      )}_Attendance.csv"`
+    );
+
+    return res.status(200).send(csv);
+
+  } catch (error) {
+    console.log(
+      "EXPORT ATTENDANCE ERROR:",
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+// ================= CSV HELPERS =================
+
+const escapeCsv = (value) => {
+  const stringValue = String(value ?? "");
+
+  if (
+    stringValue.includes(",") ||
+    stringValue.includes('"') ||
+    stringValue.includes("\n")
+  ) {
+    return `"${stringValue.replace(/"/g, '""')}"`;
+  }
+
+  return stringValue;
+};
+
+
+const safeFileName = (name) => {
+  return String(name)
+    .replace(/[^a-z0-9]/gi, "_")
+    .replace(/_+/g, "_")
+    .replace(/^_|_$/g, "");
+};

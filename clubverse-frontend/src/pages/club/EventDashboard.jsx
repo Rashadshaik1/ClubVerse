@@ -376,9 +376,48 @@ alert("Cancellation failed");
     }
   };
 
-  const downloadAttendanceSheet = () => {
-    window.open(`https://clubverse-nsgq.onrender.com/api/events/${id}/export-attendance?token=${token}`, "_blank");
-  };
+const downloadAttendanceSheet = async () => {
+  try {
+    const response = await axios.get(
+      `https://clubverse-nsgq.onrender.com/api/events/${id}/export-attendance`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "blob",
+      }
+    );
+
+    const blob = new Blob(
+      [response.data],
+      { type: "text/csv;charset=utf-8;" }
+    );
+
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.download = `${event?.title || "Event"}_Attendance.csv`;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    window.URL.revokeObjectURL(url);
+
+  } catch (error) {
+    console.error(
+      "ATTENDANCE EXPORT ERROR:",
+      error
+    );
+
+    alert("Failed to export attendance sheet.");
+  }
+};
 
   const handleGallerySelectionAndPreview = (e) => {
     if (e.target.files) {

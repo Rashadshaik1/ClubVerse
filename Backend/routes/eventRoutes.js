@@ -21,7 +21,8 @@ const {
   deleteGalleryImage,
   addFeedback,
   getEventRegistrations,
-    fixEventCoordinators
+  exportAttendance,
+  fixEventCoordinators
 } = require("../controllers/eventController");
 
 console.log("COMPLETE EVENT FUNCTION:", completeEvent);
@@ -124,6 +125,14 @@ router.get(
   "/:id/registrations",
   protect,
   getEventRegistrations
+);
+
+// ================= EXPORT ATTENDANCE CSV =================
+
+router.get(
+  "/:id/export-attendance",
+  protect,
+  exportAttendance
 );
 
 // ================= FIX EVENT COORDINATORS =================
