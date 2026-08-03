@@ -191,7 +191,9 @@ const MembersSkeleton = ({
 };
 
 export default function Members() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+  return window.innerWidth >= 1024;
+});
 
   const [boards, setBoards] = useState([]);
   const [activeBoard, setActiveBoard] = useState(null); 
@@ -333,7 +335,11 @@ if (loading) {
 />
 
       {/* ✅ 2. కంటెంట్ కంటైనర్ - అచ్చం నీ ఈవెంట్స్ పేజీ లాగే pt-24 ఇచ్చా */}
-      <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300">
+      <div
+  className={`flex-1 min-w-0 w-full pt-24 px-4 sm:px-6 lg:px-8 pb-12 transition-all duration-300 ${
+    sidebarOpen ? "lg:ml-64" : "lg:ml-20"
+  }`}
+>
         
         {/* ✅ 3. నావ్‌బార్ ఇక్కడే టాప్ లో లోడ్ అవుతుంది */}
                <ClubNavbar
@@ -342,7 +348,7 @@ if (loading) {
 />
 
         {/* ✅ 4. నీ మిగిలిన పేజీల స్టైల్ లోనే హెడర్ కార్డ్ సెట్ చేశా */}
-        <div className="mb-8 bg-white/40 backdrop-blur-md p-6 rounded-3xl border border-white/40 shadow-sm flex justify-between items-center">
+        <div className="mb-5 sm:mb-8 bg-white/40 backdrop-blur-md p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/40 shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-4">
           <div>
             <h1 className="text-2xl font-black text-[#048c92] tracking-tight">Members Management</h1>
             <p className="text-xs text-gray-500 mt-1">Organize and manage your academic board committees seamlessly.</p>
@@ -383,12 +389,12 @@ if (loading) {
                   </button>
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
                   {boards.map((b) => (
                     <div 
                       key={b._id} 
                       onClick={() => setActiveBoard(b)}
-                      className="p-6 bg-white/70 backdrop-blur-xl border border-[#cceeee] rounded-3xl shadow-sm hover:shadow-md cursor-pointer border-t-4 border-t-[#43bfc3] hover:scale-[1.01] transition transform duration-150"
+                      className="p-5 sm:p-6 bg-white/70 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-md cursor-pointer border-t-4 border-t-[#43bfc3] hover:scale-[1.01] transition transform duration-150"
                     >
                       <h3 className="text-lg font-extrabold text-[#048c92]">{b.academicYear} Board</h3>
                       <p className="text-[10px] text-gray-400 mt-1">Created: {new Date(b.createdAt).toLocaleDateString()}</p>
@@ -422,9 +428,12 @@ if (loading) {
                 No executive board members added onto this academic layout loop yet.
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-8">
                 {members.map((m) => (
-                  <div key={m._id} className="relative bg-white/70 backdrop-blur-xl border border-[#cceeee] rounded-3xl shadow-sm p-6 flex flex-col items-center text-center hover:shadow-md transition">
+                  <div
+  key={m._id}
+  className="relative bg-white/70 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl shadow-sm p-5 sm:p-6 flex flex-col items-center text-center hover:shadow-md transition"
+>
                     <div className="absolute top-4 right-4">
                       <button 
                         onClick={(e) => { e.stopPropagation(); setActiveMenuId(activeMenuId === m._id ? null : m._id); }}
@@ -448,9 +457,9 @@ if (loading) {
                     <h4 className="text-base font-extrabold text-[#048c92] line-clamp-1">{m.name}</h4>
                     <span className="mt-2 text-[10px] px-3 py-0.5 bg-[#43bfc3]/10 font-black text-[#048c92] rounded-full border border-[#43bfc3]/20 mb-3">{m.position}</span>
                     
-                    <div className="w-full border-t border-[#cceeee] pt-3 mt-1 flex justify-around text-[10px] text-gray-400 font-bold">
+                    <div className="w-full border-t border-[#cceeee] pt-3 mt-1 flex flex-wrap justify-center gap-x-3 gap-y-1 text-[10px] text-gray-400 font-bold">
                       <span>⚙️ {m.branch}</span>
-                      <span className="text-gray-200">|</span>
+                      <span className="hidden sm:inline text-gray-200">|</span>
                       <span>🎓 {m.year}</span>
                     </div>
                   </div>
@@ -461,7 +470,7 @@ if (loading) {
             <div className="flex justify-center">
               <button 
                 onClick={() => { setIsEditingMember(false); resetMemberForm(); setShowMemberModal(true); }}
-                className="px-6 py-2.5 bg-[#048c92] hover:bg-[#43bfc3] text-white text-xs font-black rounded-xl shadow-sm transition transform active:scale-95"
+                className="w-full sm:w-auto px-6 py-2.5 bg-[#048c92] hover:bg-[#43bfc3] text-white text-xs font-black rounded-xl shadow-sm transition transform active:scale-95"
               >
                 ➕ Add Board Member
               </button>
@@ -471,8 +480,8 @@ if (loading) {
 
         {/* ================= MODALS AREA ================= */}
         {showBoardModal && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-white border border-[#cceeee] rounded-3xl shadow-2xl w-full max-w-md p-6">
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 z-50 overflow-y-auto">
+            <div className="bg-white border border-[#cceeee] rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-md p-5 sm:p-6 my-4">
               <h3 className="text-base font-black text-[#048c92] mb-4">Setup New Academic Board</h3>
               <form onSubmit={handleBoardSubmit} className="space-y-4">
                 <div>
@@ -493,8 +502,8 @@ if (loading) {
         )}
 
         {showMemberModal && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
-            <div className="bg-white border border-[#cceeee] rounded-3xl shadow-2xl w-full max-w-lg p-6 my-8">
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 z-50 overflow-y-auto">
+            <div className="bg-white border border-[#cceeee] rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-lg p-5 sm:p-6 my-4 sm:my-8">
               <h3 className="text-base font-black text-[#048c92] mb-4">{isEditingMember ? "Edit Member Profile" : "Add Board Member Details"}</h3>
               <form onSubmit={handleMemberSubmit} className="space-y-4">
                 <div>
