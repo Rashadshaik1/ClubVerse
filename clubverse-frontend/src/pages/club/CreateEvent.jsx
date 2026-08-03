@@ -6,13 +6,13 @@ import ClubSidebar from "../../components/ClubSidebar";
 
 export default function CreateEvent() {
 const navigate = useNavigate();
-
+const [sidebarOpen, setSidebarOpen] = useState(false);
   const club = JSON.parse(localStorage.getItem("club") || "{}");
   const today = new Date().toISOString().split("T")[0];
 
   // Premium, soft interactive inputs
   const inputStyle =
-    "w-full bg-white/80 border border-[#cceeee] rounded-2xl p-3.5 text-sm font-medium text-gray-700 transition-all duration-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#43bfc3]/40 focus:border-[#048c92] focus:bg-white";
+  "w-full min-w-0 bg-white/80 border border-[#cceeee] rounded-xl sm:rounded-2xl px-3 sm:px-3.5 py-3 sm:py-3.5 text-sm font-medium text-gray-700 transition-all duration-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#43bfc3]/40 focus:border-[#048c92] focus:bg-white";
 
   const [loading, setLoading] = useState(false);
 
@@ -159,34 +159,50 @@ const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
       {/* FIXED SIDEBAR */}
-      <ClubSidebar />
+      <ClubSidebar
+  isOpen={sidebarOpen}
+  setIsOpen={setSidebarOpen}
+/>
 
       {/* DASHBOARD CONTENT CONTAINER - Handles full screen tracking beautifully */}
       <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300">
-        <ClubNavbar />
+        <ClubNavbar
+  sidebarOpen={sidebarOpen}
+  setSidebarOpen={setSidebarOpen}
+/>
 
-        {/* HERO HEADER BANNER */}
-        <div className="mb-8 bg-white/40 backdrop-blur-md p-6 rounded-3xl border border-white/40 shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-          <div>
-            <h1 className="text-2xl font-black text-[#048c92] tracking-tight">
-              Create New Event
-            </h1>
-            <p className="text-gray-500 font-medium text-xs mt-1">
-              Deploy structural timelines, artwork nodes, and parameters to the
-              live feed.
-            </p>
-          </div>
-          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider bg-white px-4 py-2 rounded-2xl border border-[#e2f8f8]">
-            {club?.name || "Workspace Dashboard"}
-          </div>
-        </div>
+     {/* PAGE HEADER */}
+<div className="mb-5 sm:mb-7 lg:mb-8 bg-white/50 backdrop-blur-md p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/50 shadow-sm">
 
-        <form onSubmit={handleSubmit} className="space-y-8 max-w-5xl">
+  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+    <div className="min-w-0">
+      <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-[#048c92] tracking-tight">
+        Create New Event
+      </h1>
+
+      <p className="text-gray-500 font-medium text-[11px] sm:text-xs mt-1 leading-relaxed">
+        Add the details below to publish your event.
+      </p>
+    </div>
+
+    <div className="self-start sm:self-auto max-w-full text-[10px] sm:text-xs font-bold text-gray-500 bg-white px-3 sm:px-4 py-2 rounded-xl sm:rounded-2xl border border-[#e2f8f8] truncate">
+      {club?.name || "Club Dashboard"}
+    </div>
+
+  </div>
+
+</div>
+
+ <form
+  onSubmit={handleSubmit}
+  className="w-full max-w-5xl space-y-5 sm:space-y-6 lg:space-y-8"
+>
           {/* BASIC INFORMATION */}
-          <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
-            <h2 className="text-sm font-extrabold text-[#048c92] uppercase tracking-wider mb-2">
-              Basic Information
-            </h2>
+          <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
+            <h2 className="text-sm sm:text-base font-extrabold text-[#048c92] tracking-tight mb-2">
+  Basic Information
+</h2>
 
             <input
               className={inputStyle}
@@ -206,10 +222,10 @@ const navigate = useNavigate();
           </div>
 
           {/* SCHEDULE & TIMINGS */}
-          <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
-            <h2 className="text-sm font-extrabold text-[#048c92] uppercase tracking-wider mb-2">
-              Schedule & Location
-            </h2>
+          <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
+          <h2 className="text-sm sm:text-base font-extrabold text-[#048c92] tracking-tight mb-2">
+  Schedule & Location
+</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1">
@@ -241,9 +257,9 @@ const navigate = useNavigate();
 
             <div className="space-y-1 pt-2">
               <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wide px-1">
-                Event Timeline Node (Time)
+                Event Time
               </label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 <select
                   className={inputStyle}
                   name="eventHour"
@@ -279,22 +295,22 @@ const navigate = useNavigate();
           </div>
 
           {/* ARTWORK MEDIA UPLOADS */}
-          <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
-            <h2 className="text-sm font-extrabold text-[#048c92] uppercase tracking-wider mb-2">
-              Event Artwork
-            </h2>
+          <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
+            <h2 className="text-sm sm:text-base font-extrabold text-[#048c92] tracking-tight mb-2">
+  Event Images
+</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {/* POSTER DROPZONE */}
               <div className="space-y-2">
                 <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wide block px-1">
-                  Vertical Poster
+                  Poster
                 </span>
                 <div className="relative border-2 border-dashed border-[#cceeee] rounded-2xl p-4 hover:border-[#43bfc3] transition-all bg-white/40 flex flex-col items-center justify-center min-h-[180px]">
                   {!preview.poster ? (
                     <div className="text-center space-y-1">
                       <p className="text-xs font-bold text-gray-500">
-                        Upload Standard Poster
+                        Upload Poster
                       </p>
                       <p className="text-[10px] text-gray-400">
                         Supports PNG, JPG, WEBP
@@ -333,17 +349,17 @@ const navigate = useNavigate();
               {/* BANNER DROPZONE */}
               <div className="space-y-2">
                 <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wide block px-1">
-                  Horizontal Banner (1280×720){" "}
+                  Banner (1280 × 720){" "}
                   <span className="text-red-500">*</span>
                 </span>
                 <div className="relative border-2 border-dashed border-[#cceeee] rounded-2xl p-4 hover:border-[#43bfc3] transition-all bg-white/40 flex flex-col items-center justify-center min-h-[180px]">
                   {!preview.banner ? (
                     <div className="text-center space-y-1">
                       <p className="text-xs font-bold text-gray-500">
-                        Upload Hero Banner
+                        Upload Banner
                       </p>
                       <p className="text-[10px] text-gray-400">
-                        Strictly 1280 × 720 aspect ratio
+                        Image must be 1280 × 720
                       </p>
                       <input
                         type="file"
@@ -380,17 +396,17 @@ const navigate = useNavigate();
           </div>
 
           {/* REGISTRATION PARAMETERS */}
-          <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm space-y-6">
-            <h2 className="text-sm font-extrabold text-[#048c92] uppercase tracking-wider">
-              Registration Timeline Gate
-            </h2>
+         <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
+           <h2 className="text-sm sm:text-base font-extrabold text-[#048c92] tracking-tight">
+  Registration Details
+</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
               {/* START TIME */}
               <div className="bg-white/30 p-4 rounded-2xl border border-[#edfdfd] space-y-3">
                 <span className="text-xs font-extrabold text-gray-500 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />{" "}
-                  Opening Window
+                  Registration Opens
                 </span>
                 <input
                   type="date"
@@ -435,7 +451,7 @@ const navigate = useNavigate();
               <div className="bg-white/30 p-4 rounded-2xl border border-[#edfdfd] space-y-3">
                 <span className="text-xs font-extrabold text-gray-500 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />{" "}
-                  Closing Window
+                  Registration Closes
                 </span>
                 <input
                   type="date"
@@ -479,12 +495,12 @@ const navigate = useNavigate();
 
             <div className="space-y-1">
               <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wide px-1">
-                Maximum Seats / Volume
+                Maximum Participants
               </label>
               <input
                 className={inputStyle}
                 name="maxParticipants"
-                placeholder="e.g. 150 (Leave blank for infinite)"
+                placeholder="e.g. 150 (Leave blank if there is no limit)"
                 type="number"
                 onChange={handleChange}
               />
@@ -492,33 +508,33 @@ const navigate = useNavigate();
           </div>
 
           {/* RULES & COMPLIANCE */}
-          <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
-            <h2 className="text-sm font-extrabold text-[#048c92] uppercase tracking-wider mb-2">
-              Rules & Prerequisites
-            </h2>
+          <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
+            <h2 className="text-sm sm:text-base font-extrabold text-[#048c92] tracking-tight mb-2">
+  Rules & Requirements
+</h2>
             <textarea
               className={`${inputStyle} h-24 resize-none`}
               name="rules"
-              placeholder="Guidelines & Rules for participants..."
+              placeholder="Rules for participants..."
               onChange={handleChange}
             />
             <textarea
               className={`${inputStyle} h-24 resize-none`}
               name="requirements"
-              placeholder="Hardware, software or skill requirements..."
+              placeholder="Skills, software or other requirements..."
               onChange={handleChange}
             />
           </div>
 
           {/* COORDINATORS NETWORKS */}
-          <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
-            <h2 className="text-sm font-extrabold text-[#048c92] uppercase tracking-wider mb-2">
-              Point of Contacts
-            </h2>
+          <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm space-y-4">
+            <h2 className="text-sm sm:text-base font-extrabold text-[#048c92] tracking-tight mb-2">
+  Event Coordinators
+</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {/* COORDINATOR 1 */}
-              <div className="bg-white/40 p-4 rounded-2xl border border-white/60 space-y-3">
+              <div className="bg-white/40 p-4 sm:p-5 rounded-2xl border border-white/60 space-y-3">
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-1">
                   Coordinator 1
                 </h3>
@@ -544,7 +560,7 @@ const navigate = useNavigate();
               </div>
 
               {/* COORDINATOR 2 */}
-              <div className="bg-white/40 p-4 rounded-2xl border border-white/60 space-y-3">
+              <div className="bg-white/40 p-4 sm:p-5 rounded-2xl border border-white/60 space-y-3">
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-1">
                   Coordinator 2
                 </h3>
@@ -572,13 +588,31 @@ const navigate = useNavigate();
           </div>
 
           {/* DISPATCH ACTION TRIGGER */}
-          <div className="flex justify-end pt-4">
+          <div className="flex justify-stretch sm:justify-end pt-1 sm:pt-2 pb-2">
             <button
               type="submit"
-              className="bg-[#048c92] hover:bg-[#03767b] text-white text-sm font-black px-8 py-4 rounded-2xl shadow-md transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none"
+              className="
+  w-full sm:w-auto
+  min-w-0 sm:min-w-[180px]
+  bg-[#048c92]
+  hover:bg-[#03767b]
+  text-white
+  text-sm
+  font-bold
+  px-6 sm:px-8
+  py-3.5 sm:py-4
+  rounded-xl sm:rounded-2xl
+  shadow-md
+  transition-all
+  duration-300
+  hover:-translate-y-0.5
+  active:translate-y-0
+  disabled:opacity-50
+  disabled:pointer-events-none
+"
               disabled={loading}
             >
-              {loading ? "Syncing Workspace..." : "Publish Event"}
+              {loading ? "Publishing..." : "Publish Event"}
             </button>
           </div>
         </form>
