@@ -4,11 +4,195 @@ import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
 import Loader from "../../components/Loader";
 
+
+
 const CORE_ROLES = ["President", "Secretary", "Treasurer", "Vice president", "Student coordinator", "Joint secretary", "Club advisor"];
 const GOVERNING_ROLES = ["Event organizer", "Marketing lead", "Designing lead", "Documentation lead", "Content writing lead", "Promotions lead", "Social media lead", "Technical lead"];
 const FACULTY_ROLES = ["Faculty Coordinator", "Faculty Advisor"];
 
+const MembersSkeleton = ({
+  sidebarOpen,
+  setSidebarOpen,
+}) => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
+      
+      <ClubSidebar
+  isOpen={sidebarOpen}
+  setIsOpen={setSidebarOpen}
+/>
+
+      <div
+  className={`flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300 ${
+    sidebarOpen ? "lg:ml-64" : "lg:ml-20"
+  }`}
+>
+        
+       <ClubNavbar
+  sidebarOpen={sidebarOpen}
+  setSidebarOpen={setSidebarOpen}
+/>
+
+        {/* ================= HEADER SKELETON ================= */}
+        <div className="mb-5 sm:mb-8 bg-white/40 backdrop-blur-md p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/40 shadow-sm flex flex-col sm:flex-row justify-between gap-4">
+          
+          <div className="space-y-3">
+            <div className="h-7 w-56 sm:w-64 rounded-xl bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+            <div className="h-3 w-64 sm:w-80 max-w-full rounded-lg bg-gradient-to-r from-[#e2fafa] via-[#c9f2f3] to-[#e2fafa] animate-pulse" />
+          </div>
+
+          <div className="h-9 w-32 rounded-xl bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+        </div>
+
+
+        {/* ================= SECTION HEADER ================= */}
+        <div className="flex justify-between items-center mb-5 sm:mb-6">
+          
+          <div className="h-4 w-44 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+          <div className="h-9 w-32 rounded-xl bg-gradient-to-r from-[#d9f7f8] via-[#aee8ea] to-[#d9f7f8] animate-pulse" />
+
+        </div>
+
+
+        {/* ================= BOARD CARDS ================= */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+
+          {[1, 2, 3, 4].map((card) => (
+            <div
+              key={card}
+              className="p-5 sm:p-6 bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl shadow-sm"
+            >
+
+              {/* Top accent */}
+              <div className="h-1.5 w-full rounded-full bg-gradient-to-r from-[#d9f7f8] via-[#8ddfe2] to-[#d9f7f8] animate-pulse mb-5" />
+
+              {/* Board title */}
+              <div className="h-5 w-40 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+              {/* Created date */}
+              <div className="h-3 w-28 rounded-md mt-3 bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+
+              {/* Explore button */}
+              <div className="h-7 w-28 rounded-full mt-5 bg-gradient-to-r from-[#e0f8f8] via-[#c5eeee] to-[#e0f8f8] animate-pulse" />
+
+            </div>
+          ))}
+
+        </div>
+
+
+        {/* ================= LOWER CONTENT SKELETON ================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 mt-6 sm:mt-8">
+
+          {/* LEFT / MAIN MEMBERS AREA */}
+          <div className="lg:col-span-2 bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-lg">
+
+            {/* Heading */}
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6">
+
+              <div>
+                <div className="h-5 w-48 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+                <div className="h-3 w-64 max-w-full rounded-md mt-2 bg-gradient-to-r from-[#e5fafa] via-[#cceff0] to-[#e5fafa] animate-pulse" />
+              </div>
+
+              <div className="h-8 w-24 rounded-xl bg-gradient-to-r from-[#d9f7f8] via-[#aee8ea] to-[#d9f7f8] animate-pulse" />
+
+            </div>
+
+
+            {/* Member cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+              {[1, 2, 3, 4].map((member) => (
+                <div
+                  key={member}
+                  className="bg-white/60 border border-[#cceeee] rounded-2xl p-5 flex flex-col items-center shadow-sm"
+                >
+
+                  {/* Avatar */}
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-r from-[#d9f7f8] via-[#aee8ea] to-[#d9f7f8] animate-pulse mb-4" />
+
+                  {/* Name */}
+                  <div className="h-4 w-32 rounded-md bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+                  {/* Position */}
+                  <div className="h-5 w-24 rounded-full mt-3 bg-gradient-to-r from-[#e0f8f8] via-[#c5eeee] to-[#e0f8f8] animate-pulse" />
+
+                  {/* Details */}
+                  <div className="w-full border-t border-[#cceeee] mt-4 pt-3 flex justify-around">
+
+                    <div className="h-3 w-16 rounded-md bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+
+                    <div className="h-3 w-16 rounded-md bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+
+                  </div>
+
+                </div>
+              ))}
+
+            </div>
+
+          </div>
+
+
+          {/* RIGHT SUMMARY */}
+          <div className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-lg">
+
+            <div className="h-5 w-32 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+            <div className="h-3 w-52 max-w-full rounded-md mt-3 bg-gradient-to-r from-[#e5fafa] via-[#cceff0] to-[#e5fafa] animate-pulse" />
+
+
+            <div className="space-y-6 mt-8">
+
+              {[1, 2, 3].map((item) => (
+                <div key={item}>
+
+                  <div className="flex justify-between mb-2">
+
+                    <div className="h-3 w-24 rounded-md bg-gradient-to-r from-[#dff8f8] via-[#c6eeee] to-[#dff8f8] animate-pulse" />
+
+                    <div className="h-3 w-8 rounded-md bg-gradient-to-r from-[#dff8f8] via-[#c6eeee] to-[#dff8f8] animate-pulse" />
+
+                  </div>
+
+                  <div className="w-full h-2 rounded-full bg-[#e5f7f7] overflow-hidden">
+
+                    <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#bceff0] via-[#67cdd1] to-[#bceff0] animate-pulse" />
+
+                  </div>
+
+                </div>
+              ))}
+
+            </div>
+
+
+            {/* Quick summary */}
+            <div className="mt-8 bg-[#43bfc3]/5 border border-[#43bfc3]/20 rounded-2xl p-4">
+
+              <div className="h-3 w-28 mx-auto rounded-md bg-gradient-to-r from-[#d9f7f8] via-[#9ee2e5] to-[#d9f7f8] animate-pulse" />
+
+              <div className="h-3 w-44 max-w-full mx-auto mt-3 rounded-md bg-gradient-to-r from-[#e5fafa] via-[#c5eeee] to-[#e5fafa] animate-pulse" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 export default function Members() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   const [boards, setBoards] = useState([]);
   const [activeBoard, setActiveBoard] = useState(null); 
   const [members, setMembers] = useState([]);
@@ -130,9 +314,13 @@ export default function Members() {
     });
     setIsEditingMember(true); setShowMemberModal(true); setActiveMenuId(null);
   };
-
-  if (loading) {
-  return <Loader />;
+if (loading) {
+  return (
+    <MembersSkeleton
+      sidebarOpen={sidebarOpen}
+      setSidebarOpen={setSidebarOpen}
+    />
+  );
 }
   return (
     // ✅ 1. ఇక్కడ నీ మిగిలిన పేజీల్లాగే క్లీన్ ఫ్లెక్స్ రాపర్ పెట్టాను
@@ -179,11 +367,11 @@ export default function Members() {
               </div>
             ) : (
               <div>
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6">
                   <h2 className="text-sm font-black text-[#048c92] uppercase tracking-wider">Active Committee Boards</h2>
                   <button 
                     onClick={() => { setIsEditingBoard(false); setShowBoardModal(true); }}
-                    className="bg-[#048c92] hover:bg-[#43bfc3] text-white text-xs font-black px-4 py-2 rounded-xl transition shadow-sm"
+                    className="w-full sm:w-auto bg-[#048c92] hover:bg-[#43bfc3] text-white text-xs font-black px-4 py-2 rounded-xl transition shadow-sm"
                   >
                     + Create Board Panel
                   </button>
