@@ -78,22 +78,30 @@ export default function ManageEvents() {
  // ================= EVENT SKELETON =================
 const EventSkeleton = () => {
   return (
-    <div className="bg-white/60 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-[#cceeee] overflow-hidden shadow-sm animate-pulse">
+    <div className="bg-white/60 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-[#cceeee] overflow-hidden shadow-sm">
       
       {/* IMAGE SKELETON */}
-      <div className="h-40 sm:h-44 w-full bg-gray-200" />
+      <div className="h-40 sm:h-44 w-full bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
 
       {/* CONTENT SKELETON */}
       <div className="p-4 sm:p-5 space-y-4">
 
+        {/* TITLE + DATE */}
         <div className="space-y-2">
-          <div className="h-4 bg-gray-200 rounded-lg w-3/4" />
-          <div className="h-3 bg-gray-200 rounded-lg w-1/2" />
+
+          <div className="h-4 w-3/4 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+          <div className="h-3 w-1/2 rounded-md bg-gradient-to-r from-[#e2fafa] via-[#c9f2f3] to-[#e2fafa] animate-pulse" />
+
         </div>
 
-        <div className="pt-3 border-t border-gray-100 flex justify-between items-center">
-          <div className="h-3 bg-gray-200 rounded-lg w-24" />
-          <div className="h-3 bg-gray-200 rounded-lg w-20" />
+        {/* COUNTDOWN */}
+        <div className="pt-3 border-t border-[#cceeee] flex items-center justify-between">
+
+          <div className="h-3 w-20 rounded-md bg-gradient-to-r from-[#e0f8f8] via-[#c5eeee] to-[#e0f8f8] animate-pulse" />
+
+          <div className="h-3 w-20 rounded-md bg-gradient-to-r from-[#d9f7f8] via-[#aee8ea] to-[#d9f7f8] animate-pulse" />
+
         </div>
 
       </div>
@@ -129,7 +137,7 @@ const EventSkeleton = () => {
 
         {/* ================= MAIN INTERFACE STATE ================= */}
        {loading ? (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 w-full max-w-7xl">
+  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 w-full max-w-7xl">
     {Array.from({ length: 6 }).map((_, index) => (
       <EventSkeleton key={index} />
     ))}
