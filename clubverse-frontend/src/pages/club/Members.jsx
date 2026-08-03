@@ -191,9 +191,7 @@ const MembersSkeleton = ({
 };
 
 export default function Members() {
-  const [sidebarOpen, setSidebarOpen] = useState(() => {
-  return window.innerWidth >= 1024;
-});
+ const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [boards, setBoards] = useState([]);
   const [activeBoard, setActiveBoard] = useState(null); 
