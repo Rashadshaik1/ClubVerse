@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
-import Loader from "../../components/Loader";
 import { 
   BarChart, 
   Bar, 
@@ -25,6 +24,164 @@ import {
   FaTimes
 } from "react-icons/fa";
 
+const EventDashboardSkeleton = ({
+  sidebarOpen,
+  setSidebarOpen,
+}) => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
+
+      {/* SIDEBAR */}
+      <ClubSidebar
+        isOpen={sidebarOpen}
+        setIsOpen={setSidebarOpen}
+      />
+
+      {/* MAIN CONTENT */}
+      <div className="flex-1 w-full min-w-0 pt-20 sm:pt-24 px-3 sm:px-5 lg:px-8 pb-8 sm:pb-12">
+
+        {/* NAVBAR */}
+        <ClubNavbar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
+
+        {/* HEADER SKELETON */}
+        <div className="mb-5 sm:mb-8 bg-white/40 backdrop-blur-md p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/40 shadow-sm">
+
+          <div className="h-3 w-40 sm:w-48 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+          <div className="h-6 sm:h-8 w-48 sm:w-72 max-w-full rounded-xl mt-3 bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+        </div>
+
+        {/* MAIN GRID */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 max-w-7xl">
+
+          {/* LEFT COLUMN */}
+          <div className="space-y-5 sm:space-y-6">
+
+            {/* POSTER SKELETON */}
+            <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm">
+
+              <div className="h-4 w-28 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse mb-4" />
+
+              <div className="w-full h-64 sm:h-80 rounded-2xl bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+              <div className="h-3 w-40 mx-auto rounded-md mt-3 bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+
+              <div className="h-10 w-full rounded-xl mt-4 bg-gradient-to-r from-[#e2fafa] via-[#c9f2f3] to-[#e2fafa] animate-pulse" />
+
+            </div>
+
+            {/* REGISTRATION SKELETON */}
+            <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm">
+
+              <div className="flex justify-between items-center mb-5">
+
+                <div className="h-4 w-28 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+                <div className="h-6 w-20 rounded-xl bg-gradient-to-r from-[#cceff0] via-[#aee8ea] to-[#cceff0] animate-pulse" />
+
+              </div>
+
+              {/* GRAPH */}
+              <div className="h-48 w-full flex items-end justify-between gap-2 sm:gap-3 px-2 pt-6 border-b border-[#cceeee]">
+
+                {[35, 55, 25, 70, 45, 80, 40, 60].map(
+                  (height, index) => (
+                    <div
+                      key={index}
+                      className="flex-1 flex items-end justify-center h-full"
+                    >
+                      <div
+                        style={{ height: `${height}%` }}
+                        className="w-4 sm:w-6 rounded-t-full bg-gradient-to-t from-[#d9f7f8] via-[#8ddfe2] to-[#bceff0] animate-pulse"
+                      />
+                    </div>
+                  )
+                )}
+
+              </div>
+
+            </div>
+
+            {/* STUDENTS SKELETON */}
+            <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm">
+
+              <div className="h-5 w-40 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse mb-5" />
+
+              {[1, 2, 3].map((item) => (
+                <div
+                  key={item}
+                  className="flex flex-col gap-2 border-b border-gray-100 py-3"
+                >
+                  <div className="h-3 w-32 rounded-md bg-gradient-to-r from-[#dff8f8] via-[#c6eeee] to-[#dff8f8] animate-pulse" />
+
+                  <div className="h-3 w-48 max-w-full rounded-md bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+                </div>
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* RIGHT COLUMN */}
+          <div className="lg:col-span-2 space-y-5 sm:space-y-6">
+
+            {/* LOCATION SKELETON */}
+            <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm">
+
+              <div className="h-5 w-36 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+              <div className="h-3 w-72 max-w-full rounded-md mt-3 bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+
+              <div className="flex flex-col sm:flex-row gap-3 mt-5">
+
+                <div className="h-11 flex-1 rounded-2xl bg-gradient-to-r from-[#e2fafa] via-[#c9f2f3] to-[#e2fafa] animate-pulse" />
+
+                <div className="h-11 w-full sm:w-36 rounded-2xl bg-gradient-to-r from-[#cceff0] via-[#aee8ea] to-[#cceff0] animate-pulse" />
+
+              </div>
+
+            </div>
+
+            {/* RESCHEDULE SKELETON */}
+            <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm">
+
+              <div className="h-5 w-40 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+              <div className="h-3 w-80 max-w-full rounded-md mt-3 bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+
+                <div>
+                  <div className="h-3 w-20 rounded-md bg-gradient-to-r from-[#dff8f8] via-[#c6eeee] to-[#dff8f8] animate-pulse mb-2" />
+                  <div className="h-11 w-full rounded-2xl bg-gradient-to-r from-[#e2fafa] via-[#c9f2f3] to-[#e2fafa] animate-pulse" />
+                </div>
+
+                <div>
+                  <div className="h-3 w-24 rounded-md bg-gradient-to-r from-[#dff8f8] via-[#c6eeee] to-[#dff8f8] animate-pulse mb-2" />
+                  <div className="h-11 w-full rounded-2xl bg-gradient-to-r from-[#e2fafa] via-[#c9f2f3] to-[#e2fafa] animate-pulse" />
+                </div>
+
+              </div>
+
+              <div className="h-20 w-full rounded-2xl mt-4 bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+
+              <div className="h-11 w-full sm:w-44 ml-auto rounded-2xl mt-4 bg-gradient-to-r from-[#cceff0] via-[#aee8ea] to-[#cceff0] animate-pulse" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 export default function EventDashboard() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -33,8 +190,9 @@ export default function EventDashboard() {
   const token = localStorage.getItem("token");
 
   const [event, setEvent] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isUpcoming, setIsUpcoming] = useState(true);
+const [loading, setLoading] = useState(true);
+const [sidebarOpen, setSidebarOpen] = useState(false);
+const [isUpcoming, setIsUpcoming] = useState(true);
 
   const [registrations, setRegistrations] = useState([]);
 
@@ -466,42 +624,53 @@ const downloadAttendanceSheet = async () => {
     }
   };
 
-  if (loading) {
-  return <Loader />;
+ if (loading) {
+  return (
+    <EventDashboardSkeleton
+      sidebarOpen={sidebarOpen}
+      setSidebarOpen={setSidebarOpen}
+    />
+  );
 }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
       {/* FIXED SIDEBAR */}
-      <ClubSidebar />
+      <ClubSidebar
+  isOpen={sidebarOpen}
+  setIsOpen={setSidebarOpen}
+/>
 
       {/* CONTENT CONTAINER - Fixed sidebar overlap issue dynamically */}
-      <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300">
-        <ClubNavbar />
+      <div className="flex-1 w-full min-w-0 pt-20 sm:pt-24 px-3 sm:px-5 lg:px-8 pb-8 sm:pb-12 transition-all duration-300">
+        <ClubNavbar
+  sidebarOpen={sidebarOpen}
+  setSidebarOpen={setSidebarOpen}
+/>
 
         {/* HEADER SECTION */}
-        <div className="mb-8 bg-white/40 backdrop-blur-md p-6 rounded-3xl border border-white/40 shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+        <div className="mb-5 sm:mb-7 lg:mb-8 bg-white/40 backdrop-blur-md p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/40 shadow-sm flex flex-col lg:flex-row justify-between lg:items-center gap-4">
           <div>
-            <span className="px-3 py-1 rounded-xl text-[10px] font-black tracking-wider uppercase bg-[#048c92]/10 text-[#048c92]">
-              {club?.name || "Club"} • Dashboard
-            </span>
-            <h1 className="text-2xl font-black text-[#048c92] tracking-tight mt-1">
+            <span className="inline-block max-w-full truncate px-3 py-1 rounded-xl text-[10px] font-black tracking-wider uppercase bg-[#048c92]/10 text-[#048c92]">
+  {club?.name || "Club"} • Event Management
+</span>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-[#048c92] tracking-tight mt-1 break-words">
               {event?.title || "Event Dashboard"}
             </h1>
           </div>
           
 {isUpcoming && (
-  <div className="flex items-center gap-3">
+  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full lg:w-auto">
     <button 
       onClick={handleCompleteEvent}
-      className="bg-green-500/10 hover:bg-green-500 text-green-600 hover:text-white border border-green-500/20 px-5 py-2.5 rounded-2xl text-xs font-black shadow-sm transition-all transform hover:-translate-y-0.5"
+      className="w-full sm:w-auto bg-green-500/10 hover:bg-green-500 text-green-600 hover:text-white border border-green-500/20 px-5 py-2.5 rounded-2xl text-xs font-black shadow-sm transition-all transform hover:-translate-y-0.5"
     >
       Mark as Completed
     </button>
 
     <button 
       onClick={handleCancelEvent}
-      className="bg-red-500/10 hover:bg-red-500 text-red-600 hover:text-white border border-red-500/20 px-5 py-2.5 rounded-2xl text-xs font-black shadow-sm transition-all transform hover:-translate-y-0.5"
+      className="w-full sm:w-auto bg-red-500/10 hover:bg-red-500 text-red-600 hover:text-white border border-red-500/20 px-5 py-2.5 rounded-2xl text-xs font-black shadow-sm transition-all transform hover:-translate-y-0.5"
     >
       Cancel Event
     </button>
@@ -510,16 +679,16 @@ const downloadAttendanceSheet = async () => {
         </div>
 
         {/* MAIN DASHBOARD GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 w-full max-w-7xl">
           
           {/* LEFT COLUMN: POSTER & GRAPH */}
-          <div className="space-y-6">
+          <div className="space-y-5 sm:space-y-6 min-w-0">
             {/* EVENT POSTER CARD */}
-            <div className="bg-white/60 backdrop-blur-xl p-5 rounded-3xl border border-[#cceeee] shadow-sm">
+            <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm min-w-0">
               <h3 className="text-sm font-black text-gray-700 uppercase tracking-wider mb-4">Event Poster</h3>
 <div
   onClick={() => setShowPosterModal(true)}
-  className="w-full h-80 rounded-2xl border border-[#cceeee] bg-white/50 overflow-hidden flex items-center justify-center p-2 shadow-inner cursor-pointer group"
+  className="w-full h-64 sm:h-80 rounded-2xl border border-[#cceeee] bg-white/50 overflow-hidden flex items-center justify-center p-2 shadow-inner cursor-pointer group"
   title="Click to view poster"
 >
   <img
@@ -551,14 +720,14 @@ const downloadAttendanceSheet = async () => {
             </div>
 
             {/* REGISTRATION METRICS */}
-            <div className="bg-white/60 backdrop-blur-xl p-5 rounded-3xl border border-[#cceeee] shadow-sm">
+            <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm min-w-0">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-sm font-black text-gray-700 uppercase tracking-wider">Registrations</h3>
                 <span className="bg-[#048c92] text-white font-black text-xs px-3 py-1 rounded-xl shadow-sm">
                   {registrations.length || 0} Total
                 </span>
               </div>
-              <div className="h-48 w-full mt-2">
+              <div className="h-48 sm:h-52 w-full mt-2 min-w-0">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={analyticsData}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#edfdfd" />
@@ -585,7 +754,7 @@ const downloadAttendanceSheet = async () => {
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm">
+            <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm min-w-0">
 
 <h2 className="text-lg font-bold mb-5">
 Registered Students
@@ -601,8 +770,8 @@ registrations.length===0 ?
 registrations.map(reg=>(
 
 <div
-key={reg._id}
-className="flex justify-between border-b py-3"
+  key={reg._id}
+  className="flex flex-col sm:flex-row sm:justify-between gap-1 border-b py-3 min-w-0"
 >
 
 <div>
@@ -611,7 +780,7 @@ className="flex justify-between border-b py-3"
 {reg.userId?.name}
 </p>
 
-<p className="text-xs text-gray-500">
+<p className="text-xs text-gray-500 break-all">
 {reg.userId?.email}
 </p>
 
@@ -627,17 +796,17 @@ className="flex justify-between border-b py-3"
           </div>
 
           {/* RIGHT COLUMNS: CONTROLS & UTILITIES */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-5 sm:space-y-6 min-w-0">
             {isUpcoming ? (
-              <div className="space-y-6">
+              <div className="space-y-5 sm:space-y-6 min-w-0">
                 
                 {/* VENUE UPDATE */}
-                <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm">
+                <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <FaMapMarkerAlt className="text-[#048c92] text-sm" />
                     <h2 className="text-base font-black text-gray-800 tracking-tight">Update Location</h2>
                   </div>
-                  <p className="text-xs text-amber-600 font-medium mb-4">Note: This sends instant email alerts to all attendees.</p>
+                 <p className="text-xs text-amber-600 font-medium mb-4">Note: All registered students will get an email.</p>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <input type="text" value={venue} onChange={(e) => setVenue(e.target.value)} className={inputStyle} disabled={isVenueUpdating} placeholder="Enter venue name..." />
                     <button 
@@ -653,12 +822,14 @@ className="flex justify-between border-b py-3"
                 </div>
 
                 {/* RESCHEDULE CONSOLE */}
-                <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm">
+                <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <FaCalendarAlt className="text-[#048c92] text-sm" />
                     <h2 className="text-base font-black text-gray-800 tracking-tight">Reschedule Event</h2>
                   </div>
-                  <p className="text-xs text-amber-600 font-medium mb-4">Note: Changes trigger automated rescheduling notification emails.</p>
+                  <p className="text-xs text-amber-600 font-medium mb-4">
+  All registered students will be notified about the new date.
+</p>
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
@@ -710,23 +881,27 @@ className="flex justify-between border-b py-3"
                 </div>
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-5 sm:space-y-6 min-w-0">
                 
                 {/* ATTENDANCE SHEET */}
                 <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                   <div>
                     <h2 className="text-base font-black text-gray-800 tracking-tight">Attendance Records</h2>
-                    <p className="text-xs text-gray-400 mt-0.5">Download full roster dataset directly in CSV matrix.</p>
+                    <p className="text-xs text-gray-400 mt-0.5">
+  Download the student attendance list as a CSV file.
+</p>
                   </div>
                   <button onClick={downloadAttendanceSheet} className="bg-[#048c92] hover:bg-[#03767b] text-white text-xs font-black px-5 py-3 rounded-2xl shadow-sm transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
-                    <FaDownload /> Export Sheet (CSV)
+                    <FaDownload /> Download CSV
                   </button>
                 </div>
 
                 {/* GALLERY ACCUMULATOR */}
-                <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm">
+                <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm min-w-0">
                   <h2 className="text-base font-black text-gray-800 tracking-tight mb-1">Event Gallery</h2>
-                  <p className="text-xs text-gray-400 mb-4">Upload multiple images to save event memories.</p>
+                  <p className="text-xs text-gray-400 mb-4">
+  Add photos from this event.
+</p>
                   
                   <div className="space-y-4">
                     <div className="flex flex-col items-center justify-center border-2 border-dashed border-[#cceeee] hover:border-[#048c92] rounded-2xl p-6 bg-white/40 hover:bg-white/80 transition relative group">
@@ -738,13 +913,15 @@ className="flex justify-between border-b py-3"
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
                       />
                       <FaCloudUploadAlt className="text-2xl text-[#048c92] mb-1 group-hover:scale-110 transition-transform" />
-                      <p className="text-xs font-extrabold text-gray-600">Click or Drag & Drop Images Here</p>
+                      <p className="text-xs font-extrabold text-gray-600">
+  Click here to add photos
+</p>
                     </div>
 
                     {galleryPreviews.length > 0 && (
                       <div className="space-y-3 pt-2">
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider">Staged Images ({galleryPreviews.length})</p>
-                        <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 bg-white/40 p-3 rounded-2xl border border-gray-100">
+                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 bg-white/40 p-3 rounded-2xl border border-gray-100">
                           {galleryPreviews.map((url, index) => (
                             <div key={index} className="aspect-square w-full rounded-xl border border-gray-100 overflow-hidden bg-white shadow-sm relative group">
                               <img src={url} className="w-full h-full object-cover" alt="Preview" />
@@ -772,7 +949,7 @@ className="flex justify-between border-b py-3"
 
                 {/* TECHNICAL LEADERBOARD */}
                 {club?.type === "Technical" && (
-                  <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm">
+                  <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm min-w-0">
                     <div className="flex items-center gap-2 mb-4">
                       <FaTrophy className="text-amber-500 text-sm" />
                       <h2 className="text-base font-black text-gray-800 tracking-tight">Leaderboard Winners</h2>
@@ -793,10 +970,12 @@ className="flex justify-between border-b py-3"
                 )}
 
                 {/* USER FEEDBACK */}
-                <div className="bg-white/60 backdrop-blur-xl p-6 rounded-3xl border border-[#cceeee] shadow-sm">
+                <div className="bg-white/60 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-[#cceeee] shadow-sm min-w-0">
                   <div className="flex items-center gap-2 mb-4">
                     <FaComments className="text-[#048c92] text-sm" />
-                    <h2 className="text-base font-black text-gray-800 tracking-tight">Attendee Feedback</h2>
+                    <h2 className="text-base font-black text-gray-800 tracking-tight">
+  Student Feedback
+</h2>
                   </div>
                   <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
                     {liveFeedback && liveFeedback.length > 0 ? (
@@ -807,7 +986,9 @@ className="flex justify-between border-b py-3"
                         </div>
                       ))
                     ) : (
-                      <p className="text-xs text-gray-400 italic">No feedback submissions received yet.</p>
+                      <p className="text-xs text-gray-400 italic">
+  No feedback yet.
+</p>
                     )}
                   </div>
                 </div>
@@ -823,12 +1004,12 @@ className="flex justify-between border-b py-3"
             onClick={() => setShowPosterModal(false)}
           >
             <div
-              className="relative max-w-5xl max-h-[90vh] w-full flex items-center justify-center"
+  className="relative max-w-5xl max-h-[90vh] w-full px-2 sm:px-4 flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setShowPosterModal(false)}
-                className="absolute -top-4 -right-4 z-10 w-10 h-10 rounded-full bg-white text-gray-700 text-xl font-bold shadow-lg hover:bg-gray-100 transition"
+                className="absolute top-2 right-2 sm:-top-4 sm:-right-4 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white text-gray-700 text-xl font-bold shadow-lg hover:bg-gray-100 transition"
               >
                 ×
               </button>
