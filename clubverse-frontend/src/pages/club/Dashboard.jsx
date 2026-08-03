@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
-import Loader from "../../components/Loader";
+
 
 import {
   FaCalendarAlt,
@@ -13,6 +13,200 @@ import {
   FaArrowUp,
   FaArrowDown,
 } from "react-icons/fa";
+
+// ================= DASHBOARD SKELETON =================
+
+const DashboardSkeleton = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
+
+      <ClubSidebar />
+
+      <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12">
+
+        <ClubNavbar />
+
+        {/* ================= HEADER SKELETON ================= */}
+
+        <div className="mb-5 sm:mb-8 bg-white/40 backdrop-blur-md p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/40 shadow-sm">
+
+          <div className="h-7 w-64 rounded-xl bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+          <div className="h-3 w-80 max-w-full rounded-lg mt-3 bg-gradient-to-r from-[#e2fafa] via-[#c9f2f3] to-[#e2fafa] animate-pulse" />
+
+        </div>
+
+
+        {/* ================= SUMMARY CARDS ================= */}
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
+
+          {[1, 2, 3, 4].map((card) => (
+            <div
+              key={card}
+              className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 lg:p-6 shadow-sm min-w-0"
+            >
+
+              {/* Top row */}
+
+              <div className="flex justify-between items-center">
+
+                <div className="h-3 w-28 rounded-md bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-r from-[#d9f7f8] via-[#aee8ea] to-[#d9f7f8] animate-pulse" />
+
+              </div>
+
+
+              {/* Number */}
+
+              <div className="mt-5 flex items-center gap-2">
+
+                <div className="h-10 w-20 rounded-xl bg-gradient-to-r from-[#cceff0] via-[#aee8ea] to-[#cceff0] animate-pulse" />
+
+                <div className="h-5 w-16 rounded-lg bg-gradient-to-r from-[#e0f8f8] via-[#c9f0f1] to-[#e0f8f8] animate-pulse" />
+
+              </div>
+
+
+              {/* Description */}
+
+              <div className="h-3 w-44 rounded-md mt-3 bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+
+            </div>
+          ))}
+
+        </div>
+
+
+        {/* ================= ANALYTICS ================= */}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mt-5 sm:mt-8">
+
+
+          {/* ================= GRAPH SKELETON ================= */}
+
+          <div className="lg:col-span-2 bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-3xl p-6 shadow-lg">
+
+            <div className="flex items-center justify-between mb-6">
+
+              <div className="flex items-center gap-3">
+
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#aee8ea] to-[#d9f7f8] animate-pulse" />
+
+                <div className="h-4 w-36 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+              </div>
+
+              <div className="h-7 w-20 rounded-xl bg-gradient-to-r from-[#e2fafa] via-[#c4eeee] to-[#e2fafa] animate-pulse" />
+
+            </div>
+
+
+            {/* Graph */}
+
+            <div className="h-56 w-full flex items-end justify-between gap-3 px-3 pt-6 border-b border-[#cceeee]">
+
+              {[35, 55, 25, 70, 45, 80, 40, 60, 30, 75, 50, 65].map(
+                (height, index) => (
+                  <div
+                    key={index}
+                    className="flex-1 flex items-end justify-center h-full"
+                  >
+
+                    <div
+                      style={{ height: `${height}%` }}
+                      className="w-4 sm:w-6 rounded-t-full bg-gradient-to-t from-[#d9f7f8] via-[#8ddfe2] to-[#bceff0] animate-pulse"
+                    />
+
+                  </div>
+                )
+              )}
+
+            </div>
+
+
+            {/* Month labels */}
+
+            <div className="flex justify-between px-2 mt-4">
+
+              {[
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+              ].map((month) => (
+                <div
+                  key={month}
+                  className="h-3 w-6 rounded-md bg-gradient-to-r from-[#e0f8f8] via-[#c5eeee] to-[#e0f8f8] animate-pulse"
+                />
+              ))}
+
+            </div>
+
+          </div>
+
+
+          {/* ================= STATUS SKELETON ================= */}
+
+          <div className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-3xl p-6 shadow-lg">
+
+            <div className="h-4 w-28 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+            <div className="h-3 w-56 max-w-full rounded-md mt-3 bg-gradient-to-r from-[#e5fafa] via-[#cceff0] to-[#e5fafa] animate-pulse" />
+
+            <div className="space-y-7 mt-10">
+
+              {[1, 2].map((item) => (
+                <div key={item}>
+
+                  <div className="flex justify-between mb-2">
+
+                    <div className="h-3 w-32 rounded-md bg-gradient-to-r from-[#dff8f8] via-[#c6eeee] to-[#dff8f8] animate-pulse" />
+
+                    <div className="h-3 w-8 rounded-md bg-gradient-to-r from-[#dff8f8] via-[#c6eeee] to-[#dff8f8] animate-pulse" />
+
+                  </div>
+
+                  <div className="w-full h-2 rounded-full bg-[#e5f7f7] overflow-hidden">
+
+                    <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#bceff0] via-[#67cdd1] to-[#bceff0] animate-pulse" />
+
+                  </div>
+
+                </div>
+              ))}
+
+            </div>
+
+
+            {/* Quick summary */}
+
+            <div className="mt-10 bg-[#43bfc3]/5 border border-[#43bfc3]/20 rounded-2xl p-4">
+
+              <div className="h-3 w-28 mx-auto rounded-md bg-gradient-to-r from-[#d9f7f8] via-[#9ee2e5] to-[#d9f7f8] animate-pulse" />
+
+              <div className="h-3 w-48 max-w-full mx-auto mt-3 rounded-md bg-gradient-to-r from-[#e5fafa] via-[#c5eeee] to-[#e5fafa] animate-pulse" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+};
 
 export default function Dashboard() {
   const [club, setClub] = useState(null);
@@ -239,9 +433,9 @@ export default function Dashboard() {
     }
   };
 
-  if (loading) {
-    return <Loader />;
-  }
+ if (loading) {
+  return <DashboardSkeleton />;
+}
 
   const maxEventsCount = Math.max(
     ...monthlyAnalytics.map(
@@ -255,20 +449,20 @@ export default function Dashboard() {
 
       <ClubSidebar />
 
-      <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300">
+      <div className="flex-1 w-full pt-20 sm:pt-24 px-3 sm:px-6 lg:px-8 pb-8 sm:pb-12 transition-all duration-300 min-w-0">
 
         <ClubNavbar />
 
         {/* ================= HEADER ================= */}
 
-        <div className="mb-8 bg-white/40 backdrop-blur-md p-6 rounded-3xl border border-white/40 shadow-sm">
+        <div className="mb-5 sm:mb-8 bg-white/40 backdrop-blur-md p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/40 shadow-sm">
 
           <div>
-            <h1 className="text-2xl font-black text-[#048c92] tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-[#048c92] tracking-tight">
               {club?.name || "Club"} Dashboard
             </h1>
 
-            <p className="text-gray-500 font-medium text-xs mt-1">
+            <p className="text-gray-500 font-medium text-[11px] sm:text-xs mt-1">
               View your club events and performance at a glance.
             </p>
           </div>
@@ -277,29 +471,29 @@ export default function Dashboard() {
 
         {/* ================= SUMMARY CARDS ================= */}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
 
           {/* ================= TOTAL EVENTS ================= */}
 
-          <div className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-3xl p-6 shadow-sm">
+          <div className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 lg:p-6 shadow-sm min-w-0">
 
             <div className="flex justify-between items-center text-gray-400">
 
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+              <span className="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 truncate">
                 Total Events
               </span>
 
-              <FaCalendarAlt className="text-lg text-[#43bfc3]" />
+              <FaCalendarAlt className="text-sm sm:text-lg text-[#43bfc3] shrink-0" />
 
             </div>
 
             <div className="mt-4 flex items-baseline gap-2">
 
-              <span className="text-4xl font-black text-[#048c92] tracking-tight">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#048c92] tracking-tight">
                 {stats.totalEvents}
               </span>
 
-              <span className="text-xs font-bold text-emerald-600 flex items-center bg-emerald-50 px-1.5 py-0.5 rounded-lg">
+              <span className="text-[9px] sm:text-xs font-bold text-emerald-600 flex items-center bg-emerald-50 px-1 sm:px-1.5 py-0.5 rounded-lg whitespace-nowrap">
 
                 {eventGrowth >= 0 ? (
                   <FaArrowUp className="text-[9px] mr-0.5" />
@@ -314,7 +508,7 @@ export default function Dashboard() {
 
             </div>
 
-            <p className="text-gray-400 text-[11px] font-medium mt-1">
+            <p className="text-gray-400 text-[9px] sm:text-[11px] font-medium mt-1 leading-relaxed">
               Total events created by your club
             </p>
 
@@ -322,21 +516,21 @@ export default function Dashboard() {
 
           {/* ================= AVERAGE RATING ================= */}
 
-          <div className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-3xl p-6 shadow-sm">
+          <div className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 lg:p-6 shadow-sm min-w-0">
 
             <div className="flex justify-between items-center text-gray-400">
 
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+              <span className="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 truncate">
                 Average Rating
               </span>
 
-              <FaStar className="text-lg text-[#43bfc3]" />
+              <FaStar className="text-sm sm:text-lg text-[#43bfc3] shrink-0" />
 
             </div>
 
             <div className="mt-4 flex items-baseline gap-2">
 
-              <span className="text-4xl font-black text-[#048c92] tracking-tight">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#048c92] tracking-tight">
                 {stats.averageRating.toFixed(1)}
               </span>
 
@@ -355,7 +549,7 @@ export default function Dashboard() {
 
             </div>
 
-            <p className="text-gray-400 text-[11px] font-medium mt-1">
+            <p className="text-gray-400 text-[9px] sm:text-[11px] font-medium mt-1 leading-relaxed">
               Average rating from students
             </p>
 
@@ -363,21 +557,21 @@ export default function Dashboard() {
 
           {/* ================= UPCOMING EVENTS ================= */}
 
-          <div className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-3xl p-6 shadow-sm">
+          <div className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 lg:p-6 shadow-sm min-w-0">
 
             <div className="flex justify-between items-center text-gray-400">
 
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+              <span className="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 truncate">
                 Upcoming Events
               </span>
 
-              <FaClock className="text-lg text-[#43bfc3]" />
+              <FaClock className="text-sm sm:text-lg text-[#43bfc3] shrink-0" />
 
             </div>
 
             <div className="mt-4 flex items-baseline gap-2">
 
-              <span className="text-4xl font-black text-[#048c92] tracking-tight">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#048c92] tracking-tight">
                 {stats.upcomingEvents}
               </span>
 
@@ -389,7 +583,7 @@ export default function Dashboard() {
 
             </div>
 
-            <p className="text-gray-400 text-[11px] font-medium mt-1">
+            <p className="text-gray-400 text-[9px] sm:text-[11px] font-medium mt-1 leading-relaxed">
               Events scheduled for the future
             </p>
 
@@ -401,7 +595,7 @@ export default function Dashboard() {
 
             <div className="flex justify-between items-center text-gray-400">
 
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+              <span className="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 truncate">
                 Cancelled Events
               </span>
 
@@ -423,7 +617,7 @@ export default function Dashboard() {
 
             </div>
 
-            <p className="text-gray-400 text-[11px] font-medium mt-1">
+            <p className="text-gray-400 text-[9px] sm:text-[11px] font-medium mt-1 leading-relaxed">
               Events cancelled by the club
             </p>
 
@@ -433,11 +627,11 @@ export default function Dashboard() {
 
         {/* ================= ANALYTICS ================= */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mt-5 sm:mt-8">
 
           {/* ================= EVENTS OVERVIEW ================= */}
 
-          <div className="lg:col-span-2 bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-3xl p-6 shadow-lg flex flex-col justify-between">
+          <div className="lg:col-span-2 bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-lg flex flex-col justify-between min-w-0">
 
             <div className="flex items-center justify-between mb-4">
 
@@ -459,7 +653,7 @@ export default function Dashboard() {
 
             {/* ================= GRAPH ================= */}
 
-            <div className="h-56 w-full flex items-end justify-between px-2 pt-6 relative border-b border-[#cceeee]">
+            <div className="h-48 sm:h-56 w-full flex items-end justify-between px-1 sm:px-2 pt-5 sm:pt-6 relative border-b border-[#cceeee] overflow-hidden">
 
               <div className="absolute inset-0 flex flex-col justify-between pointer-events-none pb-2 pt-6 opacity-30">
 
@@ -489,7 +683,7 @@ export default function Dashboard() {
                     className="flex-1 flex flex-col items-center h-full justify-end group z-10"
                   >
 
-                    <div className="opacity-0 group-hover:opacity-100 bg-[#048c92] text-white text-[10px] font-black px-2 py-0.5 rounded-lg absolute mb-2 -translate-y-12 transition-all duration-300 shadow-md">
+                    <div className="hidden sm:block opacity-0 group-hover:opacity-100 bg-[#048c92] text-white text-[10px] font-black px-2 py-0.5 rounded-lg absolute mb-2 -translate-y-12 transition-all duration-300 shadow-md">
 
                       {data.count} Events
 
@@ -499,7 +693,7 @@ export default function Dashboard() {
                       style={{
                         height: dynamicHeight,
                       }}
-                      className="w-4 sm:w-6 bg-gradient-to-t from-[#048c92]/10 via-[#43bfc3]/40 to-[#048c92] rounded-t-full border-t-2 border-[#048c92] group-hover:brightness-110 group-hover:w-7 transition-all duration-500 relative shadow-sm"
+                      className="w-2.5 sm:w-4 lg:w-6 bg-gradient-to-t from-[#048c92]/10 via-[#43bfc3]/40 to-[#048c92] rounded-t-full border-t-2 border-[#048c92] group-hover:brightness-110 group-hover:w-7 transition-all duration-500 relative shadow-sm"
                     >
 
                       {data.count > 0 && (
@@ -522,7 +716,7 @@ export default function Dashboard() {
                 (data, idx) => (
                   <span
                     key={idx}
-                    className="flex-1 text-center text-[11px] font-bold text-gray-400 tracking-tight"
+                    className="flex-1 text-center text-[9px] sm:text-[11px] font-bold text-gray-400 tracking-tight"
                   >
                     {data.month}
                   </span>
@@ -535,11 +729,11 @@ export default function Dashboard() {
 
           {/* ================= EVENT STATUS ================= */}
 
-          <div className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-3xl p-6 shadow-lg flex flex-col justify-between">
+          <div className="bg-white/60 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-lg flex flex-col justify-between min-w-0">
 
             <div>
 
-              <h3 className="text-sm font-extrabold text-[#048c92] uppercase tracking-wider mb-2">
+              <h3 className="text-xs sm:text-sm font-extrabold text-[#048c92] uppercase tracking-wider mb-2">
                 Event Status
               </h3>
 
@@ -549,7 +743,7 @@ export default function Dashboard() {
 
             </div>
 
-            <div className="space-y-4 my-4">
+            <div className="space-y-5 sm:space-y-4 my-5 sm:my-4">
 
               {/* UPCOMING */}
 
