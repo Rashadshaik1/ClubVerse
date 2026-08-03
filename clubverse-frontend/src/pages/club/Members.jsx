@@ -327,13 +327,19 @@ if (loading) {
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
       
       {/* FIXED SIDEBAR */}
-      <ClubSidebar />
+           <ClubSidebar
+  isOpen={sidebarOpen}
+  setIsOpen={setSidebarOpen}
+/>
 
       {/* ✅ 2. కంటెంట్ కంటైనర్ - అచ్చం నీ ఈవెంట్స్ పేజీ లాగే pt-24 ఇచ్చా */}
       <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300">
         
         {/* ✅ 3. నావ్‌బార్ ఇక్కడే టాప్ లో లోడ్ అవుతుంది */}
-        <ClubNavbar />
+               <ClubNavbar
+  sidebarOpen={sidebarOpen}
+  setSidebarOpen={setSidebarOpen}
+/>
 
         {/* ✅ 4. నీ మిగిలిన పేజీల స్టైల్ లోనే హెడర్ కార్డ్ సెట్ చేశా */}
         <div className="mb-8 bg-white/40 backdrop-blur-md p-6 rounded-3xl border border-white/40 shadow-sm flex justify-between items-center">
