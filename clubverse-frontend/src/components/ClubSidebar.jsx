@@ -1,6 +1,6 @@
-
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
+
 import {
   FaTachometerAlt,
   FaCalendarPlus,
@@ -10,114 +10,62 @@ import {
   FaImages,
   FaInfoCircle,
   FaSignOutAlt,
-  FaBars,
-  FaTimes
 } from "react-icons/fa";
 
 import collegeLogo from "../assets/logoclub.png";
 
-export default function ClubSidebar() {
-  const [isOpen, setIsOpen] = useState(false);
-
+export default function ClubSidebar({
+  isOpen,
+  setIsOpen,
+}) {
   const menu = [
     {
       name: "Dashboard",
       path: "/club-dashboard",
-      icon: <FaTachometerAlt />
+      icon: <FaTachometerAlt />,
     },
     {
       name: "Create Event",
       path: "/create-event",
-      icon: <FaCalendarPlus />
+      icon: <FaCalendarPlus />,
     },
     {
       name: "Manage Events",
       path: "/manage-events",
-      icon: <FaClipboardList />
+      icon: <FaClipboardList />,
     },
     {
       name: "Members",
       path: "/members",
-      icon: <FaUsers />
+      icon: <FaUsers />,
     },
     {
       name: "Gallery",
       path: "/gallery",
-      icon: <FaImages />
+      icon: <FaImages />,
     },
     {
       name: "About",
       path: "/about",
-      icon: <FaInfoCircle />
+      icon: <FaInfoCircle />,
     },
     {
       name: "Profile",
       path: "/profile",
-      icon: <FaUserCircle />
-    }
+      icon: <FaUserCircle />,
+    },
   ];
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("club");
+
     window.location.href = "/club-login";
   };
 
   return (
     <>
-      {/* =====================================================
-          MOBILE / TABLET MENU BUTTON
-          ===================================================== */}
-
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
-        className="
-          fixed
-          top-[5.25rem]
-          left-3
-          sm:left-5
-          z-[60]
-
-          w-11
-          h-11
-          sm:w-12
-          sm:h-12
-
-          flex
-          items-center
-          justify-center
-
-          bg-white
-          border
-          border-[#cceeee]
-
-          text-[#048c92]
-
-          rounded-xl
-          sm:rounded-2xl
-
-          shadow-md
-          hover:shadow-lg
-          hover:bg-[#eafcff]
-
-          active:scale-95
-
-          transition-all
-          duration-300
-        "
-      >
-        {isOpen ? (
-          <FaTimes className="text-lg sm:text-xl" />
-        ) : (
-          <FaBars className="text-lg sm:text-xl" />
-        )}
-      </button>
-
-
-      {/* =====================================================
-          BACKDROP
-          ===================================================== */}
+      {/* ================= BACKDROP ================= */}
 
       {isOpen && (
         <div
@@ -126,43 +74,34 @@ export default function ClubSidebar() {
             fixed
             inset-0
             bg-black/20
-            z-[45]
+            z-40
+            transition-opacity
+            duration-300
           "
         />
       )}
 
-
-      {/* =====================================================
-          SIDEBAR
-          ===================================================== */}
+      {/* ================= SIDEBAR ================= */}
 
       <aside
         className={`
           fixed
           left-0
-          top-20
-          h-[calc(100vh-5rem)]
-
+          top-0
+          h-screen
           w-[280px]
           sm:w-72
-
           bg-white
-
           border-r
           border-gray-200
-
           flex
           flex-col
-
           shadow-xl
-
-          z-[50]
-
+          z-[45]
           transform
           transition-transform
           duration-300
           ease-in-out
-
           ${
             isOpen
               ? "translate-x-0"
@@ -171,20 +110,16 @@ export default function ClubSidebar() {
         `}
       >
 
-        {/* =================================================
-            LOGO AREA
-            ================================================= */}
+        {/* ================= LOGO AREA ================= */}
 
         <div
           className="
-            px-5
-            sm:px-6
-            py-5
-            sm:py-6
-
+            p-5
+            sm:p-6
+            pt-20
+            sm:pt-20
             border-b
             border-gray-100
-
             bg-gray-50
           "
         >
@@ -199,18 +134,12 @@ export default function ClubSidebar() {
                 h-11
                 sm:w-12
                 sm:h-12
-
-                rounded-xl
-                sm:rounded-2xl
-
+                rounded-2xl
                 object-cover
-
                 ring-2
                 ring-[#43bfc3]/20
-
                 shadow-sm
-
-                flex-shrink-0
+                shrink-0
               "
             />
 
@@ -220,17 +149,12 @@ export default function ClubSidebar() {
                 className="
                   text-xl
                   sm:text-2xl
-
                   font-bold
-
                   bg-gradient-to-r
                   from-[#048c92]
                   to-[#43bfc3]
-
                   bg-clip-text
                   text-transparent
-
-                  truncate
                 "
               >
                 ClubVerse
@@ -238,215 +162,128 @@ export default function ClubSidebar() {
 
               <p
                 className="
-                  text-[9px]
-                  sm:text-[10px]
-
+                  text-[10px]
+                  sm:text-[11px]
                   font-medium
-
                   text-gray-400
-
                   tracking-wider
                   uppercase
-
-                  truncate
                 "
               >
                 Management Portal
               </p>
 
             </div>
-
           </div>
-
         </div>
 
+        {/* ================= NAVIGATION ================= */}
 
-        {/* =================================================
-            NAVIGATION
-            ================================================= */}
-
-        <nav
+        <div
           className="
             flex-1
-
-            px-4
-            sm:px-5
-
-            py-4
-            sm:py-5
-
+            p-4
+            sm:p-5
             space-y-2
-
             overflow-y-auto
-
-            custom-scrollbar
           "
         >
 
           {menu.map((item) => (
-
             <NavLink
               key={item.name}
               to={item.path}
-
               onClick={() => setIsOpen(false)}
-
               className={({ isActive }) =>
                 `
-                  group
+                flex
+                items-center
+                gap-4
+                px-4
+                sm:px-5
+                py-3
+                sm:py-3.5
+                rounded-2xl
+                font-semibold
+                text-sm
+                transition-all
+                duration-300
+                border
 
-                  flex
-                  items-center
-
-                  gap-3
-                  sm:gap-4
-
-                  px-4
-                  sm:px-5
-
-                  py-3
-                  sm:py-3.5
-
-                  rounded-xl
-                  sm:rounded-2xl
-
-                  font-semibold
-                  text-sm
-
-                  transition-all
-                  duration-300
-
-                  border
-
-                  ${
-                    isActive
-                      ? `
-                        bg-gradient-to-r
-                        from-[#048c92]
-                        to-[#43bfc3]
-
-                        text-white
-
-                        border-transparent
-
-                        shadow-md
-
-                        translate-x-0.5
-                      `
-                      : `
-                        text-gray-600
-
-                        border-transparent
-
-                        hover:bg-[#eafcff]
-
-                        hover:text-[#048c92]
-
-                        hover:translate-x-1
-                      `
-                  }
-                `
+                ${
+                  isActive
+                    ? `
+                      bg-gradient-to-r
+                      from-[#048c92]
+                      to-[#43bfc3]
+                      text-white
+                      border-transparent
+                      shadow-md
+                      scale-[1.01]
+                    `
+                    : `
+                      text-gray-600
+                      border-transparent
+                      hover:bg-[#eafcff]
+                      hover:text-[#048c92]
+                    `
+                }
+              `
               }
             >
-
-              <span
-                className="
-                  text-base
-                  sm:text-lg
-
-                  opacity-90
-
-                  flex-shrink-0
-
-                  transition-transform
-                  duration-300
-
-                  group-hover:scale-110
-                "
-              >
+              <span className="text-lg opacity-90">
                 {item.icon}
               </span>
 
-              <span className="truncate">
-                {item.name}
-              </span>
-
+              <span>{item.name}</span>
             </NavLink>
-
           ))}
 
-        </nav>
+        </div>
 
-
-        {/* =================================================
-            LOGOUT
-            ================================================= */}
+        {/* ================= LOGOUT ================= */}
 
         <div
           className="
-            px-4
-            sm:px-5
-
-            py-4
-            sm:py-5
-
+            p-4
+            sm:p-5
             border-t
             border-gray-100
-
             bg-gray-50
           "
         >
 
           <button
             onClick={handleLogout}
-
             className="
               w-full
-
               flex
               items-center
               justify-center
-
-              gap-2
-              sm:gap-3
-
+              gap-3
               py-3
               sm:py-3.5
-
-              rounded-xl
-              sm:rounded-2xl
-
+              rounded-2xl
               bg-red-50
-
               text-red-600
-
               font-bold
               text-sm
-
               border
               border-red-100
-
               hover:bg-red-600
               hover:text-white
               hover:border-transparent
-
               active:scale-95
-
               transition-all
               duration-300
             "
           >
-
-            <FaSignOutAlt className="text-sm sm:text-base" />
-
+            <FaSignOutAlt className="text-base" />
             Logout
-
           </button>
 
         </div>
-
       </aside>
     </>
   );
 }
-

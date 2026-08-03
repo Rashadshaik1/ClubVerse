@@ -20,11 +20,17 @@ const DashboardSkeleton = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
 
-      <ClubSidebar />
+      <ClubSidebar
+  isOpen={sidebarOpen}
+  setIsOpen={setSidebarOpen}
+/>
 
       <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12">
 
-        <ClubNavbar />
+        <ClubNavbar
+  sidebarOpen={sidebarOpen}
+  setSidebarOpen={setSidebarOpen}
+/>
 
         {/* ================= HEADER SKELETON ================= */}
 
@@ -209,6 +215,7 @@ const DashboardSkeleton = () => {
 };
 
 export default function Dashboard() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [club, setClub] = useState(null);
 
   const [stats, setStats] = useState({
@@ -447,11 +454,17 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
 
-      <ClubSidebar />
+      <ClubSidebar
+  isOpen={sidebarOpen}
+  setIsOpen={setSidebarOpen}
+/>
 
       <div className="flex-1 w-full pt-20 sm:pt-24 px-3 sm:px-6 lg:px-8 pb-8 sm:pb-12 transition-all duration-300 min-w-0">
 
-        <ClubNavbar />
+        <ClubNavbar
+  sidebarOpen={sidebarOpen}
+  setSidebarOpen={setSidebarOpen}
+/>
 
         {/* ================= HEADER ================= */}
 
