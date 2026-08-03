@@ -16,18 +16,21 @@ import {
 
 // ================= DASHBOARD SKELETON =================
 
-const DashboardSkeleton = () => {
+const DashboardSkeleton = ({
+  sidebarOpen,
+  setSidebarOpen,
+}) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
 
-      <ClubSidebar
+
+<ClubSidebar
   isOpen={sidebarOpen}
   setIsOpen={setSidebarOpen}
 />
-
       <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12">
 
-        <ClubNavbar
+<ClubNavbar
   sidebarOpen={sidebarOpen}
   setSidebarOpen={setSidebarOpen}
 />
@@ -440,8 +443,13 @@ export default function Dashboard() {
     }
   };
 
- if (loading) {
-  return <DashboardSkeleton />;
+if (loading) {
+  return (
+    <DashboardSkeleton
+      sidebarOpen={sidebarOpen}
+      setSidebarOpen={setSidebarOpen}
+    />
+  );
 }
 
   const maxEventsCount = Math.max(

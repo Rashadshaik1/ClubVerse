@@ -16,6 +16,7 @@ export default function ClubNavbar({
   setSidebarOpen,
 }) {
   const navigate = useNavigate();
+  
 
   const [club, setClub] = useState({});
   const [notifications, setNotifications] = useState([]);
