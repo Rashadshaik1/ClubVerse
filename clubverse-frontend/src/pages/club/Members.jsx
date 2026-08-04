@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
-import Loader from "../../components/Loader";
 
 
 
