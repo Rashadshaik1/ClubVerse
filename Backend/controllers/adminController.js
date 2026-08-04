@@ -3,7 +3,7 @@ const Club = require("../models/club");
 const Event = require("../models/Event");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
-const sendEmail = require("../utils/sendMail");
+const sendEmail = require("../utils/sendEmail");
 
 
 // ================= CREATE ADMIN =================
