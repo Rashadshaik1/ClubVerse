@@ -3,7 +3,7 @@ const Club = require("../models/club");
 const Event = require("../models/Event");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
-const nodemailer = require("nodemailer");
+const sendEmail = require("../utils/sendMail");
 
 
 // ================= CREATE ADMIN =================
@@ -73,6 +73,7 @@ exports.createClubAccount = async (req, res) => {
     }
 
     const exists = await Club.findOne({ email });
+
     if (exists) {
       return res.status(400).json({
         msg: "Club already exists"
@@ -80,84 +81,58 @@ exports.createClubAccount = async (req, res) => {
     }
 
     const plainPassword = password;
-
-const hashedPassword = await bcrypt.hash(String(password), 10);
+    const hashedPassword = await bcrypt.hash(String(password), 10);
 
     let safeLogo = "";
+
     if (typeof logo === "string" && logo.length < 1000000) {
       safeLogo = logo;
     }
 
     const club = await Club.create({
-  name,
-  email,
-  password: hashedPassword,
-  type: type || "social",
-  description: description || "",
-  logo: safeLogo,
-  createdBy: req.user?.id || ""
-});
+      name,
+      email,
+      password: hashedPassword,
+      type: type || "social",
+      description: description || "",
+      logo: safeLogo,
+      createdBy: req.user?.id || ""
+    });
 
-// SEND LOGIN CREDENTIALS EMAIL
+    // ================= SEND LOGIN CREDENTIALS EMAIL =================
 
-const transporter = nodemailer.createTransport({
+    await sendEmail({
+      to: email,
+      subject: "Welcome to ClubVerse - Club Account Created 🎉",
+      html: `
+        <h2>Welcome to ClubVerse 🎉</h2>
 
-  service:"gmail",
+        <p>Your club account has been created successfully.</p>
 
-  auth:{
-    user:process.env.EMAIL,
-    pass:process.env.EMAIL_PASS
-  }
+        <h3>Your Login Credentials:</h3>
 
-});
+        <p><b>Email:</b> ${email}</p>
 
+        <p><b>Password:</b> ${plainPassword}</p>
 
-await transporter.sendMail({
+        <br/>
 
-  from:`"ClubVerse Team" <${process.env.EMAIL}>`,
+        <p>
+          Login to ClubVerse using these credentials.
+        </p>
 
-  to:email,
+        <p>
+          After your first login, please change your password from the Profile section.
+        </p>
 
-  subject:"Welcome to ClubVerse - Club Account Created 🎉",
+        <br/>
 
-  html:`
-
-  <h2>Welcome to ClubVerse 🎉</h2>
-
-  <p>Your club account has been created successfully.</p>
-
-  <h3>Your Login Credentials:</h3>
-
-  <p>
-  <b>Email:</b> ${email}
-  </p>
-
-  <p>
-  <b>Password:</b> ${plainPassword}
-  </p>
-
-
-  <br/>
-
-  <p>
-  Login to ClubVerse using these credentials.
-  </p>
-
-  <p>
-  After first login, please change your password from Profile section.
-  </p>
-
-
-  <br/>
-
-  <p>
-  Regards,<br/>
-  ClubVerse Team
-  </p>
-
-  `
-
-});
+        <p>
+          Regards,<br/>
+          <b>ClubVerse Team</b>
+        </p>
+      `
+    });
 
     return res.status(201).json({
       success: true,
@@ -165,7 +140,8 @@ await transporter.sendMail({
     });
 
   } catch (error) {
-    console.log("CREATE CLUB ERROR:", error);
+    console.error("CREATE CLUB ERROR:", error);
+
     return res.status(500).json({
       msg: "Server error while creating club",
       error: error.message
