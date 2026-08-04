@@ -189,7 +189,39 @@ const MembersSkeleton = ({
     </div>
   );
 };
+const MembersLoadingSkeleton = () => {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-8">
+      {[1, 2, 3, 4].map((member) => (
+        <div
+          key={member}
+          className="relative bg-white/70 backdrop-blur-xl border border-[#cceeee] rounded-2xl sm:rounded-3xl shadow-sm p-5 sm:p-6 flex flex-col items-center text-center"
+        >
+          {/* ⋮ Menu */}
+          <div className="absolute top-4 right-4">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-r from-[#d9f7f8] via-[#aee8ea] to-[#d9f7f8] animate-pulse" />
+          </div>
 
+          {/* Avatar */}
+          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-[#d9f7f8] via-[#aee8ea] to-[#d9f7f8] animate-pulse mb-4" />
+
+          {/* Name */}
+          <div className="h-4 w-32 rounded-md bg-gradient-to-r from-[#d9f7f8] via-[#bceff0] to-[#d9f7f8] animate-pulse" />
+
+          {/* Position */}
+          <div className="h-5 w-24 rounded-full mt-3 bg-gradient-to-r from-[#e0f8f8] via-[#c5eeee] to-[#e0f8f8] animate-pulse" />
+
+          {/* Branch + Year */}
+          <div className="w-full border-t border-[#cceeee] mt-4 pt-3 flex justify-around">
+            <div className="h-3 w-16 rounded-md bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+
+            <div className="h-3 w-16 rounded-md bg-gradient-to-r from-[#e5fafa] via-[#cdeff0] to-[#e5fafa] animate-pulse" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 export default function Members() {
  const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -419,8 +451,8 @@ if (loading) {
               </button>
             </div>
 
-            {membersLoading ? (
-  <Loader />
+{membersLoading ? (
+  <MembersLoadingSkeleton />
 ) : members.length === 0 ? (
               <div className="text-center py-12 bg-white/50 backdrop-blur-md rounded-3xl border border-dashed border-[#cceeee] text-xs text-gray-400 mb-8">
                 No executive board members added onto this academic layout loop yet.
