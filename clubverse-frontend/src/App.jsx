@@ -30,14 +30,22 @@ import Gallery from "./pages/club/Gallery";
 import GalleryDetails from "./pages/club/GalleryDetails";
 
 export default function App() {
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(
+    !sessionStorage.getItem("clubverse_splash_shown")
+  );
 
   return (
     <BrowserRouter>
 
       {showSplash ? (
         <SplashScreen
-          onFinish={() => setShowSplash(false)}
+          onFinish={() => {
+            sessionStorage.setItem(
+              "clubverse_splash_shown",
+              "true"
+            );
+            setShowSplash(false);
+          }}
         />
       ) : (
         <Routes>
