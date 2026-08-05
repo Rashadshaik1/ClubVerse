@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useEffect, useRef } from "react";
 import { Loader2 } from "lucide-react";
+import logo from "../../assets/logo.png";
 import {
   FaEnvelope,
   FaLock,
@@ -391,7 +392,7 @@ const handleResetPassword = async (e) => {
 };
 
 return (
-  <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#f6f4ff] via-[#eef2ff] to-[#e6f7ff] flex items-center justify-center px-4 py-8">
+  <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#f6f4ff] via-[#eef2ff] to-[#e6f7ff] flex items-center justify-center px-3 sm:px-4 py-6 sm:py-8">
 
     {/* =====================================================
         FLOATING PARTICLES
@@ -447,36 +448,38 @@ return (
       className="relative z-10 w-full max-w-[430px]"
     >
 
-      <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/80 shadow-xl shadow-[#6D4BC3]/10 p-5 sm:p-7 md:p-8">
+      <div className="w-full bg-white/55 backdrop-blur-2xl rounded-3xl border border-white/80 shadow-[0_20px_60px_rgba(109,75,195,0.14)] p-4 sm:p-7 md:p-8">
 
 
         {/* =================================================
             HEADER
         ================================================= */}
 
-        <div className="text-center mb-6">
+        <div className="text-center mb-7 sm:mb-8">
 
           {/* Logo-style icon */}
 
-          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-[#6D4BC3] to-[#8D76D8] flex items-center justify-center shadow-lg shadow-[#6D4BC3]/20">
+         <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 flex items-center justify-center p-2 shadow-lg shadow-[#6D4BC3]/10">
 
-            <span className="text-white text-2xl sm:text-3xl font-black">
-              C
-            </span>
+  <img
+    src={logo}
+    alt="ClubVerse"
+    className="w-full h-full object-contain rounded-xl"
+  />
 
-          </div>
+</div>
 
-          <h1 className="text-2xl sm:text-3xl font-black text-[#6D4BC3]">
-            {forgotPassword
-              ? "Reset Password"
-              : isLogin
-              ? "Student Login"
-              : step === 2
-              ? "Verify OTP"
-              : "Student Register"}
-          </h1>
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#6D4BC3]">
+  {forgotPassword
+    ? "Reset Password"
+    : isLogin
+    ? "Student Login"
+    : step === 2
+    ? "Verify OTP"
+    : "Student Register"}
+</h1>
 
-          <p className="text-xs sm:text-sm text-gray-400 mt-1">
+          <p className="text-xs sm:text-sm text-gray-400 mt-1.5 leading-relaxed max-w-xs mx-auto">
             {forgotPassword
               ? "Securely reset your ClubVerse password"
               : isLogin
@@ -494,10 +497,14 @@ return (
         ================================================= */}
 
         {error && (
-          <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-xs font-semibold text-center">
-            {error}
-          </div>
-        )}
+  <motion.div
+    initial={{ opacity: 0, y: -8 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="mb-4 px-4 py-3 rounded-xl bg-red-50/80 backdrop-blur-sm border border-red-100 text-red-600 text-xs sm:text-sm font-semibold text-center shadow-sm"
+  >
+    {error}
+  </motion.div>
+)}
 
 
         {/* =================================================
@@ -521,7 +528,7 @@ return (
 
               <div className="relative">
 
-                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400/80 text-sm transition-colors" />
 
                 <input
                   type="email"
@@ -535,7 +542,7 @@ return (
                       email: e.target.value,
                     })
                   }
-                  className="w-full h-12 pl-11 pr-4 rounded-xl bg-white/60 border border-[#DDD4F2] text-sm text-gray-700 outline-none transition focus:bg-white/80 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/10"
+                  className="w-full h-12 pl-11 pr-4 rounded-xl bg-white/50 backdrop-blur-md border border-white/80 text-sm text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-200 focus:bg-white/70 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/15 hover:border-[#8D76D8]/40"
                 />
 
               </div>
@@ -553,7 +560,7 @@ return (
 
               <div className="relative">
 
-                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400/80 text-sm transition-colors" />
 
                 <input
                   type={showPassword ? "text" : "password"}
@@ -567,7 +574,7 @@ return (
                       password: e.target.value,
                     })
                   }
-                  className="w-full h-12 pl-11 pr-11 rounded-xl bg-white/60 border border-[#DDD4F2] text-sm text-gray-700 outline-none transition focus:bg-white/80 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/10"
+                  className="w-full h-12 pl-11 pr-11 rounded-xl bg-white/50 backdrop-blur-md border border-white/80 text-sm text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-200 focus:bg-white/70 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/15 hover:border-[#8D76D8]/40"
                 />
 
                 <button
@@ -575,7 +582,7 @@ return (
                   onClick={() =>
                     setShowPassword(!showPassword)
                   }
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#6D4BC3] transition"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#6D4BC3] transition-all duration-200 hover:scale-110"
                 >
                   {showPassword ? (
                     <FaEyeSlash />
@@ -631,11 +638,11 @@ return (
               type="submit"
               disabled={loading}
               whileTap={{ scale: loading ? 1 : 0.98 }}
-              className={`w-full h-12 rounded-xl text-white text-sm font-black transition-all duration-200 ${
-                loading
-                  ? "bg-[#8D76D8] cursor-not-allowed"
-                  : "bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] hover:shadow-lg hover:shadow-[#6D4BC3]/20"
-              }`}
+   className={`w-full h-12 rounded-xl text-white text-sm font-black transition-all duration-300 ${
+  loading
+    ? "bg-[#8D76D8] cursor-not-allowed opacity-90"
+    : "bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] hover:shadow-lg hover:shadow-[#6D4BC3]/25 hover:-translate-y-0.5 active:translate-y-0"
+}`}
             >
 
               {loading ? (
@@ -674,7 +681,7 @@ return (
 
                 <div className="relative">
 
-                  <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                  <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400/80 text-sm transition-colors" />
 
                   <input
                     type="email"
@@ -697,7 +704,11 @@ return (
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 rounded-xl text-white text-sm font-black bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] hover:shadow-lg transition"
+                className={`w-full h-12 rounded-xl text-white text-sm font-black tracking-wide transition-all duration-300 ${
+  loading
+    ? "bg-[#8D76D8] cursor-not-allowed"
+    : "bg-gradient-to-r from-[#6D4BC3] via-[#765FCE] to-[#8D76D8] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#6D4BC3]/25 active:translate-y-0"
+}`}
               >
                 {loading ? "Sending OTP..." : "Send OTP"}
               </button>
@@ -710,7 +721,7 @@ return (
                   setForgotStep(1);
                   setError("");
                 }}
-                className="w-full text-xs sm:text-sm text-[#6D4BC3] hover:underline font-semibold"
+                className="w-full text-xs sm:text-sm text-gray-500 hover:text-[#6D4BC3] font-semibold transition-colors"
               >
                 Back to Login
               </button>
@@ -747,7 +758,7 @@ return (
 
               {/* OTP */}
 
-              <div className="flex justify-center gap-1.5 sm:gap-2">
+              <div className="flex justify-center gap-1 sm:gap-2 w-full">
 
                 {otp.map((digit, index) => (
 
@@ -769,7 +780,7 @@ return (
                     onKeyDown={(e) =>
                       handleKeyDown(e, index)
                     }
-                    className="w-10 h-11 sm:w-12 sm:h-12 rounded-xl text-center text-lg sm:text-xl font-bold border border-[#DDD4F2] bg-white/60 focus:outline-none focus:ring-2 focus:ring-[#8D76D8]/20 focus:border-[#8D76D8]"
+                    className="w-9 h-10 xs:w-10 xs:h-11 sm:w-12 sm:h-12 rounded-xl text-center text-lg sm:text-xl font-black text-[#6D4BC3] bg-white/50 backdrop-blur-md border border-white/80 outline-none transition-all duration-200 focus:bg-white/80 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/20 hover:border-[#8D76D8]/40"
                   />
 
                 ))}
@@ -786,7 +797,7 @@ return (
                 onChange={(e) =>
                   setNewPassword(e.target.value)
                 }
-                className="w-full h-12 px-4 rounded-xl bg-white/60 border border-[#DDD4F2] text-sm outline-none focus:bg-white/80 focus:border-[#8D76D8]"
+                className="w-full h-12 px-4 rounded-xl bg-white/50 backdrop-blur-md border border-white/80 text-sm text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-200 focus:bg-white/80 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/15 hover:border-[#8D76D8]/40"
               />
 
 
@@ -799,14 +810,18 @@ return (
                 onChange={(e) =>
                   setConfirmNewPassword(e.target.value)
                 }
-                className="w-full h-12 px-4 rounded-xl bg-white/60 border border-[#DDD4F2] text-sm outline-none focus:bg-white/80 focus:border-[#8D76D8]"
+                className="w-full h-12 px-4 rounded-xl bg-white/50 backdrop-blur-md border border-white/80 text-sm text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-200 focus:bg-white/80 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/15 hover:border-[#8D76D8]/40"
               />
 
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 rounded-xl text-white text-sm font-black bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] hover:shadow-lg transition"
+                className={`w-full h-12 rounded-xl text-white text-sm font-black tracking-wide transition-all duration-300 ${
+  loading
+    ? "bg-[#8D76D8] cursor-not-allowed"
+    : "bg-gradient-to-r from-[#6D4BC3] via-[#765FCE] to-[#8D76D8] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#6D4BC3]/25 active:translate-y-0"
+}`}
               >
                 {loading
                   ? "Resetting..."
@@ -838,7 +853,7 @@ return (
 
               <div className="relative">
 
-                <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400/80 text-sm transition-colors" />
 
                 <input
                   type="text"
@@ -850,7 +865,7 @@ return (
                       name: e.target.value,
                     })
                   }
-                  className="w-full h-12 pl-11 pr-4 rounded-xl bg-white/60 border border-[#DDD4F2] text-sm outline-none focus:bg-white/80 focus:border-[#8D76D8]"
+                  className="w-full h-12 pl-11 pr-4 rounded-xl bg-white/50 backdrop-blur-md border border-white/80 text-sm text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-200 focus:bg-white/70 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/15 hover:border-[#8D76D8]/40"
                 />
 
               </div>
@@ -868,7 +883,7 @@ return (
 
               <div className="relative">
 
-                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400/80 text-sm transition-colors" />
 
                 <input
                   type="email"
@@ -880,7 +895,7 @@ return (
                       email: e.target.value,
                     })
                   }
-                  className="w-full h-12 pl-11 pr-4 rounded-xl bg-white/60 border border-[#DDD4F2] text-sm outline-none focus:bg-white/80 focus:border-[#8D76D8]"
+                  className="w-full h-12 pl-11 pr-4 rounded-xl bg-white/50 backdrop-blur-md border border-white/80 text-sm text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-200 focus:bg-white/70 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/15 hover:border-[#8D76D8]/40"
                 />
 
               </div>
@@ -898,7 +913,7 @@ return (
 
               <div className="relative">
 
-                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400/80 text-sm transition-colors" />
 
                 <input
                   type={
@@ -914,7 +929,7 @@ return (
                       password: e.target.value,
                     })
                   }
-                  className="w-full h-12 pl-11 pr-11 rounded-xl bg-white/60 border border-[#DDD4F2] text-sm outline-none focus:bg-white/80 focus:border-[#8D76D8]"
+                  className="w-full h-12 pl-11 pr-11 rounded-xl bg-white/50 backdrop-blur-md border border-white/80 text-sm text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-200 focus:bg-white/70 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/15 hover:border-[#8D76D8]/40"
                 />
 
                 <button
@@ -924,7 +939,7 @@ return (
                       !showPassword
                     )
                   }
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#6D4BC3]"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#6D4BC3] transition-all duration-200 hover:scale-110"
                 >
                   {showPassword ? (
                     <FaEyeSlash />
@@ -948,7 +963,7 @@ return (
 
               <div className="relative">
 
-                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400/80 text-sm transition-colors" />
 
                 <input
                   type={
@@ -965,7 +980,7 @@ return (
                         e.target.value,
                     })
                   }
-                  className="w-full h-12 pl-11 pr-11 rounded-xl bg-white/60 border border-[#DDD4F2] text-sm outline-none focus:bg-white/80 focus:border-[#8D76D8]"
+                  className="w-full h-12 pl-11 pr-11 rounded-xl bg-white/50 backdrop-blur-md border border-white/80 text-sm text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-200 focus:bg-white/70 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/15 hover:border-[#8D76D8]/40"
                 />
 
                 <button
@@ -975,7 +990,7 @@ return (
                       !showConfirmPassword
                     )
                   }
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#6D4BC3]"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#6D4BC3] transition-all duration-200 hover:scale-110"
                 >
                   {showConfirmPassword ? (
                     <FaEyeSlash />
@@ -992,7 +1007,11 @@ return (
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-12 rounded-xl text-white text-sm font-black bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] hover:shadow-lg transition"
+              className={`w-full h-12 rounded-xl text-white text-sm font-black tracking-wide transition-all duration-300 ${
+  loading
+    ? "bg-[#8D76D8] cursor-not-allowed"
+    : "bg-gradient-to-r from-[#6D4BC3] via-[#765FCE] to-[#8D76D8] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#6D4BC3]/25 active:translate-y-0"
+}`}
             >
               {loading
                 ? "Sending OTP..."
@@ -1029,7 +1048,7 @@ return (
 
             {/* OTP BOXES */}
 
-            <div className="flex justify-center gap-1.5 sm:gap-2">
+            <div className="flex justify-center gap-1 sm:gap-2 w-full">
 
               {otp.map((digit, index) => (
 
@@ -1051,7 +1070,7 @@ return (
                   onKeyDown={(e) =>
                     handleKeyDown(e, index)
                   }
-                  className="w-10 h-11 sm:w-12 sm:h-12 rounded-xl text-center text-lg sm:text-xl font-bold border border-[#DDD4F2] bg-white/60 focus:outline-none focus:ring-2 focus:ring-[#8D76D8]/20 focus:border-[#8D76D8]"
+                  className="w-9 h-10 xs:w-10 xs:h-11 sm:w-12 sm:h-12 rounded-xl text-center text-lg sm:text-xl font-black text-[#6D4BC3] bg-white/50 backdrop-blur-md border border-white/80 outline-none transition-all duration-200 focus:bg-white/80 focus:border-[#8D76D8] focus:ring-2 focus:ring-[#8D76D8]/20 hover:border-[#8D76D8]/40"
                 />
 
               ))}
@@ -1062,7 +1081,11 @@ return (
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-12 rounded-xl text-white text-sm font-black bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] hover:shadow-lg transition flex items-center justify-center gap-2"
+              className={`w-full h-12 rounded-xl text-white text-sm font-black tracking-wide transition-all duration-300 flex items-center justify-center gap-2 ${
+  loading
+    ? "bg-[#8D76D8] cursor-not-allowed"
+    : "bg-gradient-to-r from-[#6D4BC3] via-[#765FCE] to-[#8D76D8] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#6D4BC3]/25 active:translate-y-0"
+}`}
             >
 
               {loading ? (
@@ -1093,7 +1116,7 @@ return (
                 <button
                   type="button"
                   onClick={resendOTP}
-                  className="text-xs sm:text-sm text-[#6D4BC3] font-bold hover:underline"
+                  className="text-xs sm:text-sm text-[#6D4BC3] font-bold hover:text-[#8D76D8] hover:underline transition-colors"
                 >
                   Resend OTP
                 </button>
@@ -1112,7 +1135,7 @@ return (
 
         {!forgotPassword && (
 
-          <div className="mt-6 pt-5 border-t border-[#DDD4F2]/70 text-center">
+          <div className="mt-6 pt-5 border-t border-white/70 text-center">
 
             <p className="text-xs sm:text-sm text-gray-500">
 
@@ -1127,7 +1150,7 @@ return (
                   setIsLogin(!isLogin);
                   setStep(1);
                 }}
-                className="ml-1 text-[#6D4BC3] font-bold hover:underline"
+                className="ml-1 text-[#6D4BC3] font-bold hover:text-[#8D76D8] hover:underline transition-colors"
               >
                 {isLogin
                   ? "Sign Up"
