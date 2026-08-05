@@ -230,167 +230,190 @@ const fetchStats = async () => {
           </section>
 
 
-          {/* =====================================================
-              LIVE EVENTS
-          ===================================================== */}
+         {/* =====================================================
+    LIVE EVENTS
+===================================================== */}
 
-          <section
-            id="ongoing-events"
-            className="mt-12 sm:mt-14 lg:mt-16"
+<section
+  id="ongoing-events"
+  className="mt-12 sm:mt-14 lg:mt-16"
+>
+
+  {/* ================= SECTION HEADER ================= */}
+
+  <div
+    className="
+      flex
+      flex-col
+      gap-3
+      sm:flex-row
+      sm:items-end
+      sm:justify-between
+    "
+  >
+
+    <div className="min-w-0">
+
+      <h2
+        className="
+          text-2xl
+          sm:text-3xl
+          lg:text-[32px]
+          font-bold
+          text-[#4B2E91]
+          tracking-tight
+        "
+      >
+        🔴 Live Events
+      </h2>
+
+      <p
+        className="
+          mt-1
+          text-sm
+          sm:text-base
+          text-gray-500
+        "
+      >
+        Events happening right now
+      </p>
+
+    </div>
+
+    {/* ================= LIVE COUNT ================= */}
+
+    <span
+      className="
+        self-start
+        sm:self-auto
+        shrink-0
+        px-4
+        sm:px-5
+        py-1.5
+        sm:py-2
+        rounded-full
+        bg-red-100
+        text-red-600
+        text-sm
+        sm:text-base
+        font-semibold
+      "
+    >
+      {ongoingEvents.length} Live
+    </span>
+
+  </div>
+
+
+  {/* ================= HORIZONTAL EVENTS ================= */}
+
+  <div
+    className="
+      mt-6
+      sm:mt-7
+      lg:mt-8
+      flex
+      gap-4
+      sm:gap-5
+      lg:gap-6
+      overflow-x-auto
+      snap-x
+      snap-mandatory
+      pb-5
+      scrollbar-hide
+      overscroll-x-contain
+    "
+    style={{
+      scrollbarWidth: "none",
+      msOverflowStyle: "none",
+    }}
+  >
+
+    {loadingEvents ? (
+
+      <>
+        {[1, 2, 3, 4].map((i) => (
+
+          <div
+            key={i}
+            className="
+              w-[82vw]
+              sm:w-[340px]
+              md:w-[360px]
+              lg:w-[380px]
+              xl:w-[390px]
+              shrink-0
+              snap-start
+            "
           >
+            <SkeletonCard />
+          </div>
 
-            {/* SECTION HEADER */}
+        ))}
+      </>
 
-            <div
-              className="
-                flex
-                flex-col
-                gap-3
-                sm:flex-row
-                sm:items-end
-                sm:justify-between
-              "
-            >
+    ) : ongoingEvents.length ? (
 
-              <div className="min-w-0">
+      ongoingEvents.map((event) => (
 
-                <h2
-                  className="
-                    text-2xl
-                    sm:text-3xl
-                    lg:text-[32px]
-                    font-bold
-                    text-[#4B2E91]
-                    tracking-tight
-                  "
-                >
-                  🔴 Live Events
-                </h2>
+        <OngoingEventCard
+          key={event._id}
+          event={event}
+        />
 
-                <p
-                  className="
-                    mt-1
-                    text-sm
-                    sm:text-base
-                    text-gray-500
-                  "
-                >
-                  Events happening right now
-                </p>
+      ))
 
-              </div>
+    ) : (
 
+      <div
+        className="
+          w-full
+          shrink-0
+          rounded-2xl
+          sm:rounded-3xl
+          bg-white/60
+          backdrop-blur-xl
+          border
+          border-white/70
+          shadow-lg
+          px-5
+          py-10
+          sm:px-8
+          sm:py-12
+          text-center
+        "
+      >
 
-              {/* LIVE COUNT */}
+        <h2
+          className="
+            text-xl
+            sm:text-2xl
+            font-bold
+            text-[#6D4BC3]
+          "
+        >
+          No Live Events
+        </h2>
 
-              <span
-                className="
-                  self-start
-                  sm:self-auto
-                  shrink-0
-                  px-4
-                  sm:px-5
-                  py-1.5
-                  sm:py-2
-                  rounded-full
-                  bg-red-100
-                  text-red-600
-                  text-sm
-                  sm:text-base
-                  font-semibold
-                "
-              >
-                {ongoingEvents.length} Live
-              </span>
+        <p
+          className="
+            text-sm
+            sm:text-base
+            text-gray-500
+            mt-2
+            sm:mt-3
+          "
+        >
+          Check back later.
+        </p>
 
-            </div>
+      </div>
 
+    )}
 
-            {/* EVENTS GRID */}
+  </div>
 
-            <div
-              className="
-                grid
-                grid-cols-1
-                sm:grid-cols-2
-                lg:grid-cols-3
-                xl:grid-cols-4
-                gap-4
-                sm:gap-5
-                lg:gap-6
-                mt-6
-                sm:mt-7
-                lg:mt-8
-              "
-            >
-
-              {loadingEvents ? (
-
-                <>
-                  {[1, 2, 3, 4].map((i) => (
-                    <SkeletonCard key={i} />
-                  ))}
-                </>
-
-              ) : ongoingEvents.length ? (
-
-                ongoingEvents.map((event) => (
-                  <OngoingEventCard
-                    key={event._id}
-                    event={event}
-                  />
-                ))
-
-              ) : (
-
-                <div
-                  className="
-                    col-span-full
-                    rounded-2xl
-                    sm:rounded-3xl
-                    bg-white/60
-                    backdrop-blur-xl
-                    border
-                    border-white/70
-                    shadow-lg
-                    px-5
-                    py-10
-                    sm:px-8
-                    sm:py-12
-                    text-center
-                  "
-                >
-
-                  <h2
-                    className="
-                      text-xl
-                      sm:text-2xl
-                      font-bold
-                      text-[#6D4BC3]
-                    "
-                  >
-                    No Live Events
-                  </h2>
-
-                  <p
-                    className="
-                      text-sm
-                      sm:text-base
-                      text-gray-500
-                      mt-2
-                      sm:mt-3
-                    "
-                  >
-                    Check back later.
-                  </p>
-
-                </div>
-
-              )}
-
-            </div>
-
-          </section>
+</section>
 
 
           {/* =====================================================
