@@ -15,14 +15,24 @@ export default function EventCountdown({ eventDate }) {
     }
 
     return {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((difference / (1000 * 60)) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
+      days: Math.floor(
+        difference / (1000 * 60 * 60 * 24)
+      ),
+      hours: Math.floor(
+        (difference / (1000 * 60 * 60)) % 24
+      ),
+      minutes: Math.floor(
+        (difference / (1000 * 60)) % 60
+      ),
+      seconds: Math.floor(
+        (difference / 1000) % 60
+      ),
     };
   };
 
-  const [timeLeft, setTimeLeft] = useState(calculateTime());
+  const [timeLeft, setTimeLeft] = useState(
+    calculateTime()
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -32,7 +42,8 @@ export default function EventCountdown({ eventDate }) {
     return () => clearInterval(timer);
   }, [eventDate]);
 
-  const format = (num) => String(num).padStart(2, "0");
+  const format = (num) =>
+    String(num).padStart(2, "0");
 
   const timerData = [
     {
@@ -54,57 +65,117 @@ export default function EventCountdown({ eventDate }) {
   ];
 
   return (
-    <div className="mt-6">
+    <div className="mt-5 sm:mt-6">
 
-      {/* Heading */}
+      {/* ================= HEADING ================= */}
 
-      <div className="flex items-center gap-2 mb-4">
+      <div
+        className="
+          flex
+          items-center
+          gap-1.5
+          sm:gap-2
+          mb-3
+          sm:mb-4
+        "
+      >
 
         <Clock3
-          size={20}
-          className="text-[#6D4BC3]"
+          size={18}
+          className="
+            text-[#6D4BC3]
+            shrink-0
+            sm:w-5
+            sm:h-5
+          "
         />
 
-        <h3 className="text-sm font-semibold text-[#4B2E91]">
+        <h3
+          className="
+            text-xs
+            sm:text-sm
+            font-semibold
+            text-[#4B2E91]
+          "
+        >
           Event Starts In
         </h3>
 
       </div>
 
-      {/* Timer */}
+      {/* ================= TIMER ================= */}
 
-      <div className="grid grid-cols-4 gap-3">
+      <div
+        className="
+          grid
+          grid-cols-4
+          gap-1.5
+          xs:gap-2
+          sm:gap-3
+        "
+      >
 
         {timerData.map((item) => (
 
           <div
             key={item.label}
             className="
-            rounded-2xl
-            bg-white/70
-            backdrop-blur-xl
-            border
-            border-[#DDD4F2]
-            shadow-md
-            hover:shadow-xl
-            hover:-translate-y-1
-            transition-all
-            duration-300
-            py-4
-            text-center
+              min-w-0
+              rounded-xl
+              sm:rounded-2xl
+              bg-white/70
+              backdrop-blur-xl
+              border
+              border-[#DDD4F2]
+              shadow-md
+              hover:shadow-xl
+              hover:-translate-y-1
+              transition-all
+              duration-300
+              py-2.5
+              xs:py-3
+              sm:py-4
+              px-1
+              sm:px-2
+              text-center
             "
           >
 
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] bg-clip-text text-transparent">
+            {/* VALUE */}
 
+            <h2
+              className="
+                text-xl
+                xs:text-2xl
+                sm:text-3xl
+                font-bold
+                bg-gradient-to-r
+                from-[#6D4BC3]
+                to-[#8D76D8]
+                bg-clip-text
+                text-transparent
+                leading-tight
+              "
+            >
               {item.value}
-
             </h2>
 
-            <p className="text-xs text-gray-500 mt-1 tracking-wide uppercase">
+            {/* LABEL */}
 
+            <p
+              className="
+                text-[8px]
+                xs:text-[9px]
+                sm:text-xs
+                text-gray-500
+                mt-0.5
+                sm:mt-1
+                tracking-wide
+                uppercase
+                truncate
+              "
+            >
               {item.label}
-
             </p>
 
           </div>
