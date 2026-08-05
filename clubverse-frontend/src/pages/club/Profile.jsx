@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Loader from "../../components/Loader";
 import {
   Camera,
   Mail,
@@ -23,7 +22,234 @@ import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
 
+/* =========================================================
+   PROFILE PAGE SKELETON
+========================================================= */
+
+const SkeletonBox = ({ className = "" }) => (
+  <div
+    className={`bg-gradient-to-r from-[#d9f7f8] via-[#aee8ea] to-[#d9f7f8] animate-pulse ${className}`}
+  />
+);
+
+const ProfileSkeleton = ({
+  sidebarOpen,
+  setSidebarOpen,
+}) => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
+
+      {/* SIDEBAR */}
+      <ClubSidebar
+        isOpen={sidebarOpen}
+        setIsOpen={setSidebarOpen}
+      />
+
+      {/* MAIN */}
+      <div
+        className={`flex-1 min-w-0 w-full pt-24 px-4 sm:px-6 lg:px-8 pb-12 transition-all duration-300 ${
+          sidebarOpen ? "lg:ml-64" : "lg:ml-20"
+        }`}
+      >
+
+        {/* NAVBAR */}
+        <ClubNavbar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
+
+        <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
+
+          {/* =================================================
+              HERO SKELETON
+          ================================================= */}
+
+          <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm">
+
+            {/* BANNER */}
+            <SkeletonBox className="h-44 sm:h-52 md:h-64 w-full" />
+
+            {/* CLUB INFO */}
+            <div className="px-4 sm:px-8 pb-6 pt-20 sm:pt-16 relative">
+
+              {/* LOGO */}
+              <SkeletonBox className="absolute -top-14 sm:-top-16 left-1/2 sm:left-8 md:left-12 -translate-x-1/2 sm:translate-x-0 w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-white" />
+
+              <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4">
+
+                <div className="w-full sm:pl-40 text-center sm:text-left">
+
+                  {/* Club name */}
+                  <SkeletonBox className="h-6 w-40 sm:w-52 rounded-xl mx-auto sm:mx-0" />
+
+                  {/* Club type */}
+                  <SkeletonBox className="h-6 w-20 rounded-full mt-3 mx-auto sm:mx-0" />
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          {/* =================================================
+              MAIN GRID
+          ================================================= */}
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+
+            {/* LEFT */}
+            <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+
+              {/* BASIC INFORMATION */}
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-48 rounded-lg mb-6" />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                  <div>
+                    <SkeletonBox className="h-3 w-28 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                  <div>
+                    <SkeletonBox className="h-3 w-28 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                </div>
+
+                <div className="mt-4">
+                  <SkeletonBox className="h-3 w-36 rounded-md mb-2" />
+                  <SkeletonBox className="h-10 w-full rounded-xl" />
+                </div>
+
+                <div className="mt-4">
+                  <SkeletonBox className="h-3 w-24 rounded-md mb-2" />
+                  <SkeletonBox className="h-24 w-full rounded-xl" />
+                </div>
+
+              </div>
+
+
+              {/* FACULTY */}
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-52 rounded-lg mb-6" />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                  <div>
+                    <SkeletonBox className="h-3 w-32 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                  <div>
+                    <SkeletonBox className="h-3 w-32 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              {/* CONTACT */}
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-56 rounded-lg mb-6" />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                  <div>
+                    <SkeletonBox className="h-3 w-28 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                  <div>
+                    <SkeletonBox className="h-3 w-32 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            {/* RIGHT */}
+            <div className="space-y-6 sm:space-y-8">
+
+              {/* SOCIAL */}
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-44 rounded-lg mb-6" />
+
+                <SkeletonBox className="h-3 w-20 rounded-md mb-2" />
+                <SkeletonBox className="h-10 w-full rounded-xl mb-4" />
+
+                <SkeletonBox className="h-3 w-20 rounded-md mb-2" />
+                <SkeletonBox className="h-10 w-full rounded-xl" />
+
+              </div>
+
+
+              {/* META */}
+              <div className="bg-[#f0f9fa] border border-[#cceeee] rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-40 rounded-lg mb-6" />
+
+                <SkeletonBox className="h-3 w-36 rounded-md mb-2" />
+                <SkeletonBox className="h-8 w-full rounded-xl mb-4" />
+
+                <SkeletonBox className="h-3 w-32 rounded-md mb-2" />
+                <SkeletonBox className="h-8 w-full rounded-xl" />
+
+              </div>
+
+
+              {/* SECURITY */}
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-40 rounded-lg mb-5" />
+
+                <SkeletonBox className="h-10 w-full rounded-xl mb-3" />
+
+                <SkeletonBox className="h-10 w-full rounded-xl" />
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* =================================================
+              BOTTOM ACTION BAR
+          ================================================= */}
+
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4 border-t border-gray-200/60">
+
+            <SkeletonBox className="h-10 w-full sm:w-24 rounded-xl" />
+
+            <SkeletonBox className="h-10 w-full sm:w-32 rounded-xl" />
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 export default function Profile() {
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [club, setClub] = useState({
     _id: "",
     name: "",
@@ -210,19 +436,39 @@ const changePassword = async () => {
 };
 
 if (loading) {
-  return <Loader />;
+  return (
+    <ProfileSkeleton
+      sidebarOpen={sidebarOpen}
+      setSidebarOpen={setSidebarOpen}
+    />
+  );
 }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
-      <ClubSidebar />
+  <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
 
-      <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300">
-        <ClubNavbar />
+    {/* SIDEBAR */}
+    <ClubSidebar
+      isOpen={sidebarOpen}
+      setIsOpen={setSidebarOpen}
+    />
 
-        <div className="max-w-5xl mx-auto space-y-8">
-          {/* ================= 1 & 2. HERO BANNER & LOGO SECTION ================= */}
-          <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm relative">
-            <div className="h-64 w-full bg-gray-100 relative group">
+    {/* MAIN CONTENT */}
+    <div
+      className={`flex-1 min-w-0 w-full pt-24 px-4 sm:px-6 lg:px-8 pb-12 transition-all duration-300 ${
+        sidebarOpen ? "lg:ml-64" : "lg:ml-20"
+      }`}
+    >
+
+      <ClubNavbar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
+
+     <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
+
+  <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm relative">
+
+    <div className="h-44 sm:h-52 md:h-64 w-full bg-gray-100 relative group">
               {banner ? (
   <>
     <img
@@ -284,8 +530,8 @@ if (loading) {
 )}
             </div>
 
-            <div className="px-8 pb-6 pt-16 relative flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 border-b border-gray-100">
-             <div className="absolute -top-16 left-8 sm:left-12 w-32 h-32 rounded-full border-4 border-white bg-white shadow-md overflow-hidden group">
+            <div className="w-full sm:pl-40 text-center sm:text-left min-w-0">
+             <div className="absolute -top-14 sm:-top-16 left-1/2 sm:left-8 md:left-12 -translate-x-1/2 sm:translate-x-0 w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-white bg-white shadow-md overflow-hidden group">
 
   {logo ? (
     <img
@@ -316,7 +562,7 @@ if (loading) {
 </div>
 
               <div className="sm:pl-40 text-center sm:text-left">
-                <h2 className="text-2xl font-black text-gray-800 tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-black text-gray-800 tracking-tight truncate">
                   {club.name}
                 </h2>
                 <span className="inline-block mt-1 text-xs font-bold text-[#048c92] bg-[#43bfc3]/10 px-3 py-1 rounded-full border border-[#43bfc3]/20">
@@ -327,11 +573,11 @@ if (loading) {
           </div>
 
           {/* MAIN GRID CONTROL SPLIT */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* LEFT / CENTER DEEP FORM COLUMNS */}
             <div className="md:col-span-2 space-y-8">
               {/* ================= 3. BASIC CLUB INFORMATION ================= */}
-              <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm space-y-4">
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm  space-y-4">
                 <h3 className="text-base font-black text-gray-800 border-b border-gray-50 pb-3 flex items-center gap-2">
                   <Info className="w-4 h-4 text-[#048c92]" /> Basic Club
                   Information
@@ -599,8 +845,8 @@ if (loading) {
 
         {/* ================= SECURITY SYSTEM PASSWORD MODAL ================= */}
         {showPasswordModal && (
-          <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-            <div className="bg-white border border-gray-200 w-full max-w-md rounded-3xl p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200 relative">
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4">
+            <div className="bg-white border border-gray-200 w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200 relative">
               <button
                 type="button"
                 onClick={() => setShowPasswordModal(false)}
