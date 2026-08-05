@@ -13,10 +13,11 @@ import EventCarousel from "../../pages/student/EventCarousel";
 
 function SkeletonCard() {
   return (
-    <div className="rounded-3xl bg-white shadow-lg p-4 border border-gray-100">
+    <div className="w-full rounded-2xl sm:rounded-3xl bg-white shadow-lg p-3 sm:p-4 border border-gray-100">
 
-     <Skeleton
+ <Skeleton
   height={180}
+  className="sm:h-[180px]"
   borderRadius={20}
   baseColor="#ECE8F8"
   highlightColor="#F8F7FC"
@@ -179,298 +180,521 @@ const fetchStats = async () => {
 }
   };
 
-  return (
+    return (
+    <div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-[#F6F4FF] via-[#EEF2FF] to-[#E8F3FF]">
 
-    <div className="min-h-screen bg-gradient-to-br from-[#F6F4FF] via-[#EEF2FF] to-[#E8F3FF]">
+      {/* ================= NAVBAR ================= */}
 
       <StudentNavbar user={user} />
 
-      <div className="max-w-7xl mx-auto px-6">
-
-        {/* ================= HERO ================= */}
-
-        <div className="pt-8">
-
-<WelcomeBanner
-  user={user}
-  loading={loadingUser}
-/>
-
-        </div>
-
-        {/* ================= QUICK STATS ================= */}
-
-        <div className="mt-10">
-
-       <QuickStats
-  ongoingCount={ongoingEvents.length}
-  upcomingCount={upcomingEvents.length}
-  registeredCount={registeredCount}
-  clubsCount={clubsCount}
-  loading={loadingStats}
-/>
-
-        </div>
-
-        {/* ================= LIVE EVENTS ================= */}
-
-        <section
-  id="ongoing-events"
-  className="mt-14"
->
-
-          <div className="flex justify-between items-center">
-
-            <div>
-
-              <h2 className="text-3xl font-bold text-[#4B2E91]">
-
-                🔴 Live Events
-
-              </h2>
-
-              <p className="text-gray-500 mt-1">
-
-                Events happening right now
-
-              </p>
-
-            </div>
-
-            <span className="px-5 py-2 rounded-full bg-red-100 text-red-600 font-semibold">
-
-              {ongoingEvents.length} Live
-
-            </span>
-
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-
-{
-  loadingEvents ? (
-
-    <>
-      {[1, 2, 3, 4].map((i) => (
-        <SkeletonCard key={i} />
-      ))}
-    </>
-
-  ) : ongoingEvents.length ? (
-
-    ongoingEvents.map((event) => (
-      <OngoingEventCard
-        key={event._id}
-        event={event}
-      />
-    ))
-
-  ) : (
-
-    <div className="col-span-2 rounded-3xl bg-white/60 backdrop-blur-xl shadow-lg p-12 text-center">
-
-      <h2 className="text-2xl font-bold text-[#6D4BC3]">
-        No Live Events
-      </h2>
-
-      <p className="text-gray-500 mt-3">
-        Check back later.
-      </p>
-
-    </div>
-
-  )
-}
-
-          </div>
-
-        </section>
-
-        {/* ================= UPCOMING ================= */}
-
-        <section
-  id="upcoming-events"
-  className="mt-20"
->
-
-          <div className="flex justify-between items-center">
-
-            <div>
-
-              <h2 className="text-3xl font-bold text-[#4B2E91]">
-
-                ⏳ Upcoming Events
-
-              </h2>
-
-              <p className="text-gray-500 mt-1">
-
-                Register before seats fill up.
-
-              </p>
-
-            </div>
-
-            <span className="px-5 py-2 rounded-full bg-[#DDD4F2] text-[#6D4BC3] font-semibold">
-
-              {upcomingEvents.length} Upcoming
-
-            </span>
-
-          </div>
-
-<EventCarousel itemsLength={upcomingEvents.length}>
-
-{
-loadingEvents ? (
-
-<>
-{[1,2,3].map((i)=>(
-<div
-key={i}
-className="min-w-[320px] md:min-w-[360px]"
->
-<SkeletonCard/>
-</div>
-))}
-</>
-
-)
-
-:
-
-upcomingEvents.length ? (
-
-upcomingEvents.map((event)=>(
-
-<div
-key={event._id}
-className="
-min-w-[320px]
-md:min-w-[360px]
-snap-start
-"
->
-
-<UpcomingEventCard
-event={event}
-/>
-
-</div>
-
-))
-
-)
-
-:
-
-(
-<div className="
-w-full
-rounded-3xl
-bg-white/60
-backdrop-blur-xl
-shadow-lg
-p-12
-text-center
-">
-
-<h2 className="text-2xl font-bold text-[#6D4BC3]">
-No Upcoming Events
-</h2>
-
-<p className="text-gray-500 mt-3">
-New events will appear here.
-</p>
-
-</div>
-)
-
-}
-
-</EventCarousel>
-
-  
-      
-
-        </section>
-
-        {/* ================= FEED ================= */}
-
-        <section
-          id="events-section"
-          className="mt-20 pb-24"
+      {/* ================= MAIN CONTENT ================= */}
+
+      <main className="w-full">
+
+        <div
+          className="
+            w-full
+            max-w-7xl
+            mx-auto
+            px-4
+            sm:px-6
+            lg:px-8
+            xl:px-10
+          "
         >
 
-          <h2 className="text-3xl font-bold text-[#4B2E91]">
+          {/* ================= HERO ================= */}
 
-            🌟 Explore Club Activities
+          <section className="pt-5 sm:pt-7 lg:pt-8">
 
-          </h2>
+            <WelcomeBanner
+              user={user}
+              loading={loadingUser}
+            />
 
-          <p className="text-gray-500 mt-2">
+          </section>
 
-            Browse all ongoing & upcoming events.
 
-          </p>
+          {/* ================= QUICK STATS ================= */}
 
-         <EventCarousel 
-itemsLength={
-[...ongoingEvents,...upcomingEvents].length
-}
->
+          <section className="mt-6 sm:mt-8 lg:mt-10">
 
-{
-loadingEvents ? (
+            <QuickStats
+              ongoingCount={ongoingEvents.length}
+              upcomingCount={upcomingEvents.length}
+              registeredCount={registeredCount}
+              clubsCount={clubsCount}
+              loading={loadingStats}
+            />
 
-<>
-{[1,2,3].map((i)=>(
-<div
-key={i}
-className="
-min-w-[320px]
-md:min-w-[360px]
-"
->
-<SkeletonCard/>
-</div>
-))}
-</>
+          </section>
 
-)
 
-:
+          {/* =====================================================
+              LIVE EVENTS
+          ===================================================== */}
 
-[...ongoingEvents,...upcomingEvents].map((event)=>(
+          <section
+            id="ongoing-events"
+            className="mt-12 sm:mt-14 lg:mt-16"
+          >
 
-<div
-key={event._id}
-className="
-min-w-[320px]
-md:min-w-[360px]
-snap-start
-"
->
+            {/* SECTION HEADER */}
 
-<EventFeedCard
-event={event}
-/>
+            <div
+              className="
+                flex
+                flex-col
+                gap-3
+                sm:flex-row
+                sm:items-end
+                sm:justify-between
+              "
+            >
 
-</div>
+              <div className="min-w-0">
 
-))
+                <h2
+                  className="
+                    text-2xl
+                    sm:text-3xl
+                    lg:text-[32px]
+                    font-bold
+                    text-[#4B2E91]
+                    tracking-tight
+                  "
+                >
+                  🔴 Live Events
+                </h2>
 
-}
+                <p
+                  className="
+                    mt-1
+                    text-sm
+                    sm:text-base
+                    text-gray-500
+                  "
+                >
+                  Events happening right now
+                </p>
 
-</EventCarousel>
+              </div>
 
-           
-        </section>
 
-      </div>
+              {/* LIVE COUNT */}
+
+              <span
+                className="
+                  self-start
+                  sm:self-auto
+                  shrink-0
+                  px-4
+                  sm:px-5
+                  py-1.5
+                  sm:py-2
+                  rounded-full
+                  bg-red-100
+                  text-red-600
+                  text-sm
+                  sm:text-base
+                  font-semibold
+                "
+              >
+                {ongoingEvents.length} Live
+              </span>
+
+            </div>
+
+
+            {/* EVENTS GRID */}
+
+            <div
+              className="
+                grid
+                grid-cols-1
+                sm:grid-cols-2
+                lg:grid-cols-3
+                xl:grid-cols-4
+                gap-4
+                sm:gap-5
+                lg:gap-6
+                mt-6
+                sm:mt-7
+                lg:mt-8
+              "
+            >
+
+              {loadingEvents ? (
+
+                <>
+                  {[1, 2, 3, 4].map((i) => (
+                    <SkeletonCard key={i} />
+                  ))}
+                </>
+
+              ) : ongoingEvents.length ? (
+
+                ongoingEvents.map((event) => (
+                  <OngoingEventCard
+                    key={event._id}
+                    event={event}
+                  />
+                ))
+
+              ) : (
+
+                <div
+                  className="
+                    col-span-full
+                    rounded-2xl
+                    sm:rounded-3xl
+                    bg-white/60
+                    backdrop-blur-xl
+                    border
+                    border-white/70
+                    shadow-lg
+                    px-5
+                    py-10
+                    sm:px-8
+                    sm:py-12
+                    text-center
+                  "
+                >
+
+                  <h2
+                    className="
+                      text-xl
+                      sm:text-2xl
+                      font-bold
+                      text-[#6D4BC3]
+                    "
+                  >
+                    No Live Events
+                  </h2>
+
+                  <p
+                    className="
+                      text-sm
+                      sm:text-base
+                      text-gray-500
+                      mt-2
+                      sm:mt-3
+                    "
+                  >
+                    Check back later.
+                  </p>
+
+                </div>
+
+              )}
+
+            </div>
+
+          </section>
+
+
+          {/* =====================================================
+              UPCOMING EVENTS
+          ===================================================== */}
+
+          <section
+            id="upcoming-events"
+            className="mt-14 sm:mt-18 lg:mt-20"
+          >
+
+            {/* SECTION HEADER */}
+
+            <div
+              className="
+                flex
+                flex-col
+                gap-3
+                sm:flex-row
+                sm:items-end
+                sm:justify-between
+              "
+            >
+
+              <div className="min-w-0">
+
+                <h2
+                  className="
+                    text-2xl
+                    sm:text-3xl
+                    lg:text-[32px]
+                    font-bold
+                    text-[#4B2E91]
+                    tracking-tight
+                  "
+                >
+                  ⏳ Upcoming Events
+                </h2>
+
+                <p
+                  className="
+                    text-sm
+                    sm:text-base
+                    text-gray-500
+                    mt-1
+                  "
+                >
+                  Register before seats fill up.
+                </p>
+
+              </div>
+
+
+              {/* UPCOMING COUNT */}
+
+              <span
+                className="
+                  self-start
+                  sm:self-auto
+                  shrink-0
+                  px-4
+                  sm:px-5
+                  py-1.5
+                  sm:py-2
+                  rounded-full
+                  bg-[#DDD4F2]
+                  text-[#6D4BC3]
+                  text-sm
+                  sm:text-base
+                  font-semibold
+                "
+              >
+                {upcomingEvents.length} Upcoming
+              </span>
+
+            </div>
+
+
+            {/* UPCOMING CAROUSEL */}
+
+            <div className="mt-6 sm:mt-7 lg:mt-8">
+
+              <EventCarousel
+                itemsLength={upcomingEvents.length}
+              >
+
+                {loadingEvents ? (
+
+                  <>
+                    {[1, 2, 3].map((i) => (
+
+                      <div
+                        key={i}
+                        className="
+                          min-w-[calc(100vw-32px)]
+                          sm:min-w-[320px]
+                          md:min-w-[360px]
+                          lg:min-w-[370px]
+                          snap-start
+                        "
+                      >
+
+                        <SkeletonCard />
+
+                      </div>
+
+                    ))}
+                  </>
+
+                ) : upcomingEvents.length ? (
+
+                  upcomingEvents.map((event) => (
+
+                    <div
+                      key={event._id}
+                      className="
+                        min-w-[calc(100vw-32px)]
+                        sm:min-w-[320px]
+                        md:min-w-[360px]
+                        lg:min-w-[370px]
+                        snap-start
+                      "
+                    >
+
+                      <UpcomingEventCard
+                        event={event}
+                      />
+
+                    </div>
+
+                  ))
+
+                ) : (
+
+                  <div
+                    className="
+                      w-full
+                      rounded-2xl
+                      sm:rounded-3xl
+                      bg-white/60
+                      backdrop-blur-xl
+                      border
+                      border-white/70
+                      shadow-lg
+                      px-5
+                      py-10
+                      sm:px-8
+                      sm:py-12
+                      text-center
+                    "
+                  >
+
+                    <h2
+                      className="
+                        text-xl
+                        sm:text-2xl
+                        font-bold
+                        text-[#6D4BC3]
+                      "
+                    >
+                      No Upcoming Events
+                    </h2>
+
+                    <p
+                      className="
+                        text-sm
+                        sm:text-base
+                        text-gray-500
+                        mt-2
+                        sm:mt-3
+                      "
+                    >
+                      New events will appear here.
+                    </p>
+
+                  </div>
+
+                )}
+
+              </EventCarousel>
+
+            </div>
+
+          </section>
+
+
+          {/* =====================================================
+              EXPLORE CLUB ACTIVITIES
+          ===================================================== */}
+
+          <section
+            id="events-section"
+            className="
+              mt-14
+              sm:mt-18
+              lg:mt-20
+              pb-16
+              sm:pb-20
+              lg:pb-24
+            "
+          >
+
+            {/* SECTION HEADER */}
+
+            <div>
+
+              <h2
+                className="
+                  text-2xl
+                  sm:text-3xl
+                  lg:text-[32px]
+                  font-bold
+                  text-[#4B2E91]
+                  tracking-tight
+                "
+              >
+                🌟 Explore Club Activities
+              </h2>
+
+              <p
+                className="
+                  text-sm
+                  sm:text-base
+                  text-gray-500
+                  mt-1
+                  sm:mt-2
+                "
+              >
+                Browse all ongoing & upcoming events.
+              </p>
+
+            </div>
+
+
+            {/* EVENT FEED CAROUSEL */}
+
+            <div className="mt-6 sm:mt-7 lg:mt-8">
+
+              <EventCarousel
+                itemsLength={
+                  [...ongoingEvents, ...upcomingEvents].length
+                }
+              >
+
+                {loadingEvents ? (
+
+                  <>
+                    {[1, 2, 3].map((i) => (
+
+                      <div
+                        key={i}
+                        className="
+                          min-w-[calc(100vw-32px)]
+                          sm:min-w-[320px]
+                          md:min-w-[360px]
+                          lg:min-w-[370px]
+                          snap-start
+                        "
+                      >
+
+                        <SkeletonCard />
+
+                      </div>
+
+                    ))}
+                  </>
+
+                ) : (
+
+                  [...ongoingEvents, ...upcomingEvents].map(
+                    (event) => (
+
+                      <div
+                        key={event._id}
+                        className="
+                          min-w-[calc(100vw-32px)]
+                          sm:min-w-[320px]
+                          md:min-w-[360px]
+                          lg:min-w-[370px]
+                          snap-start
+                        "
+                      >
+
+                        <EventFeedCard
+                          event={event}
+                        />
+
+                      </div>
+
+                    )
+                  )
+
+                )}
+
+              </EventCarousel>
+
+            </div>
+
+          </section>
+
+        </div>
+
+      </main>
 
     </div>
-
   );
-
 }
