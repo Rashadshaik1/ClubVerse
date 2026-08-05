@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import StudentNotifications from "./pages/student/StudentNotifications";
 
 // COMMON
 import Landing from "./pages/common/Landing";
+import SplashScreen from "./pages/common/SplashScreen";
 
 // ================= STUDENT =================
 import StudentAuth from "./pages/student/StudentAuth";
@@ -28,6 +30,16 @@ import Gallery from "./pages/club/Gallery";
 import GalleryDetails from "./pages/club/GalleryDetails";
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  if (showSplash) {
+    return (
+      <SplashScreen
+        onFinish={() => setShowSplash(false)}
+      />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Routes>
