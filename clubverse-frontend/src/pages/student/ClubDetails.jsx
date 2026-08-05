@@ -157,31 +157,33 @@ function ClubDetailsSkeleton() {
 
             {/* STATS */}
 
-            <div
-              className="
-                grid
-                grid-cols-1
-                sm:grid-cols-2
-                md:grid-cols-3
-                gap-4
-                sm:gap-5
-              "
-            >
+           <div
+  className="
+    grid
+    grid-cols-3
+    gap-2
+    sm:gap-4
+    md:gap-5
+  "
+>
 
               {[1, 2, 3].map((item) => (
 
                 <div
                   key={item}
-                  className="
-                    bg-white
-                    rounded-2xl
-                    p-5
-                    sm:p-6
-                    shadow
-                    flex
-                    items-center
-                    gap-4
-                  "
+                 className="
+  bg-white
+  rounded-2xl
+  p-3
+  sm:p-5
+  md:p-6
+  shadow
+  flex
+  items-center
+  gap-2
+  sm:gap-4
+  min-w-0
+"
                 >
 
                   <Skeleton
@@ -278,15 +280,15 @@ function ClubDetailsSkeleton() {
 
                   </div>
 
-                  <div className="mt-2">
+                  <div className="p-4">
 
-                    <Skeleton
-                      width="80%"
-                      height={16}
-                      borderRadius={8}
-                      baseColor="#ECE8F8"
-                      highlightColor="#F8F7FC"
-                    />
+  <Skeleton
+    width="80%"
+    height={22}
+    borderRadius={8}
+    baseColor="#ECE8F8"
+    highlightColor="#F8F7FC"
+  />
 
                   </div>
 
@@ -511,7 +513,7 @@ function ClubDetailsSkeleton() {
                   highlightColor="#F8F7FC"
                 />
 
-                <div className="p-4">
+                <div className="p-4"
 
                   <Skeleton
                     width="80%"
@@ -850,18 +852,18 @@ const ClubDetails = () => {
                   "
                 >
 
-                  <CalendarDays
-                    className="text-[#6D4BC3] shrink-0"
-                    size={30}
-                  />
+                 <CalendarDays
+  className="text-[#6D4BC3] shrink-0 w-5 h-5 sm:w-7 sm:h-7"
+  size={30}
+/>
 
                   <div className="min-w-0">
 
-                    <h3 className="text-2xl sm:text-3xl font-bold">
+                    <h3 className="text-lg sm:text-2xl md:text-3xl font-bold">
                       {club.stats?.totalEvents || 0}
                     </h3>
 
-                    <p className="text-gray-500 text-sm sm:text-base">
+                    <p className="text-gray-500 text-[10px] sm:text-sm md:text-base leading-tight">
                       Total Events
                     </p>
 
@@ -885,18 +887,18 @@ const ClubDetails = () => {
                   "
                 >
 
-                  <CalendarDays
-                    className="text-green-500 shrink-0"
-                    size={30}
-                  />
+            <CalendarDays
+  className="text-[#6D4BC3] shrink-0 w-5 h-5 sm:w-7 sm:h-7"
+  size={30}
+/>
 
                   <div className="min-w-0">
 
-                    <h3 className="text-2xl sm:text-3xl font-bold">
+                    <h3 className="text-lg sm:text-2xl md:text-3xl font-bold">
                       {club.stats?.upcomingEvents || 0}
                     </h3>
 
-                    <p className="text-gray-500 text-sm sm:text-base">
+                    <p className="text-gray-500 text-[10px] sm:text-sm md:text-base leading-tight">
                       Upcoming Events
                     </p>
 
@@ -920,18 +922,18 @@ const ClubDetails = () => {
                   "
                 >
 
-                  <CalendarDays
-                    className="text-gray-500 shrink-0"
-                    size={30}
-                  />
+              <CalendarDays
+  className="text-[#6D4BC3] shrink-0 w-5 h-5 sm:w-7 sm:h-7"
+  size={30}
+/>
 
                   <div className="min-w-0">
 
-                    <h3 className="text-2xl sm:text-3xl font-bold">
+                    <h3 className="text-lg sm:text-2xl md:text-3xl font-bold">
                       {club.stats?.completedEvents || 0}
                     </h3>
 
-                    <p className="text-gray-500 text-sm sm:text-base">
+                    <p className="text-gray-500 text-[10px] sm:text-sm md:text-base leading-tight">
                       Completed Events
                     </p>
 
@@ -992,7 +994,7 @@ const ClubDetails = () => {
                         {facultyCoordinator.name}
                       </h3>
 
-                      <p className="text-gray-500 text-sm sm:text-base">
+                      <p className="text-gray-500 text-[10px] sm:text-sm md:text-base leading-tight">
                         {facultyCoordinator.position}
                       </p>
 
