@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Menu, X } from "react-icons/fa";
+import { FaBars as Menu, FaXmark as X } from "react-icons/fa6"; // Fixed import
 import logo from "../assets/logo.png";
 import { jwtDecode } from "jwt-decode";
 import clgLogo from "../assets/clglogo.png";
