@@ -7,43 +7,43 @@ export default function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex flex-col items-center">
+    <div className="min-h-screen relative overflow-hidden flex flex-col items-center px-4 sm:px-6">
 
       {/* BACKGROUND */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#f6f4ff] via-[#eef2ff] to-[#e6f7ff]" />
 
       {/* BLOBS */}
-      <div className="absolute w-[420px] h-[420px] bg-purple-300/20 blur-3xl rounded-full top-[-120px] left-[-120px]" />
-      <div className="absolute w-[380px] h-[380px] bg-cyan-300/20 blur-3xl rounded-full bottom-[-120px] right-[-120px]" />
+      <div className="absolute w-[260px] h-[260px] sm:w-[360px] sm:h-[360px] md:w-[420px] md:h-[420px] bg-purple-300/20 blur-3xl rounded-full top-[-80px] sm:top-[-100px] md:top-[-120px] left-[-80px] sm:left-[-100px] md:left-[-120px]" />
+      <div className="absolute w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] bg-cyan-300/20 blur-3xl rounded-full bottom-[-80px] sm:bottom-[-100px] md:bottom-[-120px] right-[-80px] sm:right-[-100px] md:right-[-120px]" />
 
       {/* CONTENT */}
-      <div className="relative flex flex-col items-center text-center mt-12">
+      <div className="relative w-full flex flex-col items-center text-center mt-8 sm:mt-10 md:mt-12 pb-20">
 
         {/* LOGO */}
         <motion.img
           src={logo}
-          className="w-28 mb-4 drop-shadow-xl"
+          className="w-20 sm:w-24 md:w-28 mb-4 drop-shadow-xl"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
         />
 
         {/* TITLE */}
-        <h1 className="text-5xl font-extrabold bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] bg-clip-text text-transparent">
+        <h1 className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-[#6D4BC3] to-[#8D76D8] bg-clip-text text-transparent">
           ClubVerse
         </h1>
 
-        <p className="text-[#6F61A8] mt-2 mb-10 font-medium">
+        <p className="text-sm sm:text-base text-[#6F61A8] mt-2 mb-8 sm:mb-10 font-medium">
           Choose your mode to continue
         </p>
 
         {/* CARDS */}
-        <div className="flex gap-14">
+        <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-14">
 
           {/* STUDENT */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="w-[260px] p-6 rounded-2xl bg-white/40 backdrop-blur-xl border border-[#DDD4F2]"
+            className="w-full max-w-[260px] p-6 rounded-2xl bg-white/40 backdrop-blur-xl border border-[#DDD4F2]"
           >
 
             <div
@@ -71,7 +71,7 @@ export default function Landing() {
           {/* CLUB */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="w-[260px] p-6 rounded-2xl bg-white/40 backdrop-blur-xl border border-[#cceeee]"
+            className="w-full max-w-[260px] p-6 rounded-2xl bg-white/40 backdrop-blur-xl border border-[#cceeee]"
           >
 
             <div
@@ -101,7 +101,7 @@ export default function Landing() {
       </div>
 
       {/* FOOTER */}
-      <footer className="absolute bottom-6 text-xs text-gray-500">
+      <footer className="relative z-10 mt-auto pb-5 pt-4 text-center text-xs text-gray-500">
         © 2026 ClubVerse • Privacy • Help
       </footer>
 
