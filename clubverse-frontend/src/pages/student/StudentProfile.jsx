@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import StudentNavbar from "./StudentNavbar";
@@ -67,97 +68,100 @@ export default function Profile() {
 
   const ProfileSkeleton = () => {
     return (
-      <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 md:p-12 border border-purple-50/50 shadow-lg">
+      <div className="relative overflow-hidden bg-white/80 backdrop-blur-xl rounded-[2rem] border border-white/80 shadow-xl">
 
-        {/* ================= PROFILE HEADER ================= */}
+        {/* Premium Header Skeleton */}
 
-        <div className="flex flex-col items-center border-b border-purple-100 pb-8 mb-8 text-center">
+        <div className="h-32 sm:h-36 bg-gradient-to-r from-[#6D4BC3]/10 via-[#8D76D8]/10 to-[#E8F3FF]" />
 
-          {/* Avatar */}
-          <Skeleton
-            circle
-            width={112}
-            height={112}
-            baseColor="#ECE8F8"
-            highlightColor="#F8F7FC"
-          />
+        <div className="px-5 sm:px-8 md:px-12 pb-8 sm:pb-10">
 
-          {/* Name */}
-          <div className="mt-4">
-            <Skeleton
-              height={32}
-              width={190}
-              borderRadius={10}
-              baseColor="#ECE8F8"
-              highlightColor="#F8F7FC"
-            />
+          <div className="flex flex-col items-center -mt-16 sm:-mt-20 border-b border-purple-100/80 pb-8 text-center">
 
-            {/* Role */}
-            <div className="mt-2">
+            <div className="p-1.5 sm:p-2 rounded-full bg-white shadow-xl">
+
               <Skeleton
-                height={18}
-                width={135}
-                borderRadius={8}
+                circle
+                width={112}
+                height={112}
                 baseColor="#ECE8F8"
                 highlightColor="#F8F7FC"
               />
+
             </div>
-          </div>
 
-        </div>
+            <div className="mt-4">
 
-        {/* ================= PROFILE INFO ================= */}
+              <Skeleton
+                height={32}
+                width={190}
+                borderRadius={10}
+                baseColor="#ECE8F8"
+                highlightColor="#F8F7FC"
+              />
 
-        <div>
-
-          {/* Section Heading */}
-
-          <Skeleton
-            height={26}
-            width={230}
-            borderRadius={8}
-            baseColor="#ECE8F8"
-            highlightColor="#F8F7FC"
-          />
-
-          {/* Information Cards */}
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-
-            {[1, 2, 3, 4].map((item) => (
-
-              <div
-                key={item}
-                className="bg-white/50 p-5 rounded-2xl border border-purple-50"
-              >
-
-                {/* Label */}
+              <div className="mt-2 flex justify-center">
 
                 <Skeleton
-                  height={14}
-                  width="40%"
-                  borderRadius={6}
+                  height={18}
+                  width={135}
+                  borderRadius={8}
                   baseColor="#ECE8F8"
                   highlightColor="#F8F7FC"
                 />
 
-                {/* Value */}
+              </div>
 
-                <div className="mt-2">
+            </div>
+
+          </div>
+
+          {/* Profile Information */}
+
+          <div className="pt-8">
+
+            <Skeleton
+              height={26}
+              width={230}
+              borderRadius={8}
+              baseColor="#ECE8F8"
+              highlightColor="#F8F7FC"
+            />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mt-6">
+
+              {[1, 2, 3, 4].map((item) => (
+
+                <div
+                  key={item}
+                  className="bg-white/60 p-5 rounded-2xl border border-purple-100"
+                >
 
                   <Skeleton
-                    height={20}
-                    width={item === 2 ? "80%" : "65%"}
-                    borderRadius={7}
+                    height={14}
+                    width="40%"
+                    borderRadius={6}
                     baseColor="#ECE8F8"
                     highlightColor="#F8F7FC"
                   />
 
+                  <div className="mt-3">
+
+                    <Skeleton
+                      height={20}
+                      width={item === 2 ? "80%" : "65%"}
+                      borderRadius={7}
+                      baseColor="#ECE8F8"
+                      highlightColor="#F8F7FC"
+                    />
+
+                  </div>
+
                 </div>
 
-              </div>
+              ))}
 
-            ))}
+            </div>
 
           </div>
 
@@ -172,7 +176,13 @@ export default function Profile() {
 
       <StudentNavbar user={user} />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-8 sm:pt-10 md:pt-12 pb-16 md:pb-24">
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 md:pt-12 pb-16 md:pb-24">
+
+        {/* Decorative Background */}
+
+        <div className="pointer-events-none absolute -top-10 left-0 w-40 h-40 sm:w-56 sm:h-56 bg-[#8D76D8]/10 rounded-full blur-3xl" />
+
+        <div className="pointer-events-none absolute top-32 right-0 w-40 h-40 sm:w-64 sm:h-64 bg-[#E8F3FF]/70 rounded-full blur-3xl" />
 
         {/* ================= LOADING ================= */}
 
@@ -184,123 +194,355 @@ export default function Profile() {
 
           /* ================= PROFILE ================= */
 
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 md:p-12 border border-purple-50/50 shadow-lg">
+          <div className="relative overflow-hidden bg-white/75 backdrop-blur-2xl rounded-[2rem] border border-white/80 shadow-[0_20px_60px_rgba(75,46,145,0.12)]">
 
-            {/* ================= PROFILE HEADER ================= */}
+            {/* ================= PREMIUM TOP BANNER ================= */}
 
-            <div className="flex flex-col items-center border-b border-purple-100 pb-8 mb-8 text-center">
+            <div className="relative h-28 sm:h-36 md:h-40 bg-gradient-to-r from-[#6D4BC3] via-[#7D5BC8] to-[#8D76D8] overflow-hidden">
 
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-[#6D4BC3] to-[#4B2E91] text-white flex items-center justify-center text-3xl sm:text-4xl font-bold shadow-md uppercase">
+              <div className="absolute -top-16 -right-10 w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-white/10 blur-2xl" />
 
-                {user.email
-                  ? user.email[0]
-                  : "S"}
+              <div className="absolute -bottom-20 -left-10 w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-white/10 blur-2xl" />
 
-              </div>
-
-              <div className="mt-4">
-
-                <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 break-all">
-
-                  {user.email
-                    ? user.email.split("@")[0]
-                    : "Student"}
-
-                </h1>
-
-                <p className="text-[#6D4BC3] font-medium mt-1 uppercase text-xs sm:text-sm tracking-wider">
-
-                  🎯 {user.role || "Student"} Account
-
-                </p>
-
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5" />
 
             </div>
 
-            {/* ================= PROFILE INFO ================= */}
 
-            <div>
+            <div className="relative px-5 sm:px-8 md:px-12 pb-8 sm:pb-10">
 
-              <h2 className="text-lg sm:text-xl font-bold text-[#4B2E91] mb-6">
+              {/* ================= PROFILE HEADER ================= */}
 
-                📋 Profile Information
+              <div className="flex flex-col items-center text-center border-b border-purple-100/80 pb-8 -mt-16 sm:-mt-20">
 
-              </h2>
+                {/* Avatar */}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+                <div className="relative">
 
-                {/* Email */}
+                  <div className="absolute inset-0 rounded-full bg-[#8D76D8]/30 blur-xl scale-110" />
 
-                <div className="bg-white/50 p-4 sm:p-5 rounded-2xl border border-purple-50">
+                  <div className="relative p-1.5 sm:p-2 rounded-full bg-white shadow-2xl">
 
-                  <span className="text-xs font-semibold text-gray-400 block uppercase tracking-wider">
+                    <div className="
+                      w-24
+                      h-24
+                      sm:w-28
+                      sm:h-28
+                      rounded-full
+                      bg-gradient-to-tr
+                      from-[#6D4BC3]
+                      via-[#7D5BC8]
+                      to-[#4B2E91]
+                      text-white
+                      flex
+                      items-center
+                      justify-center
+                      text-3xl
+                      sm:text-4xl
+                      font-bold
+                      uppercase
+                      shadow-inner
+                      ring-1
+                      ring-purple-100
+                    ">
 
-                    Email Address
+                      {user.email
+                        ? user.email[0]
+                        : "S"}
 
-                  </span>
+                    </div>
 
-                  <span className="text-slate-700 font-medium text-sm sm:text-base mt-1 block break-all">
+                  </div>
 
-                    {user.email}
+                  {/* Online indicator */}
 
-                  </span>
+                  <div className="
+                    absolute
+                    bottom-2
+                    right-2
+                    w-5
+                    h-5
+                    sm:w-6
+                    sm:h-6
+                    rounded-full
+                    bg-green-500
+                    border-4
+                    border-white
+                    shadow-md
+                  " />
 
                 </div>
 
-                {/* Account ID */}
 
-                <div className="bg-white/50 p-4 sm:p-5 rounded-2xl border border-purple-50">
+                {/* Name */}
 
-                  <span className="text-xs font-semibold text-gray-400 block uppercase tracking-wider">
+                <div className="mt-4 max-w-full px-2">
 
-                    Account ID
+                  <h1 className="
+                    text-2xl
+                    sm:text-3xl
+                    md:text-4xl
+                    font-extrabold
+                    text-slate-800
+                    tracking-tight
+                    break-all
+                  ">
 
-                  </span>
+                    {user.email
+                      ? user.email.split("@")[0]
+                      : "Student"}
 
-                  <span className="text-slate-700 font-mono text-xs sm:text-sm mt-1 block break-all">
+                  </h1>
 
-                    {user._id}
+                  <p className="
+                    text-[#6D4BC3]
+                    font-semibold
+                    mt-2
+                    uppercase
+                    text-[11px]
+                    sm:text-xs
+                    md:text-sm
+                    tracking-[0.16em]
+                  ">
 
-                  </span>
+                    🎯 {user.role || "Student"} Account
+
+                  </p>
 
                 </div>
 
-                {/* Department */}
+              </div>
 
-                <div className="bg-white/50 p-4 sm:p-5 rounded-2xl border border-purple-50">
 
-                  <span className="text-xs font-semibold text-gray-400 block uppercase tracking-wider">
+              {/* ================= PROFILE INFO ================= */}
 
-                    Department / Branch
+              <div className="pt-8 sm:pt-10">
 
-                  </span>
+                <div className="flex items-center gap-3 mb-5 sm:mb-6">
 
-                  <span className="text-slate-700 font-medium text-sm sm:text-base mt-1 block">
+                  <div className="
+                    w-10
+                    h-10
+                    rounded-xl
+                    bg-[#F1EDFF]
+                    border
+                    border-[#DDD4F2]
+                    flex
+                    items-center
+                    justify-center
+                    text-lg
+                  ">
+                    📋
+                  </div>
 
-                    {getDepartment(user.email)}
+                  <div>
 
-                  </span>
+                    <h2 className="
+                      text-lg
+                      sm:text-xl
+                      font-bold
+                      text-[#4B2E91]
+                    ">
+                      Profile Information
+                    </h2>
+
+                    <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
+                      Your ClubVerse account details
+                    </p>
+
+                  </div>
 
                 </div>
 
-                {/* Joining Date */}
 
-                <div className="bg-white/50 p-4 sm:p-5 rounded-2xl border border-purple-50">
+                <div className="
+                  grid
+                  grid-cols-1
+                  sm:grid-cols-2
+                  gap-4
+                  sm:gap-5
+                ">
 
-                  <span className="text-xs font-semibold text-gray-400 block uppercase tracking-wider">
+                  {/* Email */}
 
-                    Joining Date
+                  <div className="
+                    group
+                    bg-white/70
+                    hover:bg-white
+                    p-4
+                    sm:p-5
+                    rounded-2xl
+                    border
+                    border-purple-100
+                    hover:border-[#CFC2F0]
+                    shadow-sm
+                    hover:shadow-md
+                    transition-all
+                    duration-300
+                  ">
 
-                  </span>
+                    <span className="
+                      text-[10px]
+                      sm:text-xs
+                      font-bold
+                      text-gray-400
+                      block
+                      uppercase
+                      tracking-wider
+                    ">
+                      Email Address
+                    </span>
 
-                  <span className="text-slate-700 font-medium text-sm sm:text-base mt-1 block">
+                    <span className="
+                      text-slate-700
+                      font-medium
+                      text-sm
+                      sm:text-base
+                      mt-2
+                      block
+                      break-all
+                    ">
+                      {user.email}
+                    </span>
 
-                    {user.createdAt
-                      ? new Date(user.createdAt).toLocaleDateString()
-                      : "N/A"}
+                  </div>
 
-                  </span>
+
+                  {/* Account ID */}
+
+                  <div className="
+                    group
+                    bg-white/70
+                    hover:bg-white
+                    p-4
+                    sm:p-5
+                    rounded-2xl
+                    border
+                    border-purple-100
+                    hover:border-[#CFC2F0]
+                    shadow-sm
+                    hover:shadow-md
+                    transition-all
+                    duration-300
+                  ">
+
+                    <span className="
+                      text-[10px]
+                      sm:text-xs
+                      font-bold
+                      text-gray-400
+                      block
+                      uppercase
+                      tracking-wider
+                    ">
+                      Account ID
+                    </span>
+
+                    <span className="
+                      text-slate-700
+                      font-mono
+                      text-xs
+                      sm:text-sm
+                      mt-2
+                      block
+                      break-all
+                      leading-relaxed
+                    ">
+                      {user._id}
+                    </span>
+
+                  </div>
+
+
+                  {/* Department */}
+
+                  <div className="
+                    group
+                    bg-white/70
+                    hover:bg-white
+                    p-4
+                    sm:p-5
+                    rounded-2xl
+                    border
+                    border-purple-100
+                    hover:border-[#CFC2F0]
+                    shadow-sm
+                    hover:shadow-md
+                    transition-all
+                    duration-300
+                  ">
+
+                    <span className="
+                      text-[10px]
+                      sm:text-xs
+                      font-bold
+                      text-gray-400
+                      block
+                      uppercase
+                      tracking-wider
+                    ">
+                      Department / Branch
+                    </span>
+
+                    <span className="
+                      text-slate-700
+                      font-medium
+                      text-sm
+                      sm:text-base
+                      mt-2
+                      block
+                      leading-relaxed
+                    ">
+                      {getDepartment(user.email)}
+                    </span>
+
+                  </div>
+
+
+                  {/* Joining Date */}
+
+                  <div className="
+                    group
+                    bg-white/70
+                    hover:bg-white
+                    p-4
+                    sm:p-5
+                    rounded-2xl
+                    border
+                    border-purple-100
+                    hover:border-[#CFC2F0]
+                    shadow-sm
+                    hover:shadow-md
+                    transition-all
+                    duration-300
+                  ">
+
+                    <span className="
+                      text-[10px]
+                      sm:text-xs
+                      font-bold
+                      text-gray-400
+                      block
+                      uppercase
+                      tracking-wider
+                    ">
+                      Joining Date
+                    </span>
+
+                    <span className="
+                      text-slate-700
+                      font-medium
+                      text-sm
+                      sm:text-base
+                      mt-2
+                      block
+                    ">
+                      {user.createdAt
+                        ? new Date(user.createdAt).toLocaleDateString()
+                        : "N/A"}
+                    </span>
+
+                  </div>
 
                 </div>
 
@@ -314,18 +556,54 @@ export default function Profile() {
 
           /* ================= ERROR ================= */
 
-          <div className="rounded-3xl bg-white/60 backdrop-blur-xl shadow-lg p-10 sm:p-16 text-center">
+          <div className="
+            relative
+            rounded-[2rem]
+            bg-white/70
+            backdrop-blur-2xl
+            border
+            border-white/80
+            shadow-xl
+            p-8
+            sm:p-12
+            md:p-16
+            text-center
+          ">
 
-            <h2 className="text-xl sm:text-2xl font-bold text-[#6D4BC3]">
+            <div className="
+              w-16
+              h-16
+              mx-auto
+              rounded-2xl
+              bg-[#F1EDFF]
+              flex
+              items-center
+              justify-center
+              text-2xl
+              mb-5
+            ">
+              ⚠️
+            </div>
 
+            <h2 className="
+              text-xl
+              sm:text-2xl
+              font-bold
+              text-[#6D4BC3]
+            ">
               Failed to Load Profile
-
             </h2>
 
-            <p className="text-gray-500 mt-3 text-sm sm:text-base">
-
+            <p className="
+              text-gray-500
+              mt-3
+              text-sm
+              sm:text-base
+              max-w-md
+              mx-auto
+              leading-relaxed
+            ">
               Please try logging in again to verify your token credentials.
-
             </p>
 
           </div>
@@ -337,3 +615,4 @@ export default function Profile() {
     </div>
   );
 }
+
