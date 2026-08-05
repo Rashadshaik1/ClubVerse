@@ -7,8 +7,9 @@ import {
   FaEyeSlash,
   FaEnvelope,
   FaLock,
-  FaCheckCircle,
 } from "react-icons/fa";
+
+import logo from "../../assets/logoclub.png";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -23,26 +24,26 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  /* =========================================================
+  /* =====================================================
      LOAD REMEMBERED EMAIL
-  ========================================================= */
+  ===================================================== */
 
   useEffect(() => {
-    const rememberedEmail = localStorage.getItem("clubRememberEmail");
+    const savedEmail = localStorage.getItem("clubRememberEmail");
 
-    if (rememberedEmail) {
+    if (savedEmail) {
       setForm((prev) => ({
         ...prev,
-        email: rememberedEmail,
+        email: savedEmail,
       }));
 
       setRememberMe(true);
     }
   }, []);
 
-  /* =========================================================
+  /* =====================================================
      LOGIN
-  ========================================================= */
+  ===================================================== */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,9 +79,7 @@ export default function AdminLogin() {
         return;
       }
 
-      /* =====================================================
-         REMEMBER ME
-      ===================================================== */
+      /* Remember Email */
 
       if (rememberMe) {
         localStorage.setItem(
@@ -91,9 +90,7 @@ export default function AdminLogin() {
         localStorage.removeItem("clubRememberEmail");
       }
 
-      /* =====================================================
-         STORE LOGIN DATA
-      ===================================================== */
+      /* Store Login Data */
 
       localStorage.setItem("token", data.token);
       localStorage.setItem(
@@ -102,80 +99,97 @@ export default function AdminLogin() {
       );
 
       navigate("/club-dashboard");
+
     } catch (err) {
       console.error(err);
-      setError("Unable to connect to server. Please try again.");
+      setError("Unable to connect to server.");
     } finally {
       setLoading(false);
     }
   };
 
+  /* =====================================================
+     FLOATING PARTICLES
+  ===================================================== */
+
+  const particles = [
+    { size: 7, left: "8%", top: "18%", delay: 0 },
+    { size: 5, left: "18%", top: "72%", delay: 1 },
+    { size: 9, left: "30%", top: "12%", delay: 2 },
+    { size: 6, left: "72%", top: "18%", delay: 0.5 },
+    { size: 8, left: "86%", top: "35%", delay: 1.5 },
+    { size: 5, left: "78%", top: "78%", delay: 2.5 },
+    { size: 7, left: "12%", top: "45%", delay: 1.2 },
+    { size: 5, left: "92%", top: "68%", delay: 0.8 },
+  ];
+
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#dff8f8] flex items-center justify-center px-4 py-8 sm:px-6">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#dff8f8] flex items-center justify-center px-4 py-8">
 
       {/* =====================================================
-          BACKGROUND DECORATIONS
+          FLOATING PARTICLES
       ===================================================== */}
 
-      <div className="absolute -top-32 -left-32 w-72 h-72 sm:w-96 sm:h-96 bg-[#43bfc3]/20 rounded-full blur-3xl" />
+      {particles.map((particle, index) => (
+        <motion.span
+          key={index}
+          className="absolute rounded-full bg-[#43bfc3]/30 pointer-events-none"
+          style={{
+            width: particle.size,
+            height: particle.size,
+            left: particle.left,
+            top: particle.top,
+          }}
+          animate={{
+            y: [0, -18, 0],
+            opacity: [0.3, 0.7, 0.3],
+          }}
+          transition={{
+            duration: 4 + index % 3,
+            repeat: Infinity,
+            delay: particle.delay,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
 
-      <div className="absolute -bottom-40 -right-32 w-80 h-80 sm:w-[450px] sm:h-[450px] bg-[#048c92]/10 rounded-full blur-3xl" />
+      {/* Soft background circles */}
 
-      <div className="absolute top-1/3 right-[10%] w-20 h-20 bg-white/40 rounded-full blur-2xl hidden sm:block" />
+      <div className="absolute -top-32 -left-32 w-72 h-72 bg-[#43bfc3]/10 rounded-full blur-3xl" />
+
+      <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-[#048c92]/10 rounded-full blur-3xl" />
 
       {/* =====================================================
           LOGIN CARD
       ===================================================== */}
 
       <motion.div
-        initial={{
-          opacity: 0,
-          y: 25,
-          scale: 0.97,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-          scale: 1,
-        }}
-        transition={{
-          duration: 0.5,
-          ease: "easeOut",
-        }}
-        className="relative z-10 w-full max-w-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 w-full max-w-[420px]"
       >
 
-        <div className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/65 backdrop-blur-2xl shadow-[0_25px_70px_rgba(4,140,146,0.14)] p-6 sm:p-8">
+        <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/70 shadow-xl shadow-[#048c92]/10 p-6 sm:p-8">
 
           {/* =================================================
-              TOP GLOW
+              LOGO
           ================================================= */}
 
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-1 bg-gradient-to-r from-transparent via-[#43bfc3] to-transparent rounded-full" />
+          <div className="text-center mb-7">
 
-          {/* =================================================
-              BRANDING
-          ================================================= */}
+            <img
+              src={logo}
+              alt="ClubVerse"
+              className="w-20 h-20 sm:w-24 sm:h-24 mx-auto object-contain rounded-2xl mb-4"
+            />
 
-          <div className="text-center mb-7 sm:mb-8">
-
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.15 }}
-              className="mx-auto mb-4 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-[#048c92] to-[#43bfc3] flex items-center justify-center shadow-lg shadow-[#048c92]/20"
-            >
-              <span className="text-white text-2xl sm:text-3xl font-black">
-                C
-              </span>
-            </motion.div>
-
-            <h1 className="text-2xl sm:text-3xl font-black text-[#048c92] tracking-tight">
-              ClubVerse
+            <h1 className="text-2xl sm:text-3xl font-black text-[#048c92]">
+              Club Login
             </h1>
 
-            <p className="text-xs sm:text-sm text-gray-500 font-medium mt-1">
-              Club Administration Portal
+            <p className="text-xs sm:text-sm text-gray-400 mt-1">
+              Sign in to manage your club
             </p>
 
           </div>
@@ -185,13 +199,9 @@ export default function AdminLogin() {
           ================================================= */}
 
           {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-5 px-4 py-3 rounded-xl border border-red-100 bg-red-50/80 text-red-600 text-xs sm:text-sm font-semibold text-center"
-            >
+            <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-xs font-semibold text-center">
               {error}
-            </motion.div>
+            </div>
           )}
 
           {/* =================================================
@@ -206,17 +216,18 @@ export default function AdminLogin() {
             {/* EMAIL */}
 
             <div>
-              <label className="block mb-1.5 ml-1 text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-gray-500">
+
+              <label className="block text-[11px] font-black text-gray-500 uppercase tracking-wider mb-1.5">
                 Club Email
               </label>
 
               <div className="relative">
 
-                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none" />
+                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
 
                 <input
                   type="email"
-                  placeholder="Enter your club email"
+                  placeholder="Enter club email"
                   value={form.email}
                   autoComplete="email"
                   onChange={(e) =>
@@ -225,22 +236,24 @@ export default function AdminLogin() {
                       email: e.target.value,
                     })
                   }
-                  className="w-full h-12 sm:h-[52px] pl-11 pr-4 rounded-xl bg-white/70 border border-[#cceeee] text-sm text-gray-700 font-medium placeholder:text-gray-400 outline-none transition-all duration-200 focus:bg-white focus:border-[#43bfc3] focus:ring-4 focus:ring-[#43bfc3]/10"
+                  className="w-full h-12 pl-11 pr-4 rounded-xl bg-[#f8fdfd] border border-[#cceeee] text-sm text-gray-700 outline-none transition focus:bg-white focus:border-[#43bfc3] focus:ring-2 focus:ring-[#43bfc3]/10"
                 />
 
               </div>
+
             </div>
 
             {/* PASSWORD */}
 
             <div>
-              <label className="block mb-1.5 ml-1 text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-gray-500">
+
+              <label className="block text-[11px] font-black text-gray-500 uppercase tracking-wider mb-1.5">
                 Password
               </label>
 
               <div className="relative">
 
-                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none" />
+                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
 
                 <input
                   type={
@@ -248,7 +261,7 @@ export default function AdminLogin() {
                       ? "text"
                       : "password"
                   }
-                  placeholder="Enter your password"
+                  placeholder="Enter password"
                   value={form.password}
                   autoComplete="current-password"
                   onChange={(e) =>
@@ -257,7 +270,7 @@ export default function AdminLogin() {
                       password: e.target.value,
                     })
                   }
-                  className="w-full h-12 sm:h-[52px] pl-11 pr-12 rounded-xl bg-white/70 border border-[#cceeee] text-sm text-gray-700 font-medium placeholder:text-gray-400 outline-none transition-all duration-200 focus:bg-white focus:border-[#43bfc3] focus:ring-4 focus:ring-[#43bfc3]/10"
+                  className="w-full h-12 pl-11 pr-11 rounded-xl bg-[#f8fdfd] border border-[#cceeee] text-sm text-gray-700 outline-none transition focus:bg-white focus:border-[#43bfc3] focus:ring-2 focus:ring-[#43bfc3]/10"
                 />
 
                 <button
@@ -266,11 +279,6 @@ export default function AdminLogin() {
                     setShowPassword(!showPassword)
                   }
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#048c92] transition"
-                  aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
-                  }
                 >
                   {showPassword ? (
                     <FaEyeSlash />
@@ -280,13 +288,14 @@ export default function AdminLogin() {
                 </button>
 
               </div>
+
             </div>
 
             {/* =================================================
                 REMEMBER ME
             ================================================= */}
 
-            <div className="flex items-center justify-between pt-1">
+            <div className="flex items-center">
 
               <label className="flex items-center gap-2 cursor-pointer select-none">
 
@@ -296,30 +305,14 @@ export default function AdminLogin() {
                   onChange={(e) =>
                     setRememberMe(e.target.checked)
                   }
-                  className="sr-only"
+                  className="w-4 h-4 accent-[#048c92] cursor-pointer"
                 />
-
-                <span
-                  className={`w-4 h-4 rounded-md border flex items-center justify-center transition-all duration-200 ${
-                    rememberMe
-                      ? "bg-[#048c92] border-[#048c92]"
-                      : "bg-white border-gray-300"
-                  }`}
-                >
-                  {rememberMe && (
-                    <FaCheckCircle className="text-white text-[10px]" />
-                  )}
-                </span>
 
                 <span className="text-xs font-semibold text-gray-500">
                   Remember me
                 </span>
 
               </label>
-
-              <span className="text-[10px] sm:text-xs text-gray-400 font-medium">
-                Secure login
-              </span>
 
             </div>
 
@@ -328,27 +321,22 @@ export default function AdminLogin() {
             ================================================= */}
 
             <motion.button
-              whileHover={{
-                scale: loading ? 1 : 1.01,
-              }}
-              whileTap={{
-                scale: loading ? 1 : 0.98,
-              }}
               type="submit"
               disabled={loading}
-              className={`w-full h-12 sm:h-[52px] mt-2 rounded-xl text-white font-black text-sm shadow-lg transition-all duration-300 ${
+              whileTap={{ scale: loading ? 1 : 0.98 }}
+              className={`w-full h-12 rounded-xl text-white text-sm font-black transition-all duration-200 ${
                 loading
                   ? "bg-[#43bfc3] cursor-not-allowed"
-                  : "bg-gradient-to-r from-[#048c92] to-[#43bfc3] hover:shadow-[#048c92]/25 hover:shadow-xl"
+                  : "bg-gradient-to-r from-[#048c92] to-[#43bfc3] hover:shadow-lg hover:shadow-[#048c92]/20"
               }`}
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                  Signing in...
+                  Logging in...
                 </span>
               ) : (
-                "Sign In to ClubVerse"
+                "Login"
               )}
             </motion.button>
 
@@ -358,13 +346,9 @@ export default function AdminLogin() {
               FOOTER
           ================================================= */}
 
-          <div className="mt-7 pt-5 border-t border-gray-200/60 text-center">
+          <div className="mt-6 pt-5 border-t border-gray-100 text-center">
 
-            <p className="text-[10px] sm:text-xs text-gray-400 font-medium">
-              Authorized club administrators only
-            </p>
-
-            <p className="text-[10px] text-gray-300 mt-1">
+            <p className="text-[10px] sm:text-xs text-gray-400">
               ClubVerse • College Club Management System
             </p>
 
@@ -373,6 +357,7 @@ export default function AdminLogin() {
         </div>
 
       </motion.div>
+
     </div>
   );
 }
