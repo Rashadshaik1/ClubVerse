@@ -465,112 +465,311 @@ if (loading) {
 
      <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
 
-  <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm relative">
+  {/* =====================================================
+      HERO / CLUB PROFILE HEADER
+  ===================================================== */}
 
-    <div className="h-44 sm:h-52 md:h-64 w-full bg-gray-100 relative group">
-              {banner ? (
-  <>
-    <img
-      src={banner}
-      alt="Club Banner"
-      className="w-full h-full object-cover"
-    />
-<div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+  <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm">
 
-  <label className="cursor-pointer bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-4 py-2 rounded-xl border border-gray-200 shadow-md flex items-center gap-2 hover:bg-white transition">
-    <Camera className="w-4 h-4 text-[#048c92]" />
-    Change
+    {/* ================= BANNER ================= */}
 
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleBannerChange}
-      className="hidden"
-    />
-  </label>
+    <div className="relative h-44 sm:h-52 md:h-64 lg:h-72 w-full bg-gray-100 group">
 
+      {banner ? (
+        <>
+          <img
+            src={banner}
+            alt="Club Banner"
+            className="w-full h-full object-cover"
+          />
 
-  <button
-    type="button"
-    onClick={() => setBanner("")}
-    className="bg-red-500/90 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md hover:bg-red-600 transition"
-  >
-    Remove
-  </button>
+          {/* Banner Overlay */}
+          <div
+            className="
+              absolute inset-0
+              bg-black/20
+              opacity-0
+              group-hover:opacity-100
+              transition-opacity duration-300
+              flex items-center justify-center
+              gap-2 sm:gap-3
+              px-4
+            "
+          >
 
-</div>
-  </>
-) : (
-  <div className="w-full h-full bg-gradient-to-r from-[#dff8f8] via-[#f7ffff] to-[#dff8f8] flex items-center justify-center">
-    <div className="text-center">
-      <Camera className="w-10 h-10 text-[#048c92]/40 mx-auto mb-2" />
+            {/* Change */}
+            <label
+              className="
+                cursor-pointer
+                bg-white/95
+                backdrop-blur-sm
+                text-gray-800
+                text-[11px] sm:text-xs
+                font-bold
+                px-3 sm:px-4
+                py-2
+                rounded-xl
+                border border-gray-200
+                shadow-md
+                flex items-center
+                gap-1.5 sm:gap-2
+                hover:bg-white
+                transition
+              "
+            >
+              <Camera className="w-4 h-4 text-[#048c92]" />
 
-      <p className="text-sm font-bold text-gray-500">
-        No Cover Image
-      </p>
+              <span>Change</span>
 
-      <p className="text-xs text-gray-400 mt-1 mb-4">
-        Upload a banner to personalize your club profile
-      </p>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleBannerChange}
+                className="hidden"
+              />
+            </label>
 
-      <label className="inline-flex cursor-pointer items-center gap-2 bg-[#048c92] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#39adb2] transition">
-        <Camera className="w-4 h-4" />
-        Upload Cover
+            {/* Remove */}
+            <button
+              type="button"
+              onClick={() => setBanner("")}
+              className="
+                bg-red-500/95
+                text-white
+                text-[11px] sm:text-xs
+                font-bold
+                px-3 sm:px-4
+                py-2
+                rounded-xl
+                shadow-md
+                hover:bg-red-600
+                transition
+              "
+            >
+              Remove
+            </button>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleBannerChange}
-          className="hidden"
-        />
-      </label>
-    </div>
-  </div>
-)}
-            </div>
+          </div>
+        </>
+      ) : (
 
-            <div className="w-full sm:pl-40 text-center sm:text-left min-w-0">
-             <div className="absolute -top-14 sm:-top-16 left-1/2 sm:left-8 md:left-12 -translate-x-1/2 sm:translate-x-0 w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-white bg-white shadow-md overflow-hidden group">
+        /* ================= NO BANNER ================= */
 
-  {logo ? (
-    <img
-      src={logo}
-      alt="Club Logo"
-      className="w-full h-full object-cover"
-    />
-  ) : (
-    <div className="w-full h-full bg-[#f4fcfc] flex flex-col items-center justify-center">
-      <Camera className="w-8 h-8 text-[#048c92]/40 mb-1" />
-      <p className="text-[10px] font-bold text-gray-400">
-        Upload Logo
-      </p>
-    </div>
-  )}
+        <div
+          className="
+            w-full h-full
+            bg-gradient-to-r
+            from-[#dff8f8]
+            via-[#f7ffff]
+            to-[#dff8f8]
+            flex items-center justify-center
+            px-4
+          "
+        >
 
-  <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
-    <Camera className="w-5 h-5 text-white" />
+          <div className="text-center">
 
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleLogoChange}
-      className="hidden"
-    />
-  </label>
+            <Camera
+              className="
+                w-8 h-8
+                sm:w-10 sm:h-10
+                text-[#048c92]/40
+                mx-auto mb-2
+              "
+            />
 
-</div>
+            <p className="text-xs sm:text-sm font-bold text-gray-500">
+              No Cover Image
+            </p>
 
-              <div className="sm:pl-40 text-center sm:text-left">
-                <h2 className="text-xl sm:text-2xl font-black text-gray-800 tracking-tight truncate">
-                  {club.name}
-                </h2>
-                <span className="inline-block mt-1 text-xs font-bold text-[#048c92] bg-[#43bfc3]/10 px-3 py-1 rounded-full border border-[#43bfc3]/20">
-                  {club.type}
-                </span>
-              </div>
-            </div>
+            <p className="text-[10px] sm:text-xs text-gray-400 mt-1 mb-3 sm:mb-4">
+              Upload a banner to personalize your club profile
+            </p>
+
+            <label
+              className="
+                inline-flex
+                cursor-pointer
+                items-center
+                justify-center
+                gap-2
+                bg-[#048c92]
+                text-white
+                px-3 sm:px-4
+                py-2
+                rounded-xl
+                text-[11px] sm:text-xs
+                font-bold
+                hover:bg-[#39adb2]
+                transition
+              "
+            >
+              <Camera className="w-4 h-4" />
+
+              <span>Upload Cover</span>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleBannerChange}
+                className="hidden"
+              />
+            </label>
+
           </div>
 
+        </div>
+      )}
+
+    </div>
+
+
+    {/* =====================================================
+        CLUB INFO + LOGO
+    ===================================================== */}
+
+    <div
+      className="
+        relative
+        px-4 sm:px-6 lg:px-8
+        pt-16 sm:pt-5
+        pb-5 sm:pb-6
+        min-h-[150px]
+      "
+    >
+
+      {/* ================= LOGO ================= */}
+
+      <div
+        className="
+          absolute
+          -top-14 sm:-top-16
+          left-1/2
+          sm:left-6
+          lg:left-8
+          -translate-x-1/2
+          sm:translate-x-0
+          w-28 h-28
+          sm:w-32 sm:h-32
+          rounded-full
+          border-4 border-white
+          bg-white
+          shadow-md
+          overflow-hidden
+          group
+        "
+      >
+
+        {logo ? (
+
+          <img
+            src={logo}
+            alt="Club Logo"
+            className="w-full h-full object-cover"
+          />
+
+        ) : (
+
+          <div
+            className="
+              w-full h-full
+              bg-[#f4fcfc]
+              flex flex-col
+              items-center justify-center
+            "
+          >
+            <Camera
+              className="
+                w-7 h-7
+                sm:w-8 sm:h-8
+                text-[#048c92]/40
+                mb-1
+              "
+            />
+
+            <p className="text-[9px] sm:text-[10px] font-bold text-gray-400">
+              Upload Logo
+            </p>
+          </div>
+
+        )}
+
+        {/* Logo Upload Overlay */}
+
+        <label
+          className="
+            absolute inset-0
+            bg-black/40
+            opacity-0
+            group-hover:opacity-100
+            transition-opacity
+            flex items-center justify-center
+            cursor-pointer
+          "
+        >
+          <Camera className="w-5 h-5 text-white" />
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleLogoChange}
+            className="hidden"
+          />
+        </label>
+
+      </div>
+
+
+      {/* ================= CLUB DETAILS ================= */}
+
+      <div
+        className="
+          sm:pl-36
+          lg:pl-40
+          text-center
+          sm:text-left
+          min-w-0
+        "
+      >
+
+        <h2
+          className="
+            text-xl
+            sm:text-2xl
+            lg:text-3xl
+            font-black
+            text-gray-800
+            tracking-tight
+            break-words
+          "
+        >
+          {club.name}
+        </h2>
+
+        {club.type && (
+          <span
+            className="
+              inline-block
+              mt-1.5
+              text-[10px] sm:text-xs
+              font-bold
+              text-[#048c92]
+              bg-[#43bfc3]/10
+              px-3
+              py-1
+              rounded-full
+              border border-[#43bfc3]/20
+            "
+          >
+            {club.type}
+          </span>
+        )}
+
+      </div>
+
+    </div>
+
+  </div>
           {/* MAIN GRID CONTROL SPLIT */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* LEFT / CENTER DEEP FORM COLUMNS */}
