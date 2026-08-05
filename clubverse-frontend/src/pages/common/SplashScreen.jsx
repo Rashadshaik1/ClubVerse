@@ -8,37 +8,70 @@ export default function SplashScreen({ onFinish }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onFinish();
-    }, 3000);
+    }, 3500);
 
     return () => clearTimeout(timer);
   }, [onFinish]);
 
-  return (
+  const particles = [
+    { size: 4, left: "8%", top: "20%", delay: 0, duration: 5 },
+    { size: 6, left: "17%", top: "68%", delay: 1.2, duration: 6 },
+    { size: 3, left: "27%", top: "14%", delay: 0.8, duration: 4.5 },
+    { size: 5, left: "39%", top: "82%", delay: 2, duration: 6 },
+    { size: 4, left: "58%", top: "12%", delay: 1.5, duration: 5 },
+    { size: 6, left: "72%", top: "24%", delay: 0.5, duration: 6 },
+    { size: 3, left: "84%", top: "58%", delay: 2.2, duration: 4.5 },
+    { size: 5, left: "91%", top: "78%", delay: 1, duration: 6 },
+    { size: 3, left: "65%", top: "86%", delay: 2.5, duration: 5 },
+    { size: 4, left: "11%", top: "45%", delay: 1.8, duration: 5.5 },
+  ];
 
-    <div className="relative min-h-screen overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#f6f4ff] via-[#eef2ff] to-[#e6f7ff]">
+  return (
+    <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#f6f4ff] via-[#eef2ff] to-[#e6f7ff]">
 
       {/* =====================================================
-          SOFT BACKGROUND GLOW
+          BACKGROUND
       ===================================================== */}
 
+      <div className="absolute inset-0 bg-gradient-to-br from-[#f6f4ff] via-[#eef2ff] to-[#e6f7ff]" />
+
+      {/* Large lavender glow */}
+
       <motion.div
-        className="absolute -top-40 -left-40 w-[420px] h-[420px] rounded-full bg-[#8D76D8]/15 blur-3xl"
+        className="absolute -top-40 -left-40 w-[420px] h-[420px] sm:w-[520px] sm:h-[520px] rounded-full bg-[#8D76D8]/15 blur-3xl"
         animate={{
-          scale: [1, 1.12, 1],
-          opacity: [0.4, 0.7, 0.4],
+          scale: [1, 1.15, 1],
+          opacity: [0.35, 0.65, 0.35],
         }}
         transition={{
-          duration: 5,
+          duration: 7,
           repeat: Infinity,
           ease: "easeInOut",
         }}
       />
 
+      {/* Cyan glow */}
+
       <motion.div
-        className="absolute -bottom-40 -right-40 w-[450px] h-[450px] rounded-full bg-[#43bfc3]/15 blur-3xl"
+        className="absolute -bottom-40 -right-40 w-[420px] h-[420px] sm:w-[520px] sm:h-[520px] rounded-full bg-[#43bfc3]/15 blur-3xl"
         animate={{
           scale: [1.1, 1, 1.1],
-          opacity: [0.35, 0.65, 0.35],
+          opacity: [0.3, 0.6, 0.3],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Center soft glow */}
+
+      <motion.div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] sm:w-[360px] sm:h-[360px] rounded-full bg-[#8D76D8]/10 blur-[90px]"
+        animate={{
+          scale: [0.9, 1.15, 0.9],
+          opacity: [0.25, 0.5, 0.25],
         }}
         transition={{
           duration: 6,
@@ -47,21 +80,15 @@ export default function SplashScreen({ onFinish }) {
         }}
       />
 
+
       {/* =====================================================
-          FLOATING PARTICLES
+          MOVING PARTICLES
       ===================================================== */}
 
-      {[
-        { size: 5, left: "12%", top: "22%", delay: 0 },
-        { size: 7, left: "24%", top: "70%", delay: 1 },
-        { size: 4, left: "78%", top: "25%", delay: 1.5 },
-        { size: 6, left: "88%", top: "65%", delay: 0.8 },
-        { size: 4, left: "68%", top: "80%", delay: 2 },
-        { size: 5, left: "35%", top: "15%", delay: 1.2 },
-      ].map((particle, index) => (
+      {particles.map((particle, index) => (
         <motion.span
           key={index}
-          className="absolute rounded-full bg-[#8D76D8]/30 pointer-events-none"
+          className="absolute rounded-full bg-[#8D76D8]/40 shadow-sm shadow-[#8D76D8]/30 pointer-events-none"
           style={{
             width: particle.size,
             height: particle.size,
@@ -69,33 +96,97 @@ export default function SplashScreen({ onFinish }) {
             top: particle.top,
           }}
           animate={{
-            y: [0, -18, 0],
-            opacity: [0.2, 0.7, 0.2],
+            y: [0, -30, -10, -35, 0],
+            x: [0, 8, -6, 5, 0],
+            opacity: [0.15, 0.7, 0.35, 0.65, 0.15],
+            scale: [0.8, 1.2, 0.9, 1.15, 0.8],
           }}
           transition={{
-            duration: 4 + (index % 2),
-            repeat: Infinity,
+            duration: particle.duration,
             delay: particle.delay,
+            repeat: Infinity,
             ease: "easeInOut",
           }}
         />
       ))}
 
+
+      {/* =====================================================
+          SMALL CYAN PARTICLES
+      ===================================================== */}
+
+      {[
+        { left: "22%", top: "32%", delay: 0.4 },
+        { left: "78%", top: "40%", delay: 1.5 },
+        { left: "48%", top: "18%", delay: 2 },
+        { left: "58%", top: "75%", delay: 0.8 },
+      ].map((particle, index) => (
+        <motion.span
+          key={`cyan-${index}`}
+          className="absolute w-1.5 h-1.5 rounded-full bg-[#43bfc3]/45 pointer-events-none"
+          style={{
+            left: particle.left,
+            top: particle.top,
+          }}
+          animate={{
+            y: [0, -25, 0],
+            opacity: [0.1, 0.7, 0.1],
+          }}
+          transition={{
+            duration: 4.5,
+            delay: particle.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+
+
+      {/* =====================================================
+          DECORATIVE ORBIT
+      ===================================================== */}
+
+      <motion.div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[270px] h-[270px] sm:w-[350px] sm:h-[350px] rounded-full border border-[#8D76D8]/10"
+        animate={{
+          rotate: 360,
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      <motion.div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[330px] h-[330px] sm:w-[430px] sm:h-[430px] rounded-full border border-[#43bfc3]/10"
+        animate={{
+          rotate: -360,
+        }}
+        transition={{
+          duration: 35,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+
       {/* =====================================================
           MAIN CONTENT
       ===================================================== */}
 
-      <div className="relative z-10 flex flex-col items-center text-center px-6">
+      <div className="relative z-10 flex flex-col items-center text-center px-5 sm:px-8 w-full max-w-3xl">
+
 
         {/* =================================================
-            CLUBVERSE LOGO
+            LOGO
         ================================================= */}
 
         <motion.div
           initial={{
             opacity: 0,
-            scale: 0.75,
-            y: 15,
+            scale: 0.65,
+            y: 25,
           }}
           animate={{
             opacity: 1,
@@ -103,22 +194,39 @@ export default function SplashScreen({ onFinish }) {
             y: 0,
           }}
           transition={{
-            duration: 0.9,
+            duration: 1,
             ease: [0.22, 1, 0.36, 1],
           }}
           className="relative"
         >
 
-          {/* Logo glow */}
+          {/* Outer glow */}
 
-          <div className="absolute inset-0 rounded-3xl bg-[#8D76D8]/20 blur-2xl scale-125" />
+          <motion.div
+            className="absolute inset-0 rounded-[28px] bg-gradient-to-br from-[#8D76D8]/30 to-[#43bfc3]/20 blur-2xl"
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.4, 0.7, 0.4],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
 
-          <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-3xl bg-white/60 backdrop-blur-xl border border-white/80 shadow-xl shadow-[#6D4BC3]/15 flex items-center justify-center p-3">
+          {/* Glass logo container */}
+
+          <div className="relative w-[92px] h-[92px] sm:w-[112px] sm:h-[112px] md:w-[128px] md:h-[128px] rounded-[26px] sm:rounded-[30px] bg-white/55 backdrop-blur-2xl border border-white/80 shadow-[0_20px_60px_rgba(109,75,195,0.15)] flex items-center justify-center p-3 sm:p-4">
+
+            {/* Inner shine */}
+
+            <div className="absolute inset-[1px] rounded-[25px] bg-gradient-to-br from-white/50 to-transparent pointer-events-none" />
 
             <img
               src={clubLogo}
               alt="ClubVerse"
-              className="w-full h-full object-contain"
+              className="relative z-10 w-full h-full object-contain"
             />
 
           </div>
@@ -133,20 +241,20 @@ export default function SplashScreen({ onFinish }) {
         <motion.h1
           initial={{
             opacity: 0,
-            y: 20,
+            y: 25,
             letterSpacing: "0.35em",
           }}
           animate={{
             opacity: 1,
             y: 0,
-            letterSpacing: "0.02em",
+            letterSpacing: "0.015em",
           }}
           transition={{
             delay: 0.45,
-            duration: 1,
-            ease: "easeOut",
+            duration: 1.1,
+            ease: [0.22, 1, 0.36, 1],
           }}
-          className="mt-7 text-4xl sm:text-5xl md:text-6xl font-black bg-gradient-to-r from-[#6D4BC3] via-[#7C64CF] to-[#048c92] bg-clip-text text-transparent"
+          className="mt-6 sm:mt-7 text-[40px] sm:text-5xl md:text-6xl lg:text-7xl font-black leading-none bg-gradient-to-r from-[#6D4BC3] via-[#8069D0] to-[#048c92] bg-clip-text text-transparent"
         >
           ClubVerse
         </motion.h1>
@@ -159,7 +267,7 @@ export default function SplashScreen({ onFinish }) {
         <motion.p
           initial={{
             opacity: 0,
-            y: 10,
+            y: 12,
           }}
           animate={{
             opacity: 1,
@@ -169,14 +277,14 @@ export default function SplashScreen({ onFinish }) {
             delay: 1,
             duration: 0.8,
           }}
-          className="mt-2 text-[10px] sm:text-xs md:text-sm font-bold tracking-[0.25em] text-[#6F61A8]/80 uppercase"
+          className="mt-3 text-[9px] sm:text-xs md:text-sm font-bold tracking-[0.28em] sm:tracking-[0.32em] text-[#6F61A8]/80 uppercase"
         >
           College Club Management
         </motion.p>
 
 
         {/* =================================================
-            DIVIDER
+            PREMIUM DIVIDER
         ================================================= */}
 
         <motion.div
@@ -185,38 +293,53 @@ export default function SplashScreen({ onFinish }) {
             opacity: 0,
           }}
           animate={{
-            width: 90,
+            width: "min(120px, 30vw)",
             opacity: 1,
           }}
           transition={{
-            delay: 1.25,
-            duration: 0.7,
+            delay: 1.3,
+            duration: 0.8,
+            ease: "easeOut",
           }}
-          className="h-[1px] mt-5 bg-gradient-to-r from-transparent via-[#8D76D8]/60 to-transparent"
-        />
+          className="relative h-px mt-5 bg-gradient-to-r from-transparent via-[#8D76D8]/60 to-transparent"
+        >
+
+          <motion.span
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#8D76D8]"
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.5, 1, 0.5],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+            }}
+          />
+
+        </motion.div>
 
 
         {/* =================================================
-            GVPCE BRANDING
+            COLLEGE BRANDING
         ================================================= */}
 
         <motion.div
           initial={{
             opacity: 0,
-            y: 8,
+            y: 12,
           }}
           animate={{
             opacity: 1,
             y: 0,
           }}
           transition={{
-            delay: 1.4,
+            delay: 1.45,
             duration: 0.8,
           }}
-          className="mt-6 flex flex-col items-center"
+          className="mt-5 sm:mt-6 flex flex-col items-center"
         >
 
-          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/45 backdrop-blur-md border border-white/70 shadow-sm flex items-center justify-center p-1.5">
+          <div className="relative w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/50 backdrop-blur-xl border border-white/75 shadow-md flex items-center justify-center p-1.5">
 
             <img
               src={collegeLogo}
@@ -226,7 +349,7 @@ export default function SplashScreen({ onFinish }) {
 
           </div>
 
-          <p className="mt-2 text-[9px] sm:text-[10px] font-semibold tracking-[0.18em] text-gray-400 uppercase">
+          <p className="mt-2 text-[8px] sm:text-[9px] md:text-[10px] font-semibold tracking-[0.22em] text-gray-400 uppercase">
             GVPCE
           </p>
 
@@ -234,28 +357,62 @@ export default function SplashScreen({ onFinish }) {
 
 
         {/* =================================================
-            LOADING LINE
+            LOADING INDICATOR
         ================================================= */}
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.8 }}
-          className="mt-8 w-24 sm:w-28 h-[2px] bg-white/60 rounded-full overflow-hidden"
+          initial={{
+            opacity: 0,
+            width: 0,
+          }}
+          animate={{
+            opacity: 1,
+            width: "min(110px, 28vw)",
+          }}
+          transition={{
+            delay: 1.9,
+            duration: 0.7,
+          }}
+          className="relative mt-7 sm:mt-8 h-[2px] bg-white/70 rounded-full overflow-hidden"
         >
 
           <motion.div
-            initial={{ x: "-100%" }}
-            animate={{ x: "100%" }}
+            initial={{
+              x: "-100%",
+            }}
+            animate={{
+              x: "200%",
+            }}
             transition={{
-              duration: 1.1,
+              duration: 1.2,
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="w-1/2 h-full bg-gradient-to-r from-[#6D4BC3] to-[#43bfc3]"
+            className="absolute w-1/2 h-full bg-gradient-to-r from-[#6D4BC3] via-[#8D76D8] to-[#43bfc3]"
           />
 
         </motion.div>
+
+
+        {/* =================================================
+            LOADING TEXT
+        ================================================= */}
+
+        <motion.p
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
+          transition={{
+            delay: 2.1,
+            duration: 0.8,
+          }}
+          className="mt-3 text-[8px] sm:text-[9px] tracking-[0.22em] text-gray-400 uppercase"
+        >
+          Entering your campus world
+        </motion.p>
 
       </div>
 
@@ -265,10 +422,19 @@ export default function SplashScreen({ onFinish }) {
       ===================================================== */}
 
       <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-5 text-[9px] sm:text-[10px] tracking-widest text-gray-400 uppercase"
+        initial={{
+          opacity: 0,
+          y: 5,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          delay: 2.2,
+          duration: 0.7,
+        }}
+        className="absolute bottom-4 sm:bottom-5 left-0 right-0 text-center px-4 text-[7px] sm:text-[8px] md:text-[9px] tracking-[0.2em] sm:tracking-[0.28em] text-gray-400 uppercase"
       >
         Connecting Campus Communities
       </motion.p>
