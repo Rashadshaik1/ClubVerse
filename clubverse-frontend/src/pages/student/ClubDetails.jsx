@@ -513,7 +513,7 @@ function ClubDetailsSkeleton() {
                   highlightColor="#F8F7FC"
                 />
 
-                <div className="p-4"
+                <div className="p-4">
 
                   <Skeleton
                     width="80%"
