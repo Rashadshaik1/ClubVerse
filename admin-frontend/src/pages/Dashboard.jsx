@@ -149,30 +149,30 @@ const getTimeAgo = (date) => {
     <div className="flex min-h-screen bg-[#05080f] text-white">
       <Sidebar />
 
-      <div className="ml-72 w-full p-10">
+      <div className="w-full lg:ml-72 p-4 sm:p-6 md:p-8 lg:p-10">
 
         {/* HEADER */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#00C2FF]">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#00C2FF]">
             ClubVerse Dashboard
           </h1>
-          <p className="text-gray-400 text-sm mt-1">
+          <p className="text-gray-400 text-xs sm:text-sm mt-1">
             Unified SaaS analytics & system monitoring
           </p>
         </div>
 
         {/* STATS */}
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           <Card title="Users" value={users.length} />
           <Card title="Events" value={events.length} />
           <Card title="Clubs" value={clubs.length} />
         </div>
 
         {/* CHART + INSIGHT */}
-        <div className="grid grid-cols-3 gap-6 mt-10">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-10">
 
           {/* CHART */}
-          <div className="col-span-2 p-6 rounded-2xl border border-white/10 bg-white/5">
+         <div className="xl:col-span-2 p-4 sm:p-6 rounded-2xl border border-white/10 bg-white/5">
             <h2 className="text-[#00C2FF] font-semibold mb-4">
               Event Growth Analytics
             </h2>
@@ -193,7 +193,7 @@ const getTimeAgo = (date) => {
           </div>
 
           {/* INSIGHT */}
-          <div className="p-6 rounded-2xl border border-white/10 bg-white/5">
+          <div className="p-4 sm:p-6 rounded-2xl border border-white/10 bg-white/5">
             <h2 className="text-[#00C2FF] font-semibold mb-4">
               AI Insight
             </h2>
@@ -213,7 +213,7 @@ const getTimeAgo = (date) => {
         </div>
 
         {/* RECENT ACTIVITY (RESTORED) */}
-        <div className="mt-10 p-6 rounded-2xl border border-white/10 bg-white/5">
+        <div className="mt-10 p-4 sm:p-6 rounded-2xl border border-white/10 bg-white/5">
           <h2 className="text-[#00C2FF] font-semibold mb-4">
             Recent Activity
           </h2>
@@ -225,15 +225,15 @@ const getTimeAgo = (date) => {
               sortedActivity.map((a,i)=>(
                 <div
   key={i}
-  className="p-3 rounded-lg bg-black/20 border border-white/10 text-sm text-gray-300 flex justify-between items-center"
+  className="p-3 rounded-lg bg-black/20 border border-white/10 text-sm text-gray-300 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2"
 >
 
-  <span>
+  <span className="break-words">
     {a.text}
-  </span>
+</span>
 
 
-  <span className="text-xs text-gray-500">
+  <span className="text-xs text-gray-500 self-start sm:self-auto whitespace-nowrap">
     {getTimeAgo(a.date)}
   </span>
 
@@ -251,9 +251,9 @@ const getTimeAgo = (date) => {
 // ================= CARD =================
 function Card({ title, value }) {
   return (
-    <div className="p-6 rounded-2xl border border-white/10 bg-white/5">
+    <div className="p-4 sm:p-6 rounded-2xl border border-white/10 bg-white/5">
       <p className="text-gray-400 text-sm">{title}</p>
-      <h2 className="text-3xl font-bold mt-2 text-[#00C2FF]">
+      <h2 className="text-2xl sm:text-3xl font-bold mt-2 text-[#00C2FF]">
         {value}
       </h2>
     </div>

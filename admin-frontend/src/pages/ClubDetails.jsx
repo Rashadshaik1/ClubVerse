@@ -13,7 +13,6 @@ import {
   Tooltip,
   PieChart,
   Pie,
-  Cell,
   Legend,
   ResponsiveContainer
 } from "recharts";
@@ -25,170 +24,109 @@ export default function ClubDetails() {
   const [club, setClub] = useState(null);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [chartData,setChartData]=useState([]);
-  const [pieData,setPieData]=useState([]);
-  const [memberCount,setMemberCount]=useState(0);
+  const [chartData, setChartData] = useState([]);
+  const [pieData, setPieData] = useState([]);
+  const [memberCount, setMemberCount] = useState(0);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const headers = {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        };
+
+        // 1. Get clubs
+        const clubRes = await fetch(
+          "https://clubverse-nsgq.onrender.com/api/admin/clubs",
+          {
+            headers,
+          }
+        );
+
+        const clubData = await clubRes.json();
+
+        const foundClub = (clubData.data || []).find((c) => c._id === id);
+
+        setClub(foundClub);
+
+        const memberRes = await fetch(
+          `https://clubverse-nsgq.onrender.com/api/boards/club/${id}/member-count`,
+          {
+            headers,
+          }
+        );
+
+        const memberData = await memberRes.json();
+
+        setMemberCount(memberData.count || 0);
+
+        // 2. Get all events
+        const eventRes = await fetch(
+          "https://clubverse-nsgq.onrender.com/api/admin/events",
+          {
+            headers,
+          }
+        );
+
+        const eventData = await eventRes.json();
+
+        // filter only this club events
+        const clubEvents = (eventData.data || []).filter(
+          (e) => e.clubId?._id === id
+        );
+
+        setEvents(clubEvents);
+
+        const statusMap = {
+          Completed: 0,
+          Upcoming: 0,
+          Cancelled: 0,
+        };
+
+        clubEvents.forEach((event) => {
+          if (event.status === "completed") {
+            statusMap.Completed++;
+          } else if (event.status === "cancelled") {
+            statusMap.Cancelled++;
+          } else if (event.status === "upcoming") {
+            statusMap.Upcoming++;
+          }
+        });
+
+        setPieData(
+          Object.keys(statusMap).map((status) => ({
+            name: status,
+            value: statusMap[status],
+          }))
+        );
+
+        const monthMap = {};
+
+        clubEvents.forEach((event) => {
+          const month = new Date(event.createdAt).toLocaleString("default", {
+            month: "short",
+          });
+
+          monthMap[month] = (monthMap[month] || 0) + 1;
+        });
+
+        setChartData(
+          Object.keys(monthMap).map((month) => ({
+            month,
+            count: monthMap[month],
+          }))
+        );
+
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
-  const fetchData = async () => {
-
-    try {
-
-      const headers = {
-        Authorization:
-        `Bearer ${localStorage.getItem("token")}`,
-      };
-
-
-      // 1. Get clubs
-      const clubRes = await fetch(
-        "https://clubverse-nsgq.onrender.com/api/admin/clubs",
-        {
-          headers
-        }
-      );
-
-
-      const clubData = await clubRes.json();
-
-
-      const foundClub =
-      (clubData.data || [])
-      .find((c)=>c._id === id);
-
-
-      setClub(foundClub);
-      const memberRes = await fetch(
- `https://clubverse-nsgq.onrender.com/api/boards/club/${id}/member-count`,
- {
-  headers
- }
-);
-
-
-const memberData = await memberRes.json();
-
-
-setMemberCount(memberData.count || 0);
-
-
-
-      // 2. Get all events
-
-      const eventRes = await fetch(
-        "https://clubverse-nsgq.onrender.com/api/admin/events",
-        {
-          headers
-        }
-      );
-
-
-      const eventData = await eventRes.json();
-
-
-
-      // filter only this club events
-
-      const clubEvents =
-      (eventData.data || [])
-      .filter(
-        (e)=>
-        e.clubId?._id === id
-      );
-
-
-      setEvents(clubEvents);
-
-   const statusMap = {
-  Completed:0,
-  Upcoming:0,
-  Cancelled:0
-};
-
-
-clubEvents.forEach((event)=>{
-
-  if(event.status === "completed"){
-    statusMap.Completed++;
-  }
-
-  else if(event.status === "cancelled"){
-    statusMap.Cancelled++;
-  }
-
-  else if(event.status === "upcoming"){
-    statusMap.Upcoming++;
-  }
-
-});
-
-
-setPieData(
-
-Object.keys(statusMap).map((status)=>({
-
-name:status,
-value:statusMap[status]
-
-}))
-
-);
-      const monthMap={};
-
-
-clubEvents.forEach((event)=>{
-
-
-const month =
-new Date(event.createdAt)
-.toLocaleString(
-"default",
-{
-month:"short"
-}
-);
-
-
-monthMap[month] =
-(monthMap[month] || 0)+1;
-
-
-});
-
-
-setChartData(
-
-Object.keys(monthMap)
-.map((month)=>({
-
-month,
-count:monthMap[month]
-
-}))
-
-);
-        
-
-
-      setLoading(false);
-
-
-    }
-    catch(err){
-
-      console.log(err);
-      setLoading(false);
-
-    }
-
-  };
-
-
-  fetchData();
-
-
-},[id]);
   const handleDelete = async () => {
     if (!window.confirm("Delete this club?")) return;
 
@@ -225,43 +163,43 @@ count:monthMap[month]
 
   if (!club)
     return (
-      <div className="text-white ml-72 p-10">
+      <div className="text-white lg:ml-72 p-6 sm:p-10 text-center lg:text-left">
         Club not found
       </div>
     );
 
   return (
-    <div className="flex min-h-screen bg-[#070b14] text-white overflow-hidden">
+    <div className="flex min-h-screen bg-[#070b14] text-white overflow-x-hidden">
       <Sidebar />
 
-      <div className="ml-72 w-full p-10 space-y-8">
-
+      <div className="lg:ml-72 w-full p-4 sm:p-6 md:p-10 space-y-6 sm:space-y-8 min-w-0">
         {/* ================= HEADER ================= */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-2xl shadow-lg"
+          className="p-5 sm:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-2xl shadow-lg"
         >
-          <div className="flex items-center gap-6">
-
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
             <motion.img
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.05 }}
               src={club.logo || "https://via.placeholder.com/100"}
-              className="w-24 h-24 rounded-full border border-cyan-400 shadow-lg"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-cyan-400 shadow-lg object-cover flex-shrink-0"
             />
 
-            <div>
-              <h1 className="text-3xl font-bold tracking-wide">
+            <div className="min-w-0 w-full">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-wide truncate">
                 {club.name}
               </h1>
-              <p className="text-gray-400">{club.email}</p>
+              <p className="text-gray-400 text-sm sm:text-base truncate">
+                {club.email}
+              </p>
 
               <span
-                className={`mt-2 inline-block px-3 py-1 text-xs rounded-full backdrop-blur-md
-                ${club.isBlocked
-                  ? "bg-red-500/20 text-red-400"
-                  : "bg-green-500/20 text-green-400"
+                className={`mt-2 inline-block px-3 py-1 text-xs rounded-full backdrop-blur-md ${
+                  club.isBlocked
+                    ? "bg-red-500/20 text-red-400"
+                    : "bg-green-500/20 text-green-400"
                 }`}
               >
                 {club.isBlocked ? "Blocked" : "Active"}
@@ -269,109 +207,91 @@ count:monthMap[month]
             </div>
           </div>
 
-          <p className="mt-6 text-gray-300 leading-relaxed">
+          <p className="mt-4 sm:mt-6 text-gray-300 leading-relaxed text-sm sm:text-base break-words">
             {club.description || "No description available"}
           </p>
         </motion.div>
 
-    {/* ================= STATS ================= */}
+        {/* ================= STATS ================= */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {[
+            {
+              label: "Total Events",
+              value: events.length,
+            },
+            {
+              label: "Members",
+              value: memberCount,
+            },
+            {
+              label: "Status",
+              value: club.isBlocked ? "Inactive" : "Live",
+            },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.02 }}
+              className="p-5 sm:p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl"
+            >
+              <p className="text-gray-400 text-sm">{item.label}</p>
 
-<div className="grid grid-cols-3 gap-6">
+              <h2 className="text-xl sm:text-2xl font-bold mt-1">
+                {item.value}
+              </h2>
+            </motion.div>
+          ))}
+        </div>
 
-{
-[
-{
- label:"Total Events",
- value:events.length
-},
-
-{
- label:"Members",
- value:memberCount
-},
-
-{
- label:"Status",
- value:club.isBlocked ? "Inactive" : "Live"
-}
-
-].map((item,i)=>(
-
-<motion.div
-key={i}
-whileHover={{scale:1.05}}
-className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl"
->
-
-<p className="text-gray-400 text-sm">
-{item.label}
-</p>
-
-<h2 className="text-2xl font-bold mt-1">
-{item.value}
-</h2>
-
-</motion.div>
-
-))
-
-}
-
-</div>
-
-        {/* ================= ANALYTICS MOCK ================= */}
-        <div className="grid grid-cols-2 gap-6">
-
+        {/* ================= ANALYTICS ================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="p-6 rounded-2xl bg-white/5 border border-white/10"
+            whileHover={{ scale: 1.01 }}
+            className="p-4 sm:p-6 rounded-2xl bg-white/5 border border-white/10 min-w-0"
           >
-            <h2 className="mb-4 font-semibold">Event Trend</h2>
+            <h2 className="mb-4 font-semibold text-base sm:text-lg">
+              Event Trend
+            </h2>
 
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={chartData}>
-                <XAxis dataKey="month" stroke="#888" />
-               <YAxis 
- stroke="#888"
- allowDecimals={false}
-/>
-                <Tooltip />
-                <Line type="monotone" dataKey="count" stroke="#00C2FF" />
-              </LineChart>
-            </ResponsiveContainer>
+            <div className="w-full h-[250px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData}>
+                  <XAxis dataKey="month" stroke="#888" />
+                  <YAxis stroke="#888" allowDecimals={false} />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="count" stroke="#00C2FF" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
 
-            <p className="text-gray-500 text-sm mt-2">
+            <p className="text-gray-500 text-xs sm:text-sm mt-2">
               (Connect real event data here)
             </p>
           </motion.div>
 
           <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="p-6 rounded-2xl bg-white/5 border border-white/10"
+            whileHover={{ scale: 1.01 }}
+            className="p-4 sm:p-6 rounded-2xl bg-white/5 border border-white/10 min-w-0"
           >
-            <h2 className="mb-4 font-semibold">Activity Split</h2>
+            <h2 className="mb-4 font-semibold text-base sm:text-lg">
+              Activity Split
+            </h2>
 
-            <ResponsiveContainer width="100%" height={250}>
-
-  <PieChart>
-
-<Pie
-data={pieData}
-dataKey="value"
-nameKey="name"
-outerRadius={90}
-label
-/>
-
-<Tooltip />
-
-<Legend />
-
-</PieChart>
-
-</ResponsiveContainer>
+            <div className="w-full h-[250px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    dataKey="value"
+                    nameKey="name"
+                    outerRadius={80}
+                    label
+                  />
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </motion.div>
-
         </div>
 
         {/* ================= ACTIONS ================= */}
@@ -379,27 +299,24 @@ label
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="flex gap-4"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2"
         >
-
           <motion.button
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.02 }}
             onClick={handleDelete}
-            className="px-6 py-2 rounded-xl bg-red-500/20 text-red-400 border border-red-400/30"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-red-500/20 text-red-400 border border-red-400/30 font-medium transition-colors"
           >
             Delete Club
           </motion.button>
 
           <motion.button
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.02 }}
             onClick={handleBlock}
-            className="px-6 py-2 rounded-xl bg-yellow-500/20 text-yellow-300 border border-yellow-400/30"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-yellow-500/20 text-yellow-300 border border-yellow-400/30 font-medium transition-colors"
           >
             {club.isBlocked ? "Unblock" : "Block"}
           </motion.button>
-
         </motion.div>
-
       </div>
     </div>
   );
