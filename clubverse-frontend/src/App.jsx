@@ -30,88 +30,156 @@ import Gallery from "./pages/club/Gallery";
 import GalleryDetails from "./pages/club/GalleryDetails";
 
 export default function App() {
-  const [showSplash, setShowSplash] = useState(
-    !sessionStorage.getItem("clubverse_splash_shown")
-  );
+
+  const [showSplash, setShowSplash] = useState(() => {
+    return sessionStorage.getItem("clubverse_splash_shown") !== "true";
+  });
+
+  const handleSplashFinish = () => {
+    sessionStorage.setItem("clubverse_splash_shown", "true");
+    setShowSplash(false);
+  };
 
   return (
     <BrowserRouter>
 
       {showSplash ? (
+
         <SplashScreen
-          onFinish={() => {
-            sessionStorage.setItem(
-              "clubverse_splash_shown",
-              "true"
-            );
-            setShowSplash(false);
-          }}
+          onFinish={handleSplashFinish}
         />
+
       ) : (
+
         <Routes>
 
-        {/* ================= COMMON ================= */}
-<Route path="/" element={<Landing />} />
+          {/* ================= COMMON ================= */}
 
-        {/* ================= CLUB ABOUT ================= */}
-        <Route path="/about" element={<About />} />
+          <Route
+            path="/"
+            element={<Landing />}
+          />
 
-        {/* ================= STUDENT ================= */}
-        <Route path="/student-auth" element={<StudentAuth />} />
-        <Route path="/student-home" element={<StudentHome />} />
-        <Route path="/student-clubs" element={<Clubs />} />
-        <Route path="/student-about" element={<StudentAbout />} />
-        <Route path="/student-profile" element={<StudentProfile />} />
-        <Route
-  path="/student/event/:id"
-  element={<StudentEventDetails />}
-/>
-<Route
-  path="/student/my-registrations"
-  element={<MyRegistrations />}
-/>
-<Route
-  path="/student-notifications"
-  element={<StudentNotifications />}
-/>
-<Route
-  path="/student/club/:id"
-  element={<ClubDetails />}
-/>
+          {/* ================= CLUB ABOUT ================= */}
 
-<Route
- path="/student/clubs/:id/events"
- element={<ClubEvents />}
-/>
-        {/* ================= CLUB ================= */}
-        <Route path="/club-login" element={<ClubLogin />} />
-        <Route path="/club-dashboard" element={<Dashboard />} />
-        <Route path="/create-event" element={<CreateEvent />} />
-        <Route path="/manage-events" element={<ManageEvents />} />
+          <Route
+            path="/about"
+            element={<About />}
+          />
 
-        {/* MEMBERS */}
-        <Route path="/members" element={<Members />} />
+          {/* ================= STUDENT ================= */}
 
-        {/* PROFILE */}
-        <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/student-auth"
+            element={<StudentAuth />}
+          />
 
-        {/* GALLERY */}
-        <Route path="/gallery" element={<Gallery />} />
+          <Route
+            path="/student-home"
+            element={<StudentHome />}
+          />
 
-        {/* GALLERY DETAILS */}
-        <Route
-          path="/club/gallery/:id"
-          element={<GalleryDetails />}
-        />
+          <Route
+            path="/student-clubs"
+            element={<Clubs />}
+          />
 
-        {/* EVENT DASHBOARD */}
-        <Route
-          path="/club/event/:id"
-          element={<EventDashboard />}
-        />
+          <Route
+            path="/student-about"
+            element={<StudentAbout />}
+          />
 
-            </Routes>
+          <Route
+            path="/student-profile"
+            element={<StudentProfile />}
+          />
+
+          <Route
+            path="/student/event/:id"
+            element={<StudentEventDetails />}
+          />
+
+          <Route
+            path="/student/my-registrations"
+            element={<MyRegistrations />}
+          />
+
+          <Route
+            path="/student-notifications"
+            element={<StudentNotifications />}
+          />
+
+          <Route
+            path="/student/club/:id"
+            element={<ClubDetails />}
+          />
+
+          <Route
+            path="/student/clubs/:id/events"
+            element={<ClubEvents />}
+          />
+
+          {/* ================= CLUB ================= */}
+
+          <Route
+            path="/club-login"
+            element={<ClubLogin />}
+          />
+
+          <Route
+            path="/club-dashboard"
+            element={<Dashboard />}
+          />
+
+          <Route
+            path="/create-event"
+            element={<CreateEvent />}
+          />
+
+          <Route
+            path="/manage-events"
+            element={<ManageEvents />}
+          />
+
+          {/* MEMBERS */}
+
+          <Route
+            path="/members"
+            element={<Members />}
+          />
+
+          {/* PROFILE */}
+
+          <Route
+            path="/profile"
+            element={<Profile />}
+          />
+
+          {/* GALLERY */}
+
+          <Route
+            path="/gallery"
+            element={<Gallery />}
+          />
+
+          {/* GALLERY DETAILS */}
+
+          <Route
+            path="/club/gallery/:id"
+            element={<GalleryDetails />}
+          />
+
+          {/* EVENT DASHBOARD */}
+
+          <Route
+            path="/club/event/:id"
+            element={<EventDashboard />}
+          />
+
+        </Routes>
+
       )}
+
     </BrowserRouter>
   );
 }
