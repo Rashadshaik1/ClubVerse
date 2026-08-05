@@ -18,6 +18,7 @@ import dev3 from "../../assets/dev3.jpg";
 import dev4 from "../../assets/dev4.jpg";
 
 export default function About() {
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const developers = [
     {
       name: "Azeem",
@@ -70,17 +71,25 @@ export default function About() {
           SIDEBAR
       ===================================================== */}
 
-      <ClubSidebar />
+     <ClubSidebar
+  isOpen={sidebarOpen}
+  setIsOpen={setSidebarOpen}
+/>
 
       {/* =====================================================
           MAIN CONTENT
       ===================================================== */}
 
-      <div className="w-full min-w-0">
+      <div
+  className={`flex-1 min-w-0 w-full transition-all duration-300 ${
+    sidebarOpen ? "lg:ml-64" : "lg:ml-20"
+  }`}
+>
 
-        {/* NAVBAR */}
-
-        <ClubNavbar />
+  <ClubNavbar
+    sidebarOpen={sidebarOpen}
+    setSidebarOpen={setSidebarOpen}
+  />
 
         {/* =================================================
             PAGE CONTENT
