@@ -32,20 +32,18 @@ import GalleryDetails from "./pages/club/GalleryDetails";
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
 
-  if (showSplash) {
-    return (
-      <SplashScreen
-        onFinish={() => setShowSplash(false)}
-      />
-    );
-  }
-
   return (
     <BrowserRouter>
-      <Routes>
+
+      {showSplash ? (
+        <SplashScreen
+          onFinish={() => setShowSplash(false)}
+        />
+      ) : (
+        <Routes>
 
         {/* ================= COMMON ================= */}
-        <Route path="/" element={<Landing />} />
+<Route path="/" element={<Landing />} />
 
         {/* ================= CLUB ABOUT ================= */}
         <Route path="/about" element={<About />} />
@@ -104,7 +102,8 @@ export default function App() {
           element={<EventDashboard />}
         />
 
-      </Routes>
+            </Routes>
+      )}
     </BrowserRouter>
   );
 }

@@ -1,22 +1,20 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
 import clubLogo from "../../assets/logo.png";
 import collegeLogo from "../../assets/gvpce-logo.png";
 
-export default function SplashScreen() {
-  const navigate = useNavigate();
-
+export default function SplashScreen({ onFinish }) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/", { replace: true });
+      onFinish();
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [onFinish]);
 
   return (
+
     <div className="relative min-h-screen overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#f6f4ff] via-[#eef2ff] to-[#e6f7ff]">
 
       {/* =====================================================
