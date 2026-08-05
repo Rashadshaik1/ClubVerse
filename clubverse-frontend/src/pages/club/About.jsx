@@ -5,7 +5,6 @@ import {
   ShieldCheck,
   Mail,
   Sparkles,
-  ArrowRight,
 } from "lucide-react";
 
 import ClubSidebar from "../../components/ClubSidebar";
@@ -225,15 +224,6 @@ export default function About() {
                         {item.desc}
                       </p>
 
-                      {/* Bottom arrow */}
-
-                      <div className="mt-5 flex items-center gap-2 text-[10px] sm:text-xs font-black text-[#048c92]">
-
-                        <span>Explore</span>
-
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-
-                      </div>
 
                     </div>
                   );
