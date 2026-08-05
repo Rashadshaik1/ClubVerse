@@ -247,7 +247,6 @@ const ProfileSkeleton = ({
 
 export default function Profile() {
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [club, setClub] = useState({
