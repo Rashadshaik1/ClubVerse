@@ -165,7 +165,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
 />
 
       {/* DASHBOARD CONTENT CONTAINER - Handles full screen tracking beautifully */}
-      <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300">
+     <div className="flex-1 w-full min-w-0 pt-20 sm:pt-24 px-3 sm:px-5 lg:px-8 pb-8 sm:pb-12 transition-all duration-300">
         <ClubNavbar
   sidebarOpen={sidebarOpen}
   setSidebarOpen={setSidebarOpen}

@@ -21,11 +21,7 @@ const MembersSkeleton = ({
   setIsOpen={setSidebarOpen}
 />
 
-      <div
-  className={`flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300 ${
-    sidebarOpen ? "lg:ml-64" : "lg:ml-20"
-  }`}
->
+   <div className="flex-1 w-full min-w-0 pt-20 sm:pt-24 px-3 sm:px-5 lg:px-8 pb-8 sm:pb-12 transition-all duration-300">
         
        <ClubNavbar
   sidebarOpen={sidebarOpen}
