@@ -33,7 +33,8 @@ export default function Clubs() {
     <div className="flex min-h-screen bg-[#05080f] text-white overflow-x-hidden">
       <Sidebar />
 
-      <div className="lg:ml-72 w-full p-4 sm:p-6 md:p-10 min-w-0">
+      
+<div className="lg:ml-72 w-full pt-20 sm:pt-20 lg:pt-10 p-4 sm:p-6 md:p-10 min-w-0">
         {/* HEADER */}
         <div className="mb-8 sm:mb-12 lg:mb-14">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[#00C2FF] to-blue-500 bg-clip-text text-transparent">

@@ -48,7 +48,7 @@ export default function ClubTypePage() {
     <div className="flex min-h-screen bg-[#05080f] text-white overflow-x-hidden">
       <Sidebar />
 
-      <div className="lg:ml-72 w-full p-4 sm:p-6 md:p-10 min-w-0">
+      <div className="lg:ml-72 w-full pt-20 sm:pt-20 lg:pt-10 p-4 sm:p-6 md:p-10 min-w-0">
         {/* HEADER */}
         <div className="mb-8 sm:mb-10">
           <h1 className="text-2xl sm:text-3xl font-bold text-[#00C2FF] capitalize">

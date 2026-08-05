@@ -133,8 +133,8 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* STATS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+        {/* SIDE-BY-SIDE STATS CARDS */}
+        <div className="grid grid-cols-3 gap-3 sm:gap-6">
           <Card title="Users" value={users.length} />
           <Card title="Events" value={events.length} />
           <Card title="Clubs" value={clubs.length} />
@@ -318,9 +318,9 @@ export default function Dashboard() {
 // ================= CARD =================
 function Card({ title, value }) {
   return (
-    <div className="p-4 sm:p-6 rounded-2xl border border-white/10 bg-white/5 min-w-0">
+    <div className="p-3 sm:p-6 rounded-2xl border border-white/10 bg-white/5 min-w-0">
       <p className="text-gray-400 text-xs sm:text-sm">{title}</p>
-      <h2 className="text-2xl sm:text-3xl font-bold mt-2 text-[#00C2FF]">
+      <h2 className="text-xl sm:text-3xl font-bold mt-1 sm:mt-2 text-[#00C2FF]">
         {value}
       </h2>
     </div>
