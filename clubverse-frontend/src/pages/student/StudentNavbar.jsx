@@ -212,68 +212,68 @@ export default function StudentNavbar({ user }) {
         "
       >
 
-        {/* ================= LOGO ================= */}
+       {/* ================= LOGO ================= */}
 
-        <div
-          onClick={() =>
-            handleNavigation("/student-home")
-          }
-          className="
-            flex
-            items-center
-            gap-2
-            sm:gap-3
-            cursor-pointer
-            min-w-0
-            shrink-0
-          "
-        >
+<div
+  onClick={() =>
+    handleNavigation("/student-home")
+  }
+  className="
+    flex
+    items-center
+    gap-2
+    sm:gap-3
+    cursor-pointer
+    min-w-0
+    shrink-0
+  "
+>
 
-          <img
-            src={logo}
-            alt="ClubVerse"
-            className="
-              w-10
-              h-10
-              sm:w-12
-              sm:h-12
-              object-contain
-              shrink-0
-            "
-          />
+  <img
+    src={logo}
+    alt="ClubVerse"
+    className="
+      w-9
+      h-9
+      sm:w-12
+      sm:h-12
+      object-contain
+      shrink-0
+    "
+  />
 
-          <div className="min-w-0">
+  <div className="min-w-0">
 
-            <h1
-              className="
-                text-lg
-                sm:text-xl
-                lg:text-2xl
-                font-bold
-                text-[#7966AD]
-                leading-tight
-              "
-            >
-              ClubVerse
-            </h1>
+    <h1
+      className="
+        text-base
+        sm:text-xl
+        lg:text-2xl
+        font-bold
+        text-[#7966AD]
+        leading-tight
+        whitespace-nowrap
+      "
+    >
+      ClubVerse
+    </h1>
 
-            <p
-              className="
-                hidden
-                sm:block
-                text-[10px]
-                sm:text-xs
-                text-gray-500
-                leading-tight
-              "
-            >
-              Student Portal
-            </p>
+    <p
+      className="
+        hidden
+        sm:block
+        text-[10px]
+        sm:text-xs
+        text-gray-500
+        leading-tight
+      "
+    >
+      Student Portal
+    </p>
 
-          </div>
+  </div>
 
-        </div>
-
+</div>
         {/* ================= DESKTOP MENU ================= */}
 
         <div
@@ -352,40 +352,43 @@ export default function StudentNavbar({ user }) {
           "
         >
 
-          {/* ================= COLLEGE LOGO ================= */}
+        {/* ================= COLLEGE LOGO ================= */}
 
-          <div
-            className="
-              hidden
-              md:flex
-              w-10
-              h-10
-              lg:w-12
-              lg:h-12
-              rounded-full
-              bg-white/70
-              border
-              border-[#DDD4F2]
-              shadow-sm
-              items-center
-              justify-center
-              shrink-0
-            "
-          >
+<div
+  className="
+    flex
+    w-9
+    h-9
+    sm:w-10
+    sm:h-10
+    lg:w-12
+    lg:h-12
+    rounded-full
+    bg-white/70
+    border
+    border-[#DDD4F2]
+    shadow-sm
+    items-center
+    justify-center
+    shrink-0
+  "
+>
 
-            <img
-              src={gvpceLogo}
-              alt="GVPCE Logo"
-              className="
-                w-7
-                h-7
-                lg:w-9
-                lg:h-9
-                object-contain
-              "
-            />
+  <img
+    src={gvpceLogo}
+    alt="GVPCE Logo"
+    className="
+      w-6
+      h-6
+      sm:w-7
+      sm:h-7
+      lg:w-9
+      lg:h-9
+      object-contain
+    "
+  />
 
-          </div>
+</div>
 
           {/* ================= NOTIFICATION ================= */}
 
