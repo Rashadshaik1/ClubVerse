@@ -92,7 +92,7 @@ export default function CreateClub() {
     <div className="flex min-h-screen bg-[#05080f] text-white overflow-x-hidden">
       <Sidebar />
 
-      <div className="lg:ml-72 w-full p-4 sm:p-6 md:p-10 flex items-center justify-center min-w-0">
+      <div className="lg:ml-72 w-full pt-20 sm:pt-20 lg:pt-10 p-4 sm:p-6 md:p-10 flex items-center justify-center min-w-0">
         {/* LOADER OVERLAY */}
         {loading && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
