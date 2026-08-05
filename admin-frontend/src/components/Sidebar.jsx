@@ -1,11 +1,14 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Menu, X } from "react-icons/fa";
 import logo from "../assets/logo.png";
 import { jwtDecode } from "jwt-decode";
-import clgLogo from "../assets/clglogo.png"; // ✅ ADD THIS (your college logo)
+import clgLogo from "../assets/clglogo.png";
 
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   const menu = [
     { name: "Dashboard", path: "/dashboard" },
@@ -20,10 +23,13 @@ export default function Sidebar() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setIsOpen(false);
     navigate("/");
   };
 
   const isActive = (path) => location.pathname === path;
+
+  const closeSidebar = () => setIsOpen(false);
 
   // ================= SAFE JWT DECODE =================
   let adminEmail = "";
@@ -52,58 +58,67 @@ export default function Sidebar() {
   }
 
   return (
-    <div className="h-screen w-72 fixed flex flex-col justify-between 
-      bg-[#05080f]/90 backdrop-blur-2xl border-r border-white/10 text-white">
+    <>
+      {/* Mobile Hamburger */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-3 rounded-xl bg-[#05080f]/90 border border-white/10 backdrop-blur-xl"
+      >
+        <Menu className="text-white text-lg" />
+      </button>
 
-      {/* TOP SECTION */}
-      <div className="p-5">
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
 
-        {/* BRAND */}
-        <div className="flex items-center gap-3 mb-10">
-          <img src={logo} className="w-10 h-10" />
-          <div>
-            <h1 className="text-xl font-bold text-[#00C2FF]">
-              ClubVerse
-            </h1>
-            <p className="text-xs text-gray-500">
-              Super Admin Panel
-            </p>
+      {/* Sidebar */}
+      <div
+        className={`
+          fixed top-0 left-0 z-50 h-screen w-72
+          flex flex-col justify-between
+          bg-[#05080f]/90 backdrop-blur-2xl
+          border-r border-white/10 text-white
+          transform transition-transform duration-300
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:translate-x-0
+        `}
+      >
+        {/* TOP SECTION */}
+        <div className="p-5">
+
+          {/* Mobile Close Button */}
+          <div className="flex justify-end lg:hidden mb-4">
+            <button onClick={() => setIsOpen(false)}>
+              <X className="text-white text-xl" />
+            </button>
           </div>
-        </div>
 
-        {/* MENU */}
-        <div className="flex flex-col gap-2">
+          {/* BRAND */}
+          <div className="flex items-center gap-3 mb-10">
+            <img src={logo} alt="ClubVerse Logo" className="w-10 h-10" />
 
-          {menu.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`px-3 py-2 rounded-xl text-sm transition-all duration-200
-                ${
-                  isActive(item.path)
-                    ? "bg-[#00C2FF]/10 border border-[#00C2FF]/30 text-[#00C2FF]"
-                    : "text-gray-300 hover:bg-white/5"
-                }`}
-            >
-              {item.name}
-            </Link>
-          ))}
+            <div>
+              <h1 className="text-xl font-bold text-[#00C2FF]">
+                ClubVerse
+              </h1>
 
-        </div>
+              <p className="text-xs text-gray-500">
+                Super Admin Panel
+              </p>
+            </div>
+          </div>
 
-        {/* CLUB MENU */}
-        <div className="mt-8">
-
-          <p className="text-xs text-gray-500 mb-2 px-2">
-            CLUB MANAGEMENT
-          </p>
-
+          {/* MENU */}
           <div className="flex flex-col gap-2">
-
-            {clubMenu.map((item) => (
+            {menu.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
+                onClick={closeSidebar}
                 className={`px-3 py-2 rounded-xl text-sm transition-all duration-200
                   ${
                     isActive(item.path)
@@ -114,47 +129,68 @@ export default function Sidebar() {
                 {item.name}
               </Link>
             ))}
+          </div>
+
+          {/* CLUB MENU */}
+          <div className="mt-8">
+
+            <p className="text-xs text-gray-500 mb-2 px-2">
+              CLUB MANAGEMENT
+            </p>
+
+            <div className="flex flex-col gap-2">
+              {clubMenu.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={closeSidebar}
+                  className={`px-3 py-2 rounded-xl text-sm transition-all duration-200
+                    ${
+                      isActive(item.path)
+                        ? "bg-[#00C2FF]/10 border border-[#00C2FF]/30 text-[#00C2FF]"
+                        : "text-gray-300 hover:bg-white/5"
+                    }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+
+          </div>
+        </div>
+
+        {/* BOTTOM PROFILE */}
+        <div className="p-5">
+
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl">
+
+            <img
+              src={clgLogo}
+              alt="College Logo"
+              className="w-10 h-10 rounded-full object-cover border border-[#00C2FF]/40"
+            />
+
+            <div className="min-w-0">
+              <p className="text-sm font-semibold truncate">
+                {adminName}
+              </p>
+
+              <p className="text-xs text-gray-400 truncate">
+                {adminEmail || "Loading email..."}
+              </p>
+            </div>
 
           </div>
 
-        </div>
-      </div>
-
-      {/* BOTTOM PROFILE */}
-      <div className="p-5">
-
-        <div className="flex items-center gap-3 p-3 rounded-2xl 
-          bg-white/5 border border-white/10 backdrop-blur-xl">
-
-          {/* ✅ CHANGED: COLLEGE LOGO */}
-          <img
-            src={clgLogo}
-            alt="College Logo"
-            className="w-10 h-10 rounded-full object-cover border border-[#00C2FF]/40"
-          />
-
-          <div className="min-w-0">
-            <p className="text-sm font-semibold truncate">
-              {adminName}
-            </p>
-            <p className="text-xs text-gray-400 truncate">
-              {adminEmail || "Loading email..."}
-            </p>
-          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full mt-3 py-2 rounded-xl text-sm bg-red-500/10 border border-red-400/20 text-red-400 hover:bg-red-500/20 transition"
+          >
+            Logout
+          </button>
 
         </div>
-
-        {/* LOGOUT */}
-        <button
-          onClick={handleLogout}
-          className="w-full mt-3 py-2 rounded-xl text-sm
-          bg-red-500/10 border border-red-400/20 text-red-400 
-          hover:bg-red-500/20 transition"
-        >
-          Logout
-        </button>
-
       </div>
-    </div>
+    </>
   );
 }

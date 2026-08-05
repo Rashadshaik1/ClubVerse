@@ -9,7 +9,7 @@ export default function CreateClub() {
     password: "",
     type: "social",
     description: "",
-    logo: ""
+    logo: "",
   });
 
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -19,8 +19,7 @@ export default function CreateClub() {
   const [showPassword, setShowPassword] = useState(false);
 
   const isMismatch =
-    confirmPassword.length > 0 &&
-    form.password !== confirmPassword;
+    confirmPassword.length > 0 && form.password !== confirmPassword;
 
   // IMAGE UPLOAD
   const handleImage = (e) => {
@@ -54,9 +53,9 @@ export default function CreateClub() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify(form)
+          body: JSON.stringify(form),
         }
       );
 
@@ -76,13 +75,12 @@ export default function CreateClub() {
         password: "",
         type: "social",
         description: "",
-        logo: ""
+        logo: "",
       });
 
       setConfirmPassword("");
       setPreview(null);
       setShowPassword(false);
-
     } catch (err) {
       setMsg("Server error");
     }
@@ -91,12 +89,10 @@ export default function CreateClub() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#05080f] text-white">
-
+    <div className="flex min-h-screen bg-[#05080f] text-white overflow-x-hidden">
       <Sidebar />
 
-      <div className="ml-72 w-full p-10 flex items-center justify-center">
-
+      <div className="lg:ml-72 w-full p-4 sm:p-6 md:p-10 flex items-center justify-center min-w-0">
         {/* LOADER OVERLAY */}
         {loading && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
@@ -105,25 +101,22 @@ export default function CreateClub() {
         )}
 
         {/* CARD */}
-        <div className="w-[460px]">
-
-          <div className="p-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-glow">
-
+        <div className="w-full max-w-[460px]">
+          <div className="p-5 sm:p-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-glow">
             {/* HEADER */}
-            <h1 className="text-3xl font-bold text-[#00C2FF]">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#00C2FF]">
               Create Club
             </h1>
 
-            <p className="text-gray-400 text-sm mt-1 mb-6">
+            <p className="text-gray-400 text-xs sm:text-sm mt-1 mb-6">
               Add a new club to ClubVerse ecosystem
             </p>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
               {/* NAME */}
               <input
                 placeholder="Club Name"
-                className="p-3 rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-[#00C2FF]"
+                className="p-3 rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-[#00C2FF] text-sm sm:text-base"
                 value={form.name}
                 onChange={(e) =>
                   setForm({ ...form, name: e.target.value })
@@ -133,7 +126,7 @@ export default function CreateClub() {
               {/* EMAIL */}
               <input
                 placeholder="Club Email"
-                className="p-3 rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-[#00C2FF]"
+                className="p-3 rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-[#00C2FF] text-sm sm:text-base"
                 value={form.email}
                 onChange={(e) =>
                   setForm({ ...form, email: e.target.value })
@@ -142,11 +135,10 @@ export default function CreateClub() {
 
               {/* PASSWORD */}
               <div className="relative">
-
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
-                  className="p-3 pr-12 w-full rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-[#00C2FF]"
+                  className="p-3 pr-12 w-full rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-[#00C2FF] text-sm sm:text-base"
                   value={form.password}
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
@@ -160,14 +152,13 @@ export default function CreateClub() {
                 >
                   {showPassword ? "🙈" : "👁️"}
                 </button>
-
               </div>
 
               {/* CONFIRM PASSWORD */}
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Confirm Password"
-                className="p-3 rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-[#00C2FF]"
+                className="p-3 rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-[#00C2FF] text-sm sm:text-base"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
@@ -180,7 +171,7 @@ export default function CreateClub() {
 
               {/* TYPE */}
               <select
-                className="p-3 rounded-xl bg-black/20 border border-white/10 text-white outline-none"
+                className="p-3 rounded-xl bg-black/20 border border-white/10 text-white outline-none text-sm sm:text-base"
                 value={form.type}
                 onChange={(e) =>
                   setForm({ ...form, type: e.target.value })
@@ -198,7 +189,7 @@ export default function CreateClub() {
               </select>
 
               {/* IMAGE */}
-              <label className="p-4 border border-dashed border-white/20 rounded-xl text-center cursor-pointer hover:border-[#00C2FF] transition">
+              <label className="p-4 border border-dashed border-white/20 rounded-xl text-center cursor-pointer hover:border-[#00C2FF] transition text-sm sm:text-base">
                 📸 Upload Logo
                 <input
                   type="file"
@@ -213,7 +204,8 @@ export default function CreateClub() {
                 <div className="flex justify-center">
                   <img
                     src={preview}
-                    className="w-20 h-20 rounded-full border border-[#00C2FF]"
+                    alt="Logo Preview"
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-[#00C2FF] object-cover"
                   />
                 </div>
               )}
@@ -221,7 +213,8 @@ export default function CreateClub() {
               {/* DESCRIPTION */}
               <textarea
                 placeholder="Description"
-                className="p-3 rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-[#00C2FF]"
+                rows={3}
+                className="p-3 rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-[#00C2FF] text-sm sm:text-base"
                 value={form.description}
                 onChange={(e) =>
                   setForm({ ...form, description: e.target.value })
@@ -231,23 +224,26 @@ export default function CreateClub() {
               {/* BUTTON */}
               <button
                 disabled={loading}
-                className="p-3 rounded-xl bg-[#00C2FF] text-black font-semibold hover:opacity-90 transition"
+                className="p-3 rounded-xl bg-[#00C2FF] text-black font-semibold hover:opacity-90 transition disabled:opacity-50 text-sm sm:text-base"
               >
                 {loading ? "Creating..." : "Create Club"}
               </button>
-
             </form>
 
             {/* MESSAGE */}
             {msg && (
-              <p className="text-sm mt-3 text-green-400">
+              <p
+                className={`text-sm mt-3 ${
+                  msg.includes("❌") || msg.includes("Error")
+                    ? "text-red-400"
+                    : "text-green-400"
+                }`}
+              >
                 {msg}
               </p>
             )}
-
           </div>
         </div>
-
       </div>
     </div>
   );
