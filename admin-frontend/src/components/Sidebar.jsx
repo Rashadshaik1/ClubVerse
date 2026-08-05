@@ -62,64 +62,72 @@ export default function Sidebar() {
       {/* Mobile Hamburger */}
       <button
         onClick={() => setIsOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-3 rounded-xl bg-[#05080f]/90 border border-white/10 backdrop-blur-xl"
+        aria-label="Open Navigation Menu"
+        className="lg:hidden fixed top-4 left-4 z-40 p-3 rounded-xl bg-[#05080f]/90 border border-white/10 backdrop-blur-xl shadow-lg hover:border-[#00C2FF]/40 transition"
       >
         <Menu className="text-white text-lg" />
       </button>
 
-      {/* Overlay */}
+      {/* Backdrop Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden transition-opacity"
           onClick={() => setIsOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar Container */}
       <div
         className={`
           fixed top-0 left-0 z-50 h-screen w-72
           flex flex-col justify-between
-          bg-[#05080f]/90 backdrop-blur-2xl
+          bg-[#05080f] lg:bg-[#05080f]/90 backdrop-blur-2xl
           border-r border-white/10 text-white
-          transform transition-transform duration-300
+          transform transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          lg:translate-x-0
+          lg:translate-x-0 overflow-y-auto
         `}
       >
         {/* TOP SECTION */}
         <div className="p-5">
-
           {/* Mobile Close Button */}
-          <div className="flex justify-end lg:hidden mb-4">
-            <button onClick={() => setIsOpen(false)}>
+          <div className="flex justify-end lg:hidden mb-2">
+            <button
+              onClick={() => setIsOpen(false)}
+              aria-label="Close Navigation Menu"
+              className="p-1 rounded-lg hover:bg-white/10 transition"
+            >
               <X className="text-white text-xl" />
             </button>
           </div>
 
           {/* BRAND */}
-          <div className="flex items-center gap-3 mb-10">
-            <img src={logo} alt="ClubVerse Logo" className="w-10 h-10" />
+          <div className="flex items-center gap-3 mb-8 sm:mb-10">
+            <img
+              src={logo}
+              alt="ClubVerse Logo"
+              className="w-10 h-10 object-contain drop-shadow"
+            />
 
             <div>
-              <h1 className="text-xl font-bold text-[#00C2FF]">
+              <h1 className="text-xl font-bold text-[#00C2FF] tracking-wide">
                 ClubVerse
               </h1>
 
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 font-medium">
                 Super Admin Panel
               </p>
             </div>
           </div>
 
-          {/* MENU */}
+          {/* MAIN NAVIGATION */}
           <div className="flex flex-col gap-2">
             {menu.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 onClick={closeSidebar}
-                className={`px-3 py-2 rounded-xl text-sm transition-all duration-200
+                className={`px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 block
                   ${
                     isActive(item.path)
                       ? "bg-[#00C2FF]/10 border border-[#00C2FF]/30 text-[#00C2FF]"
@@ -131,10 +139,9 @@ export default function Sidebar() {
             ))}
           </div>
 
-          {/* CLUB MENU */}
+          {/* CLUB MANAGEMENT MENU */}
           <div className="mt-8">
-
-            <p className="text-xs text-gray-500 mb-2 px-2">
+            <p className="text-xs text-gray-500 mb-2 px-2 font-semibold tracking-wider">
               CLUB MANAGEMENT
             </p>
 
@@ -144,7 +151,7 @@ export default function Sidebar() {
                   key={item.path}
                   to={item.path}
                   onClick={closeSidebar}
-                  className={`px-3 py-2 rounded-xl text-sm transition-all duration-200
+                  className={`px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 block
                     ${
                       isActive(item.path)
                         ? "bg-[#00C2FF]/10 border border-[#00C2FF]/30 text-[#00C2FF]"
@@ -155,19 +162,16 @@ export default function Sidebar() {
                 </Link>
               ))}
             </div>
-
           </div>
         </div>
 
-        {/* BOTTOM PROFILE */}
-        <div className="p-5">
-
+        {/* BOTTOM PROFILE & LOGOUT */}
+        <div className="p-5 border-t border-white/5 lg:border-t-0">
           <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl">
-
             <img
               src={clgLogo}
               alt="College Logo"
-              className="w-10 h-10 rounded-full object-cover border border-[#00C2FF]/40"
+              className="w-10 h-10 rounded-full object-cover border border-[#00C2FF]/40 flex-shrink-0"
             />
 
             <div className="min-w-0">
@@ -179,16 +183,14 @@ export default function Sidebar() {
                 {adminEmail || "Loading email..."}
               </p>
             </div>
-
           </div>
 
           <button
             onClick={handleLogout}
-            className="w-full mt-3 py-2 rounded-xl text-sm bg-red-500/10 border border-red-400/20 text-red-400 hover:bg-red-500/20 transition"
+            className="w-full mt-3 py-2.5 rounded-xl text-sm font-medium bg-red-500/10 border border-red-400/20 text-red-400 hover:bg-red-500/20 transition-all duration-200 active:scale-[0.98]"
           >
             Logout
           </button>
-
         </div>
       </div>
     </>
