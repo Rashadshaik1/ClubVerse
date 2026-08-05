@@ -132,44 +132,37 @@ export default function GalleryDetails() {
 
 
   const fetchEventGallery = async () => {
+  try {
+    setLoading(true);
 
-    try {
+    const token = localStorage.getItem("token");
 
-      setLoading(true);
-
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-
-      const res = await axios.get(
-        `https://clubverse-nsgq.onrender.com/api/events/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setEvent(res.data.event);
-
-    } catch (err) {
-
-      console.error("Error fetching gallery:", err);
-
-      if (err.response?.status === 401) {
-        navigate("/login");
-      }
-
-    } finally {
-
-      setLoading(false);
-
+    if (!token) {
+      navigate("/login");
+      return;
     }
-  };
 
+    const res = await axios.get(
+      `https://clubverse-nsgq.onrender.com/api/events/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setEvent(res.data.event);
+
+  } catch (err) {
+    console.error("Error fetching gallery:", err);
+
+    if (err.response?.status === 401) {
+      navigate("/login");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
   /* =========================================================
      UPLOAD IMAGES

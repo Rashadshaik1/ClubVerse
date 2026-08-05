@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Loader from "../../components/Loader";
 import {
   Camera,
   Mail,
@@ -23,7 +22,233 @@ import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import ClubNavbar from "../../components/ClubNavbar";
 import ClubSidebar from "../../components/ClubSidebar";
 
+/* =========================================================
+   PROFILE PAGE SKELETON
+========================================================= */
+
+const SkeletonBox = ({ className = "" }) => (
+  <div
+    className={`bg-gradient-to-r from-[#d9f7f8] via-[#aee8ea] to-[#d9f7f8] animate-pulse ${className}`}
+  />
+);
+
+const ProfileSkeleton = ({
+  sidebarOpen,
+  setSidebarOpen,
+}) => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
+
+      {/* SIDEBAR */}
+      <ClubSidebar
+        isOpen={sidebarOpen}
+        setIsOpen={setSidebarOpen}
+      />
+
+      {/* MAIN */}
+      <div
+        className={`flex-1 min-w-0 w-full pt-24 px-4 sm:px-6 lg:px-8 pb-12 transition-all duration-300 ${
+          sidebarOpen ? "lg:ml-64" : "lg:ml-20"
+        }`}
+      >
+
+        {/* NAVBAR */}
+        <ClubNavbar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
+
+        <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
+
+          {/* =================================================
+              HERO SKELETON
+          ================================================= */}
+
+          <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm">
+
+            {/* BANNER */}
+            <SkeletonBox className="h-44 sm:h-52 md:h-64 w-full" />
+
+            {/* CLUB INFO */}
+            <div className="px-4 sm:px-8 pb-6 pt-20 sm:pt-16 relative">
+
+              {/* LOGO */}
+              <SkeletonBox className="absolute -top-14 sm:-top-16 left-1/2 sm:left-8 md:left-12 -translate-x-1/2 sm:translate-x-0 w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-white" />
+
+              <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4">
+
+                <div className="w-full sm:pl-40 text-center sm:text-left">
+
+                  {/* Club name */}
+                  <SkeletonBox className="h-6 w-40 sm:w-52 rounded-xl mx-auto sm:mx-0" />
+
+                  {/* Club type */}
+                  <SkeletonBox className="h-6 w-20 rounded-full mt-3 mx-auto sm:mx-0" />
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          {/* =================================================
+              MAIN GRID
+          ================================================= */}
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+
+            {/* LEFT */}
+            <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+
+              {/* BASIC INFORMATION */}
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-48 rounded-lg mb-6" />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                  <div>
+                    <SkeletonBox className="h-3 w-28 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                  <div>
+                    <SkeletonBox className="h-3 w-28 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                </div>
+
+                <div className="mt-4">
+                  <SkeletonBox className="h-3 w-36 rounded-md mb-2" />
+                  <SkeletonBox className="h-10 w-full rounded-xl" />
+                </div>
+
+                <div className="mt-4">
+                  <SkeletonBox className="h-3 w-24 rounded-md mb-2" />
+                  <SkeletonBox className="h-24 w-full rounded-xl" />
+                </div>
+
+              </div>
+
+
+              {/* FACULTY */}
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-52 rounded-lg mb-6" />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                  <div>
+                    <SkeletonBox className="h-3 w-32 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                  <div>
+                    <SkeletonBox className="h-3 w-32 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              {/* CONTACT */}
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-56 rounded-lg mb-6" />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                  <div>
+                    <SkeletonBox className="h-3 w-28 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                  <div>
+                    <SkeletonBox className="h-3 w-32 rounded-md mb-2" />
+                    <SkeletonBox className="h-10 w-full rounded-xl" />
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            {/* RIGHT */}
+            <div className="space-y-6 sm:space-y-8">
+
+              {/* SOCIAL */}
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-44 rounded-lg mb-6" />
+
+                <SkeletonBox className="h-3 w-20 rounded-md mb-2" />
+                <SkeletonBox className="h-10 w-full rounded-xl mb-4" />
+
+                <SkeletonBox className="h-3 w-20 rounded-md mb-2" />
+                <SkeletonBox className="h-10 w-full rounded-xl" />
+
+              </div>
+
+
+              {/* META */}
+              <div className="bg-[#f0f9fa] border border-[#cceeee] rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-40 rounded-lg mb-6" />
+
+                <SkeletonBox className="h-3 w-36 rounded-md mb-2" />
+                <SkeletonBox className="h-8 w-full rounded-xl mb-4" />
+
+                <SkeletonBox className="h-3 w-32 rounded-md mb-2" />
+                <SkeletonBox className="h-8 w-full rounded-xl" />
+
+              </div>
+
+
+              {/* SECURITY */}
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
+
+                <SkeletonBox className="h-5 w-40 rounded-lg mb-5" />
+
+                <SkeletonBox className="h-10 w-full rounded-xl mb-3" />
+
+                <SkeletonBox className="h-10 w-full rounded-xl" />
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* =================================================
+              BOTTOM ACTION BAR
+          ================================================= */}
+
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4 border-t border-gray-200/60">
+
+            <SkeletonBox className="h-10 w-full sm:w-24 rounded-xl" />
+
+            <SkeletonBox className="h-10 w-full sm:w-32 rounded-xl" />
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 export default function Profile() {
+
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [club, setClub] = useState({
     _id: "",
     name: "",
@@ -210,128 +435,347 @@ const changePassword = async () => {
 };
 
 if (loading) {
-  return <Loader />;
+  return (
+    <ProfileSkeleton
+      sidebarOpen={sidebarOpen}
+      setSidebarOpen={setSidebarOpen}
+    />
+  );
 }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
-      <ClubSidebar />
+  <div className="min-h-screen bg-gradient-to-br from-[#eafcff] via-[#f7ffff] to-[#edfdfd] flex">
 
-      <div className="flex-1 w-full pt-24 px-4 sm:px-8 pb-12 transition-all duration-300">
-        <ClubNavbar />
-
-        <div className="max-w-5xl mx-auto space-y-8">
-          {/* ================= 1 & 2. HERO BANNER & LOGO SECTION ================= */}
-          <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm relative">
-            <div className="h-64 w-full bg-gray-100 relative group">
-              {banner ? (
-  <>
-    <img
-      src={banner}
-      alt="Club Banner"
-      className="w-full h-full object-cover"
+    {/* SIDEBAR */}
+    <ClubSidebar
+      isOpen={sidebarOpen}
+      setIsOpen={setSidebarOpen}
     />
-<div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
 
-  <label className="cursor-pointer bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-4 py-2 rounded-xl border border-gray-200 shadow-md flex items-center gap-2 hover:bg-white transition">
-    <Camera className="w-4 h-4 text-[#048c92]" />
-    Change
+    {/* MAIN CONTENT */}
+    <div
+      className={`flex-1 min-w-0 w-full pt-24 px-4 sm:px-6 lg:px-8 pb-12 transition-all duration-300 ${
+        sidebarOpen ? "lg:ml-64" : "lg:ml-20"
+      }`}
+    >
 
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleBannerChange}
-      className="hidden"
-    />
-  </label>
+      <ClubNavbar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
 
+     <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
 
-  <button
-    type="button"
-    onClick={() => setBanner("")}
-    className="bg-red-500/90 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md hover:bg-red-600 transition"
-  >
-    Remove
-  </button>
+  {/* =====================================================
+      HERO / CLUB PROFILE HEADER
+  ===================================================== */}
 
-</div>
-  </>
-) : (
-  <div className="w-full h-full bg-gradient-to-r from-[#dff8f8] via-[#f7ffff] to-[#dff8f8] flex items-center justify-center">
-    <div className="text-center">
-      <Camera className="w-10 h-10 text-[#048c92]/40 mx-auto mb-2" />
+  <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm">
 
-      <p className="text-sm font-bold text-gray-500">
-        No Cover Image
-      </p>
+    {/* ================= BANNER ================= */}
 
-      <p className="text-xs text-gray-400 mt-1 mb-4">
-        Upload a banner to personalize your club profile
-      </p>
+    <div className="relative h-44 sm:h-52 md:h-64 lg:h-72 w-full bg-gray-100 group">
 
-      <label className="inline-flex cursor-pointer items-center gap-2 bg-[#048c92] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#39adb2] transition">
-        <Camera className="w-4 h-4" />
-        Upload Cover
+      {banner ? (
+        <>
+          <img
+            src={banner}
+            alt="Club Banner"
+            className="w-full h-full object-cover"
+          />
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleBannerChange}
-          className="hidden"
-        />
-      </label>
-    </div>
-  </div>
-)}
-            </div>
+          {/* Banner Overlay */}
+          <div
+            className="
+              absolute inset-0
+              bg-black/20
+              opacity-0
+              group-hover:opacity-100
+              transition-opacity duration-300
+              flex items-center justify-center
+              gap-2 sm:gap-3
+              px-4
+            "
+          >
 
-            <div className="px-8 pb-6 pt-16 relative flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 border-b border-gray-100">
-             <div className="absolute -top-16 left-8 sm:left-12 w-32 h-32 rounded-full border-4 border-white bg-white shadow-md overflow-hidden group">
+            {/* Change */}
+            <label
+              className="
+                cursor-pointer
+                bg-white/95
+                backdrop-blur-sm
+                text-gray-800
+                text-[11px] sm:text-xs
+                font-bold
+                px-3 sm:px-4
+                py-2
+                rounded-xl
+                border border-gray-200
+                shadow-md
+                flex items-center
+                gap-1.5 sm:gap-2
+                hover:bg-white
+                transition
+              "
+            >
+              <Camera className="w-4 h-4 text-[#048c92]" />
 
-  {logo ? (
-    <img
-      src={logo}
-      alt="Club Logo"
-      className="w-full h-full object-cover"
-    />
-  ) : (
-    <div className="w-full h-full bg-[#f4fcfc] flex flex-col items-center justify-center">
-      <Camera className="w-8 h-8 text-[#048c92]/40 mb-1" />
-      <p className="text-[10px] font-bold text-gray-400">
-        Upload Logo
-      </p>
-    </div>
-  )}
+              <span>Change</span>
 
-  <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
-    <Camera className="w-5 h-5 text-white" />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleBannerChange}
+                className="hidden"
+              />
+            </label>
 
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleLogoChange}
-      className="hidden"
-    />
-  </label>
+            {/* Remove */}
+            <button
+              type="button"
+              onClick={() => setBanner("")}
+              className="
+                bg-red-500/95
+                text-white
+                text-[11px] sm:text-xs
+                font-bold
+                px-3 sm:px-4
+                py-2
+                rounded-xl
+                shadow-md
+                hover:bg-red-600
+                transition
+              "
+            >
+              Remove
+            </button>
 
-</div>
+          </div>
+        </>
+      ) : (
 
-              <div className="sm:pl-40 text-center sm:text-left">
-                <h2 className="text-2xl font-black text-gray-800 tracking-tight">
-                  {club.name}
-                </h2>
-                <span className="inline-block mt-1 text-xs font-bold text-[#048c92] bg-[#43bfc3]/10 px-3 py-1 rounded-full border border-[#43bfc3]/20">
-                  {club.type}
-                </span>
-              </div>
-            </div>
+        /* ================= NO BANNER ================= */
+
+        <div
+          className="
+            w-full h-full
+            bg-gradient-to-r
+            from-[#dff8f8]
+            via-[#f7ffff]
+            to-[#dff8f8]
+            flex items-center justify-center
+            px-4
+          "
+        >
+
+          <div className="text-center">
+
+            <Camera
+              className="
+                w-8 h-8
+                sm:w-10 sm:h-10
+                text-[#048c92]/40
+                mx-auto mb-2
+              "
+            />
+
+            <p className="text-xs sm:text-sm font-bold text-gray-500">
+              No Cover Image
+            </p>
+
+            <p className="text-[10px] sm:text-xs text-gray-400 mt-1 mb-3 sm:mb-4">
+              Upload a banner to personalize your club profile
+            </p>
+
+            <label
+              className="
+                inline-flex
+                cursor-pointer
+                items-center
+                justify-center
+                gap-2
+                bg-[#048c92]
+                text-white
+                px-3 sm:px-4
+                py-2
+                rounded-xl
+                text-[11px] sm:text-xs
+                font-bold
+                hover:bg-[#39adb2]
+                transition
+              "
+            >
+              <Camera className="w-4 h-4" />
+
+              <span>Upload Cover</span>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleBannerChange}
+                className="hidden"
+              />
+            </label>
+
           </div>
 
+        </div>
+      )}
+
+    </div>
+
+
+    {/* =====================================================
+        CLUB INFO + LOGO
+    ===================================================== */}
+
+    <div
+      className="
+        relative
+        px-4 sm:px-6 lg:px-8
+        pt-16 sm:pt-5
+        pb-5 sm:pb-6
+        min-h-[150px]
+      "
+    >
+
+      {/* ================= LOGO ================= */}
+
+      <div
+        className="
+          absolute
+          -top-14 sm:-top-16
+          left-1/2
+          sm:left-6
+          lg:left-8
+          -translate-x-1/2
+          sm:translate-x-0
+          w-28 h-28
+          sm:w-32 sm:h-32
+          rounded-full
+          border-4 border-white
+          bg-white
+          shadow-md
+          overflow-hidden
+          group
+        "
+      >
+
+        {logo ? (
+
+          <img
+            src={logo}
+            alt="Club Logo"
+            className="w-full h-full object-cover"
+          />
+
+        ) : (
+
+          <div
+            className="
+              w-full h-full
+              bg-[#f4fcfc]
+              flex flex-col
+              items-center justify-center
+            "
+          >
+            <Camera
+              className="
+                w-7 h-7
+                sm:w-8 sm:h-8
+                text-[#048c92]/40
+                mb-1
+              "
+            />
+
+            <p className="text-[9px] sm:text-[10px] font-bold text-gray-400">
+              Upload Logo
+            </p>
+          </div>
+
+        )}
+
+        {/* Logo Upload Overlay */}
+
+        <label
+          className="
+            absolute inset-0
+            bg-black/40
+            opacity-0
+            group-hover:opacity-100
+            transition-opacity
+            flex items-center justify-center
+            cursor-pointer
+          "
+        >
+          <Camera className="w-5 h-5 text-white" />
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleLogoChange}
+            className="hidden"
+          />
+        </label>
+
+      </div>
+
+
+      {/* ================= CLUB DETAILS ================= */}
+
+      <div
+        className="
+          sm:pl-36
+          lg:pl-40
+          text-center
+          sm:text-left
+          min-w-0
+        "
+      >
+
+        <h2
+          className="
+            text-xl
+            sm:text-2xl
+            lg:text-3xl
+            font-black
+            text-gray-800
+            tracking-tight
+            break-words
+          "
+        >
+          {club.name}
+        </h2>
+
+        {club.type && (
+          <span
+            className="
+              inline-block
+              mt-1.5
+              text-[10px] sm:text-xs
+              font-bold
+              text-[#048c92]
+              bg-[#43bfc3]/10
+              px-3
+              py-1
+              rounded-full
+              border border-[#43bfc3]/20
+            "
+          >
+            {club.type}
+          </span>
+        )}
+
+      </div>
+
+    </div>
+
+  </div>
           {/* MAIN GRID CONTROL SPLIT */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* LEFT / CENTER DEEP FORM COLUMNS */}
             <div className="md:col-span-2 space-y-8">
               {/* ================= 3. BASIC CLUB INFORMATION ================= */}
-              <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm space-y-4">
+              <div className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm  space-y-4">
                 <h3 className="text-base font-black text-gray-800 border-b border-gray-50 pb-3 flex items-center gap-2">
                   <Info className="w-4 h-4 text-[#048c92]" /> Basic Club
                   Information
@@ -599,8 +1043,8 @@ if (loading) {
 
         {/* ================= SECURITY SYSTEM PASSWORD MODAL ================= */}
         {showPasswordModal && (
-          <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-            <div className="bg-white border border-gray-200 w-full max-w-md rounded-3xl p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200 relative">
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4">
+            <div className="bg-white border border-gray-200 w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200 relative">
               <button
                 type="button"
                 onClick={() => setShowPasswordModal(false)}
