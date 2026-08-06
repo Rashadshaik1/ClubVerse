@@ -129,7 +129,7 @@ exports.createClubAccount = async (req, res) => {
 
         <p>
           Regards,<br/>
-          <b>ClubVerse Team</b>
+          <bTeam ClubVerse</b>
         </p>
       `
     });
