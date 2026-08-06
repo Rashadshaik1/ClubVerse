@@ -1462,23 +1462,24 @@ const ClubDetails = () => {
 
   <Link
   to={`/student/event/${event._id}`}
-  className="
-    mt-auto
-    pt-5
-    w-full
-    flex
-    items-center
-    justify-center
-    rounded-xl
-    bg-[#6D4BC3]
-    py-3
-    text-white
-    font-semibold
-    transition-all
-    duration-300
-    hover:bg-[#5B3FB0]
-    hover:shadow-lg
-  "
+ className="
+  mt-5
+  inline-flex
+  items-center
+  justify-center
+  self-start
+  rounded-xl
+  bg-[#6D4BC3]
+  px-5
+  py-2.5
+  text-sm
+  font-semibold
+  text-white
+  transition-all
+  duration-300
+  hover:bg-[#5B3FB0]
+  hover:shadow-lg
+"
 >
   View Event
 </Link>
@@ -1498,7 +1499,7 @@ const ClubDetails = () => {
               )}
 
             </div>
-            {club.events?.length > 3 && (
+            {club.events?.length > 0 && (
   <div className="mt-8 flex justify-center">
   <Link
   to={`/student/clubs/${club._id}/events`}
