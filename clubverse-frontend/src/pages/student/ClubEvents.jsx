@@ -3,6 +3,126 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import StudentNavbar from "./StudentNavbar";
 import { CalendarDays, MapPin } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+function ClubEventsSkeleton() {
+  return (
+    <>
+      <StudentNavbar />
+
+      <div className="min-h-screen bg-gradient-to-br from-[#F6F4FF] via-[#EEF2FF] to-[#E8F3FF] py-5 sm:py-7 lg:py-10">
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Heading */}
+
+          <Skeleton
+            width={220}
+            height={38}
+            borderRadius={10}
+            baseColor="#ECE8F8"
+            highlightColor="#F8F7FC"
+          />
+
+          <Skeleton
+            width={320}
+            height={18}
+            className="mt-3"
+            baseColor="#ECE8F8"
+            highlightColor="#F8F7FC"
+          />
+
+          {/* Filter Buttons */}
+
+          <div className="flex justify-center mt-8 mb-8">
+
+            <div className="flex gap-3">
+
+              {[1, 2, 3].map((item) => (
+                <Skeleton
+                  key={item}
+                  width={120}
+                  height={44}
+                  borderRadius={999}
+                  baseColor="#ECE8F8"
+                  highlightColor="#F8F7FC"
+                />
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* Cards */}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+
+            {[1,2,3,4,5,6].map((item)=>(
+
+              <div
+                key={item}
+                className="rounded-3xl bg-white shadow-lg p-4 border border-gray-100"
+              >
+
+                <Skeleton
+                  height={200}
+                  borderRadius={20}
+                  baseColor="#ECE8F8"
+                  highlightColor="#F8F7FC"
+                />
+
+                <div className="mt-4">
+
+                  <Skeleton
+                    height={24}
+                    width="75%"
+                    baseColor="#ECE8F8"
+                    highlightColor="#F8F7FC"
+                  />
+
+                </div>
+
+                <div className="mt-4 space-y-3">
+
+                  <Skeleton
+                    height={16}
+                    width="60%"
+                    baseColor="#ECE8F8"
+                    highlightColor="#F8F7FC"
+                  />
+
+                  <Skeleton
+                    height={16}
+                    width="50%"
+                    baseColor="#ECE8F8"
+                    highlightColor="#F8F7FC"
+                  />
+
+                </div>
+
+                <div className="mt-6">
+
+                  <Skeleton
+                    height={44}
+                    borderRadius={12}
+                    baseColor="#ECE8F8"
+                    highlightColor="#F8F7FC"
+                  />
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
+    </>
+  );
+}
 
 const ClubEvents = () => {
   const { id } = useParams();
@@ -55,22 +175,8 @@ const ClubEvents = () => {
   ).length;
 
   if (loading) {
-    return (
-      <>
-        <StudentNavbar />
-
-        <div className="min-h-screen bg-gradient-to-br from-[#F6F4FF] via-[#EEF2FF] to-[#E8F3FF] flex items-center justify-center px-4">
-          <div className="text-center">
-            <div className="w-10 h-10 border-4 border-[#E5DFFF] border-t-[#6D4BC3] rounded-full animate-spin mx-auto mb-4"></div>
-
-            <p className="text-gray-600 text-sm sm:text-base">
-              Loading Events...
-            </p>
-          </div>
-        </div>
-      </>
-    );
-  }
+  return <ClubEventsSkeleton />;
+}
 
   return (
     <>
@@ -110,24 +216,25 @@ const ClubEvents = () => {
           {/* ================= FILTERS ================= */}
 
           <div className="flex justify-center mb-6 sm:mb-8">
+            
             <div
-              className="
-                w-full
-                sm:w-auto
-                flex
-                gap-2
-                sm:gap-3
-                bg-white
-                p-2
-                rounded-2xl
-                sm:rounded-full
-                shadow-md
-                border
-                border-[#E5DFFF]
-                overflow-x-auto
-                scrollbar-hide
-              "
-            >
+  className="
+    w-full
+    sm:w-auto
+    flex
+    flex-wrap
+    justify-center
+    gap-2
+    sm:gap-3
+    bg-white
+    p-2
+    rounded-2xl
+    sm:rounded-full
+    shadow-md
+    border
+    border-[#E5DFFF]
+  "
+>
               {/* ALL */}
 
               <button
@@ -142,7 +249,7 @@ const ClubEvents = () => {
                   text-sm
                   sm:text-base
                   font-semibold
-                  transition-all
+                  transition-all duration-300
                   duration-300
                   ${
                     filter === "all"
@@ -168,7 +275,7 @@ const ClubEvents = () => {
                   text-sm
                   sm:text-base
                   font-semibold
-                  transition-all
+                  transition-all duration-300
                   duration-300
                   ${
                     filter === "upcoming"
@@ -194,7 +301,7 @@ const ClubEvents = () => {
                   text-sm
                   sm:text-base
                   font-semibold
-                  transition-all
+                  transition-all duration-300
                   duration-300
                   ${
                     filter === "completed"
@@ -229,10 +336,11 @@ const ClubEvents = () => {
                     bg-white
                     rounded-2xl
                     sm:rounded-3xl
-                    shadow-md
-                    hover:shadow-xl
+                    shadow-lg
+hover:shadow-2xl
+hover:-translate-y-1
                     overflow-hidden
-                    transition-all
+                    transition-all duration-300
                     duration-300
                     min-w-0
                     flex
@@ -249,7 +357,7 @@ const ClubEvents = () => {
                         w-full
                         h-full
                         object-cover
-                        hover:scale-105
+                        hover:scale-110
                         transition-transform
                         duration-300
                       "
@@ -346,7 +454,7 @@ const ClubEvents = () => {
                           rounded-xl
                           text-sm
                           sm:text-base
-                          transition-all
+                          transition-all duration-300
                         "
                       >
                         View Event
