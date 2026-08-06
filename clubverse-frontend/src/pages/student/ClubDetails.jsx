@@ -6,9 +6,11 @@ import StudentNavbar from "./StudentNavbar";
 import axios from "axios";
 import {
   CalendarDays,
+  MapPin,
   Mail,
   Globe,
 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -1251,51 +1253,80 @@ const ClubDetails = () => {
 
           {/* ================= UPCOMING EVENTS ================= */}
 
-          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:p-6 md:p-8 mt-6 sm:mt-8">
+         <div
+  className="
+    relative
+    overflow-hidden
+    bg-white/90
+    backdrop-blur-xl
+    rounded-3xl
+    border
+    border-[#E8E2FA]
+    shadow-xl
+    p-5
+    sm:p-6
+    md:p-8
+    mt-6
+    sm:mt-8
+  "
+>
+  {/* Background Decorations */}
 
-            <div
-              className="
-                flex
-                flex-col
-                sm:flex-row
-                sm:justify-between
-                sm:items-center
-                gap-3
-                mb-6
-              "
-            >
+<div
+  className="
+    absolute
+    -top-24
+    -right-24
+    w-56
+    h-56
+    rounded-full
+    bg-[#EEE7FF]
+    blur-3xl
+    opacity-60
+  "
+></div>
 
-              <h2
-                className="
-                  text-xl
-                  sm:text-2xl
-                  font-semibold
-                  text-[#4B2E91]
-                "
-              >
-                Upcoming Events
-              </h2>
+<div
+  className="
+    absolute
+    -bottom-24
+    -left-24
+    w-56
+    h-56
+    rounded-full
+    bg-[#F5F2FF]
+    blur-3xl
+    opacity-60
+  "
+></div>
 
-              <Link
-                to={`/student/clubs/${club._id}/events`}
-                className="
-                  flex
-                  items-center
-                  gap-2
-                  text-[#6D4BC3]
-                  font-semibold
-                  hover:underline
-                  text-sm
-                  sm:text-base
-                  w-fit
-                "
-              >
-                View All Events
-              </Link>
+<div className="relative z-10">
 
-            </div>
+<div className="flex flex-col gap-4 mb-8">
 
+  <div className="flex items-center justify-between flex-wrap gap-3">
 
+    <div>
+
+      <h2 className="text-2xl sm:text-3xl font-bold text-[#4B2E91]">
+        Upcoming Events
+      </h2>
+
+      <p className="text-sm sm:text-base text-gray-500 mt-1">
+        Discover the latest events organized by this club.
+      </p>
+
+    </div>
+
+    <div className="px-4 py-2 rounded-full bg-[#F4EEFF] border border-[#E8E2FA]">
+      <span className="text-sm font-semibold text-[#6D4BC3]">
+        {club.events?.length || 0} Events
+      </span>
+    </div>
+
+  </div>
+
+</div>
             <div
               className="
                 grid
@@ -1313,83 +1344,146 @@ const ClubDetails = () => {
 
                 club.events.slice(0, 3).map((event) => (
 
-                  <div
-                    key={event._id}
-                    className="
-                      border
-                      rounded-2xl
-                      overflow-hidden
-                      hover:shadow-lg
-                      transition
-                      min-w-0
-                    "
-                  >
+                <div
+  key={event._id}
+  className="
+    group
+    bg-white
+    border
+    border-[#E8E2FA]
+    rounded-3xl
+    overflow-hidden
+    shadow-md
+    hover:shadow-2xl
+    hover:-translate-y-1
+    transition-all
+    duration-300
+    min-w-0
+    flex
+    flex-col
+  "
+>
+<div className="relative overflow-hidden">
 
-                    <img
-                      src={event.poster}
-                      alt={event.title}
-                      className="
-                        w-full
-                        h-36
-                        sm:h-40
-                        md:h-44
-                        object-cover
-                      "
-                    />
+  <img
+    src={event.banner || event.poster}
+    alt={event.title}
+    className="
+      w-full
+      h-44
+      sm:h-48
+      object-cover
+      transition-transform
+      duration-500
+      group-hover:scale-105
+    "
+  />
 
-                    <div className="p-4">
+  {/* Gradient Overlay */}
 
-                      <h3
-                        className="
-                          text-base
-                          sm:text-lg
-                          font-semibold
-                          line-clamp-2
-                        "
-                      >
-                        {event.title}
-                      </h3>
+  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
 
-                      <p
-                        className="
-                          text-gray-500
-                          text-sm
-                          mt-2
-                          truncate
-                        "
-                      >
-                        📅 {event.date}
-                      </p>
+  {/* Status Badge */}
 
-                      <p
-                        className="
-                          text-gray-500
-                          text-sm
-                          truncate
-                        "
-                      >
-                        📍 {event.venue}
-                      </p>
+  <span
+    className="
+      absolute
+      top-4
+      right-4
+      bg-green-500
+      text-white
+      text-xs
+      font-semibold
+      px-3
+      py-1
+      rounded-full
+      shadow-md
+    "
+  >
+    Upcoming
+  </span>
 
-                      <Link
-                        to={`/student/event/${event._id}`}
-                        className="
-                          mt-4
-                          inline-block
-                          bg-[#6D4BC3]
-                          text-white
-                          px-4
-                          py-2
-                          rounded-xl
-                          text-sm
-                          hover:bg-[#5B3CA7]
-                          transition
-                        "
-                      >
-                        View Event
-                      </Link>
+</div>
 
-                    </div>
+                  <div className="p-5 flex flex-col flex-1">
+
+  {/* Title */}
+
+  <h3
+    className="
+      text-lg
+      font-bold
+      text-[#4B2E91]
+      line-clamp-2
+      leading-7
+      min-h-[56px]
+    "
+  >
+    {event.title}
+  </h3>
+
+  {/* Event Details */}
+
+  <div className="mt-4 space-y-3">
+
+    <div className="flex items-center gap-2 text-gray-600">
+
+      <CalendarDays
+        size={16}
+        className="text-[#6D4BC3] shrink-0"
+      />
+
+      <span className="text-sm">
+        {new Date(event.date).toLocaleDateString("en-IN", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })}
+      </span>
+
+    </div>
+
+    <div className="flex items-center gap-2 text-gray-600">
+
+      <MapPin
+        size={16}
+        className="text-[#6D4BC3] shrink-0"
+      />
+
+      <span className="text-sm truncate">
+        {event.venue}
+      </span>
+
+    </div>
+
+  </div>
+
+  {/* Button */}
+
+  <Link
+  to={`/student/event/${event._id}`}
+  className="
+    mt-auto
+    pt-5
+    w-full
+    flex
+    items-center
+    justify-center
+    rounded-xl
+    bg-[#6D4BC3]
+    py-3
+    text-white
+    font-semibold
+    transition-all
+    duration-300
+    hover:bg-[#5B3FB0]
+    hover:shadow-lg
+  "
+>
+  View Event
+</Link>
+
+</div>
 
                   </div>
 
@@ -1404,6 +1498,39 @@ const ClubDetails = () => {
               )}
 
             </div>
+            {club.events?.length > 3 && (
+  <div className="mt-8 flex justify-center">
+  <Link
+  to={`/student/clubs/${club._id}/events`}
+  className="
+    group
+    inline-flex
+    items-center
+    justify-center
+    gap-2
+    px-8
+    py-3
+    rounded-2xl
+    bg-[#6D4BC3]
+    text-white
+    font-semibold
+    shadow-md
+    hover:bg-[#5B3FB0]
+    hover:shadow-xl
+    transition-all
+    duration-300
+  "
+>
+  View All Events
+
+  <ArrowRight
+    size={18}
+    className="transition-transform duration-300 group-hover:translate-x-1"
+  />
+</Link>
+  </div>
+)}
+</div> {/* relative z-10 CLOSE */}
 
           </div>
 
