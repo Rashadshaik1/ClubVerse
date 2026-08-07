@@ -510,7 +510,7 @@ exports.postponeEvent = async (req,res)=>{
       await sendEmail({
   to: emailList,
   subject: `⏰ Event Postponed Notice: ${event.title}`,
- html: 
+  html: `
     <div style="font-family:Arial;padding:20px">
 
       <h2 style="color:#048c92">
@@ -532,10 +532,8 @@ exports.postponeEvent = async (req,res)=>{
       </p>
 
     </div>
-  
+  `
 });
-
-
 
       console.log(
         "POSTPONE EMAILS SENT"
@@ -704,11 +702,35 @@ exports.cancelEvent = async (req,res)=>{
 
     if(emailList.length > 0){
 
-
-      await sendEmail({
+await sendEmail({
   to: emailList,
   subject: `❌ Event Cancelled: ${event.title}`,
-  html: <div style="font-family:Arial;padding:20px"> <h2 style="color:#d9534f"> Event Cancellation Notice </h2> <p>Hello Participant,</p> <p> We regret to inform you that the event has been cancelled. </p> <p> <b>Event:</b> ${event.title} </p> <p> <b>Reason:</b> ${reason || "Not specified"} </p> </div> });
+  html: `
+    <div style="font-family:Arial;padding:20px">
+
+      <h2 style="color:#d9534f">
+        Event Cancellation Notice
+      </h2>
+
+      <p>Hello Participant,</p>
+
+      <p>
+        We regret to inform you that the event has been cancelled.
+      </p>
+
+      <p>
+        <b>Event:</b> ${event.title}
+      </p>
+
+      <p>
+        <b>Reason:</b>
+        ${reason || "Not specified"}
+      </p>
+
+    </div>
+  `
+});
+
 console.log("CANCEL EMAILS SENT");
 
 
