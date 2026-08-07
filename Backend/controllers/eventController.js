@@ -350,15 +350,29 @@ console.log("🔥 CHANGE VENUE API HIT");
     if(emailList.length > 0){
 
 
-   await sendEmail({
+  await sendEmail({
   to: emailList,
-  html: <div style="font-family:Arial;padding:20px"> <h2 style="color:#048c92"> Important Update Regarding ${event.title} </h2> <p>Hello Participant,</p> <p>Please note that the venue for the event has been updated.</p> <p><b>Event:</b> ${event.title}</p> <p><b>New Venue:</b> ${venue}</p> <p>Please make note of the updated venue.</p> </div> });
+  subject: `⚠️ Venue Changed Alert: ${event.title}`,
+  html: `
+    <div style="font-family:Arial;padding:20px">
 
+      <h2 style="color:#048c92">
+        Important Update Regarding ${event.title}
+      </h2>
 
-      console.log(
-        "EMAILS SENT SUCCESSFULLY"
-      );
+      <p>Hello Participant,</p>
 
+      <p>Please note that the venue for the event has been updated.</p>
+
+      <p><b>Event:</b> ${event.title}</p>
+
+      <p><b>New Venue:</b> ${venue}</p>
+
+      <p>Please make note of the updated venue.</p>
+
+    </div>
+  `
+});
     }
     else{
 
