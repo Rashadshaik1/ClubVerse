@@ -352,45 +352,7 @@ console.log("🔥 CHANGE VENUE API HIT");
 
    await sendEmail({
   to: emailList,
-  subject: `⚠️ Venue Changed Alert: ${event.title}`,
-  html: `
-  <div style="font-family:Arial;padding:20px">
-   <h2 style="color:#048c92"> Important Update Regarding ${event.title} </h2>
-
-    <p>Hello <b>${name}</b>,</p>
-
-    <p>
-      This is to inform you that the venue for the event you registered for has been updated.
-    </p>
-
-    <p>
-      You have successfully registered for <b>${event.title}</b>, organized by
-      <b>${clubName}</b>, scheduled on
-      <b>${new Date(event.date).toLocaleDateString("en-IN", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })}</b>.
-    </p>
-
-    <p>
-      The event venue has been changed from
-      <b>${oldVenue}</b> to <b>${venue}</b>.
-    </p>
-
-    <p>
-      Please make a note of the updated venue and plan your visit accordingly.
-    </p>
-
-    <br>
-
-    <p>
-      Regards,<br>
-      <b>Team ClubVerse</b>
-    </p>
-  </div>
-`
-});
+  html: <div style="font-family:Arial;padding:20px"> <h2 style="color:#048c92"> Important Update Regarding ${event.title} </h2> <p>Hello Participant,</p> <p>Please note that the venue for the event has been updated.</p> <p><b>Event:</b> ${event.title}</p> <p><b>New Venue:</b> ${venue}</p> <p>Please make note of the updated venue.</p> </div> });
 
 
       console.log(
@@ -534,52 +496,31 @@ exports.postponeEvent = async (req,res)=>{
       await sendEmail({
   to: emailList,
   subject: `⏰ Event Postponed Notice: ${event.title}`,
-  html: `
-  <div style="font-family:Arial;padding:20px">
-    <h2 style="color:#048c92"> Event Rescheduled: ${event.title} </h2>
+ html: 
+    <div style="font-family:Arial;padding:20px">
 
-    <p>Hello <b>${name}</b>,</p>
+      <h2 style="color:#048c92">
+        Event Rescheduled: ${event.title}
+      </h2>
 
-    <p>
-      This is to inform you that the event you registered for has been postponed.
-    </p>
+      <p>Hello Participant,</p>
 
-    <p>
-      You have successfully registered for <b>${event.title}</b>, organized by
-      <b>${clubName}</b>, originally scheduled on
-      <b>${new Date(event.date).toLocaleDateString("en-IN", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })}</b>.
-    </p>
+      <p>The event has been postponed.</p>
 
-    <p>
-      The event has been postponed to
-      <b>${new Date(date).toLocaleDateString("en-IN", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })}</b>.
-    </p>
+      <p>
+        <b>New Date:</b>
+        ${new Date(date).toLocaleDateString()}
+      </p>
 
-    <p>
-      <b>Reason:</b> ${reason || "Not specified"}
-    </p>
+      <p>
+        <b>Reason:</b>
+        ${reason || "Not specified"}
+      </p>
 
-    <p>
-      Please make a note of the revised schedule. We look forward to your participation.
-    </p>
-
-    <br>
-
-    <p>
-      Regards,<br>
-      <b>Team ClubVerse</b>
-    </p>
-  </div>
-`
+    </div>
+  
 });
+
 
 
       console.log(
@@ -753,49 +694,7 @@ exports.cancelEvent = async (req,res)=>{
       await sendEmail({
   to: emailList,
   subject: `❌ Event Cancelled: ${event.title}`,
-  html: `
-  <div style="font-family:Arial;padding:20px">
-    <h2 style="color:#d9534f">
-      Event Cancellation Notification
-    </h2>
-
-    <p>Hello <b>${name}</b>,</p>
-
-    <p>
-      We regret to inform you that the following event has been cancelled.
-    </p>
-
-    <p><b>Event Name:</b> ${event.title}</p>
-
-    <p><b>Organized By:</b> ${clubName}</p>
-
-    <p>
-      <b>Scheduled Date:</b>
-      ${new Date(event.date).toLocaleDateString("en-IN", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })}
-    </p>
-
-    <p>
-      <b>Reason:</b> ${reason || "Not specified"}
-    </p>
-
-    <p>
-      We sincerely apologize for any inconvenience this may cause and appreciate your understanding.
-    </p>
-
-    <br>
-
-    <p>
-      Regards,<br>
-      <b>Team ClubVerse</b>
-    </p>
-  </div>
-`
-});
-
+  html: <div style="font-family:Arial;padding:20px"> <h2 style="color:#d9534f"> Event Cancellation Notice </h2> <p>Hello Participant,</p> <p> We regret to inform you that the event has been cancelled. </p> <p> <b>Event:</b> ${event.title} </p> <p> <b>Reason:</b> ${reason || "Not specified"} </p> </div> });
 console.log("CANCEL EMAILS SENT");
 
 
